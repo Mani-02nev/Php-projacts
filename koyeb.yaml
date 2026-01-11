@@ -11,16 +11,16 @@ services:
       type: dockerfile
       dockerfile: Dockerfile
     
-    # Port configuration
+    # Port configuration - Apache runs on port 80
     ports:
       - port: 80
         protocol: http
     
-    # Health check
+    # Health check - must match the port Apache is running on
     health_check:
-      http:
-        path: /
+      tcp:
         port: 80
+      grace_period: 30
     
     # Instance configuration
     instance:
