@@ -1,4 +1,4 @@
-// 6Xpress JavaScript
+// Univaut JavaScript
 
 // Mobile menu toggle
 document.addEventListener('DOMContentLoaded', function () {

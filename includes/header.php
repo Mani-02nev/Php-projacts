@@ -9,6 +9,7 @@ require_once __DIR__ . '/functions.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($page_title) ? $page_title . ' - ' : ''; ?><?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -18,15 +19,17 @@ require_once __DIR__ . '/functions.php';
             <nav class="navbar">
                 <div class="logo">
                     <a href="index.php">
-                        <h1>6<span>X</span>press</h1>
+                        <img src="assets/images/logo.png" alt="<?php echo SITE_NAME; ?>" class="site-logo">
                     </a>
                 </div>
                 
                 <ul class="nav-menu">
-                    <li><a href="index.php" class="nav-link"><i class="bi bi-house-door"></i> Home</a></li>
-                    <li><a href="products.php" class="nav-link"><i class="bi bi-grid"></i> Products</a></li>
+                    <li><a href="index.php" class="nav-link"><i class="bi bi-house-door"></i> <span>Home</span></a></li>
+                    <li><a href="products.php" class="nav-link"><i class="bi bi-grid"></i> <span>Products</span></a></li>
+                    <li class="mobile-only"><a href="cart.php" class="nav-link"><i class="bi bi-cart3"></i> <span>Cart</span></a></li>
+                    <li class="mobile-only"><a href="profile.php" class="nav-link"><i class="bi bi-person"></i> <span>Profile</span></a></li>
                     <?php if (is_admin()): ?>
-                        <li><a href="admin/index.php" class="nav-link"><i class="bi bi-speedometer2"></i> Admin</a></li>
+                        <li><a href="admin/index.php" class="nav-link"><i class="bi bi-speedometer2"></i> <span>Admin</span></a></li>
                     <?php endif; ?>
                 </ul>
                 

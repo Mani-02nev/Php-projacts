@@ -1,0 +1,445 @@
+/* 🎨 UNIVAULT - Premium Modern E-commerce Theme */
+
+:root {
+    /* 🌈 Vibrant Brand Colors - Modern Gradient Palette */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+
+    /* Core Colors */
+    --primary: #667eea;
+    --primary-dark: #5568d3;
+    --primary-light: #8b9ef7;
+    --secondary: #764ba2;
+    --accent: #f5576c;
+    --success: #00f2fe;
+    --warning: #ffd93d;
+    --danger: #ff6b6b;
+
+    /* Neutral Colors */
+    --white: #ffffff;
+    --black: #0a0a0a;
+    --gray-50: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #e5e5e5;
+    --gray-300: #d4d4d4;
+    --gray-400: #a3a3a3;
+    --gray-500: #737373;
+    --gray-600: #525252;
+    --gray-700: #404040;
+    --gray-800: #262626;
+    --gray-900: #171717;
+
+    /* 🎭 Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+    /* ✨ Premium Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+    --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.4);
+    --shadow-glow-hover: 0 0 30px rgba(102, 126, 234, 0.6);
+
+    /* 🎬 Smooth Transitions */
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* 🎨 Header - Glassmorphism Effect */
+.main-header {
+    background: var(--dark-gradient);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 🔗 Navigation Links - Smooth Hover Effects */
+.nav-link {
+    position: relative;
+    color: var(--gray-200);
+    transition: var(--transition-base);
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-gradient);
+    transform: translateX(-100%);
+    transition: var(--transition-base);
+}
+
+.nav-link:hover {
+    color: var(--white);
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link:hover::before {
+    transform: translateX(0);
+}
+
+.nav-link::after {
+    background: var(--primary-gradient);
+}
+
+/* 🔍 Search Bar - Modern Glassmorphism */
+.search-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    transition: var(--transition-base);
+    backdrop-filter: blur(10px);
+}
+
+.search-input::placeholder {
+    color: var(--gray-400);
+}
+
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2), var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.search-btn {
+    background: var(--primary-gradient);
+    border: none;
+    color: var(--white);
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-md);
+}
+
+.search-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-glow-hover);
+}
+
+/* 🛍️ Product Cards - Premium Design */
+.product-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    transition: var(--transition-base);
+    overflow: hidden;
+    position: relative;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+    transform: scaleX(0);
+    transition: var(--transition-base);
+}
+
+.product-card:hover::before {
+    transform: scaleX(1);
+}
+
+.product-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-8px) scale(1.02);
+}
+
+.product-price {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+/* 🎯 Buttons - Vibrant & Interactive */
+.btn {
+    font-weight: 600;
+    transition: var(--transition-bounce);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-black {
+    background: var(--dark-gradient);
+    border: none;
+    color: var(--white);
+}
+
+.btn-black:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-glow-hover);
+}
+
+/* 🛒 Cart Icon - Animated Badge */
+.cart-count {
+    background: var(--danger);
+    color: var(--white);
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* 📱 Mobile Bottom Nav - Glassmorphism */
+.mobile-bottom-nav {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-bottom-nav .nav-item {
+    color: var(--gray-400);
+    transition: var(--transition-base);
+}
+
+.mobile-bottom-nav .nav-item.active {
+    color: var(--white);
+    background: var(--primary-gradient);
+    border-radius: 12px;
+    box-shadow: var(--shadow-glow);
+}
+
+.mobile-bottom-nav .nav-item:hover {
+    color: var(--primary-light);
+    transform: translateY(-4px);
+}
+
+/* 🎠 Carousel Cards - Premium Hover */
+.carousel-card {
+    box-shadow: var(--shadow-md);
+    border-radius: 16px;
+    transition: var(--transition-base);
+    overflow: hidden;
+}
+
+.carousel-card:hover {
+    box-shadow: var(--shadow-2xl);
+    border-color: var(--primary);
+    transform: translateY(-12px) scale(1.03);
+}
+
+/* 📝 Section Titles - Gradient Text */
+.section-title {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.section-title i {
+    background: var(--success-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 🦶 Footer - Dark Gradient */
+.main-footer {
+    background: var(--dark-gradient);
+    color: var(--gray-300);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-section a {
+    color: var(--gray-400);
+    transition: var(--transition-base);
+    position: relative;
+}
+
+.footer-section a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-gradient);
+    transition: var(--transition-base);
+}
+
+.footer-section a:hover {
+    color: var(--white);
+    transform: translateX(5px);
+}
+
+.footer-section a:hover::after {
+    width: 100%;
+}
+
+/* 👤 Profile Dropdown - Glassmorphism */
+.profile-menu {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-2xl);
+    border-radius: 16px;
+}
+
+.profile-menu-item {
+    transition: var(--transition-base);
+    border-radius: 8px;
+}
+
+.profile-menu-item:hover {
+    background: var(--primary-gradient);
+    color: var(--white);
+    transform: translateX(5px);
+}
+
+.profile-menu-item:hover i {
+    color: var(--white);
+}
+
+/* 🚨 Alerts - Modern Design */
+.alert-success {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-left: 4px solid var(--success);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left: 4px solid var(--danger);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+/* ⏳ Loading States - Shimmer Effect */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    to {
+        left: 100%;
+    }
+}
+
+/* 🎯 Focus States - Accessibility */
+*:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* 📜 Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ✨ Selection Color - Brand Colors */
+::selection {
+    background: var(--primary);
+    color: var(--white);
+}
+
+::-moz-selection {
+    background: var(--primary);
+    color: var(--white);
+}
+
+/* 🎪 Scroll Bar Styling */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-gradient);
+}

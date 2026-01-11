@@ -220,14 +220,6 @@ include 'includes/header.php';
 }
 </style>
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>Welcome to 6Xpress</h1>
-        <p>Your Premium Shopping Destination</p>
-        <a href="products.php" class="btn"><i class="bi bi-grid"></i> Shop Now</a>
-    </div>
-</section>
 
 <!-- Auto-Scrollable Carousel -->
 <section class="carousel-section">

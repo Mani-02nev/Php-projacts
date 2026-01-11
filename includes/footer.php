@@ -4,8 +4,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>6<span>X</span>press</h3>
-                    <p>Your trusted online shopping destination</p>
+                    <h3>Univaut</h3>
+                    <p>Your premium online shopping destination</p>
                 </div>
                 
                 <div class="footer-section">

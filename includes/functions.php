@@ -1,5 +1,5 @@
 <?php
-// Helper Functions for 6Xpress
+// Helper Functions for Univaut
 
 // Sanitize input data
 function clean_input($data) {

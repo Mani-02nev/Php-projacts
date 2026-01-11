@@ -38,7 +38,7 @@ include 'includes/header.php';
 
 <div class="container">
     <div class="form-container">
-        <h1 style="text-align: center; margin-bottom: 2rem;">Login to 6Xpress</h1>
+        <h1 style="text-align: center; margin-bottom: 2rem;">Login to Univaut</h1>
         
         <?php if ($error): ?>
             <div class="alert alert-error"><?php echo $error; ?></div>

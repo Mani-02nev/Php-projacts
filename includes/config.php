@@ -1,6 +1,6 @@
 <?php
 // Site Configuration
-define('SITE_NAME', '6Xpress');
+define('SITE_NAME', 'Univaut');
 define('SITE_URL', 'http://localhost/6xpress');
 define('CURRENCY', '₹');
 

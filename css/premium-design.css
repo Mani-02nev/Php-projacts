@@ -1,0 +1,235 @@
+/* 
+ * 💎 AURA - Premium Design System
+ * Based on 8px grid system, clean visual hierarchy, and professional palette.
+ */
+
+:root {
+    /* 🎨 Professional Color Palette */
+    --primary: #0F172A;
+    /* Deep Navy - Trustworthy */
+    --primary-light: #1E293B;
+    --primary-muted: #334155;
+
+    --secondary: #F8FAFC;
+    /* Off-white - Soft Neutral */
+    --secondary-dark: #F1F5F9;
+
+    --accent: #10B981;
+    /* Emerald/Teal - Intentional Accent */
+    --accent-hover: #059669;
+
+    --text-main: #0F172A;
+    --text-muted: #64748B;
+    --text-white: #FFFFFF;
+
+    /* 📏 Spacing Scale (8px Grid) */
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+    --space-5: 40px;
+    --space-6: 48px;
+    --space-8: 64px;
+    --space-10: 80px;
+
+    /* ✨ UI Elements */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
+
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.03), 0 4px 6px -4px rgba(0, 0, 0, 0.03), 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 🧱 Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--secondary);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+/* 🔘 Buttons */
+.btn-premium {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2) var(--space-4);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+    gap: var(--space-1);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--text-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-premium);
+}
+
+.btn-accent {
+    background-color: var(--accent);
+    color: var(--text-white);
+}
+
+.btn-accent:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--primary-muted);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--secondary-dark);
+    border-color: var(--primary);
+}
+
+/* 🃏 Cards */
+.card-premium {
+    background: var(--text-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-premium:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-premium);
+}
+
+/* 📝 Forms */
+.form-group {
+    margin-bottom: var(--space-3);
+}
+
+.label-premium {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+    color: var(--primary-muted);
+}
+
+.input-premium {
+    width: 100%;
+    padding: var(--space-2) var(--space-2);
+    border: 1.5px solid var(--secondary-dark);
+    border-radius: var(--radius-sm);
+    background: var(--secondary-dark);
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.input-premium:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--text-white);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* 🌌 Hero Section */
+.hero-premium {
+    padding: var(--space-10) 0;
+    text-align: center;
+    background: radial-gradient(circle at top right, #F1F5F9 0%, #FFFFFF 100%);
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    margin-bottom: var(--space-3);
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.25rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto var(--space-5);
+}
+
+/* 📏 Grid System */
+.container-premium {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+}
+
+.grid-premium {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+}
+
+/* 🌑 Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #F8FAFC;
+        --primary-light: #F1F5F9;
+        --secondary: #0F172A;
+        --secondary-dark: #1E293B;
+        --text-main: #F8FAFC;
+        --text-muted: #94A3B8;
+        --text-white: #0F172A;
+        /* Inverted for high contrast */
+        --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-premium {
+        background: var(--secondary-dark);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .input-premium {
+        background: #1E293B;
+        color: white;
+    }
+}
+
+/* 📱 Mobile First Adjustments */
+@media (max-width: 768px) {
+    .hero-premium {
+        padding: var(--space-6) 0;
+    }
+
+    .grid-premium {
+        grid-template-columns: 1fr;
+    }
+}
