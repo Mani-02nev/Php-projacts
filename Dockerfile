@@ -35,7 +35,6 @@ RUN echo '<Directory /var/www/html>\n\
     Require all granted\n\
     </Directory>' > /etc/apache2/conf-available/docker-php.conf \
     && echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
-    && echo 'Listen 80' >> /etc/apache2/ports.conf \
     && a2enconf docker-php
 
 # Expose port 80
