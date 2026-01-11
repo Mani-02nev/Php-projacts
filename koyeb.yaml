@@ -1,0 +1,48 @@
+# Koyeb Application Configuration
+# This file defines how your application should be deployed on Koyeb
+
+app:
+  name: 6xpress
+  
+services:
+  - name: web
+    # Use Dockerfile for building
+    build:
+      type: dockerfile
+      dockerfile: Dockerfile
+    
+    # Port configuration
+    ports:
+      - port: 80
+        protocol: http
+    
+    # Health check
+    health_check:
+      http:
+        path: /
+        port: 80
+    
+    # Instance configuration
+    instance:
+      type: nano  # Options: nano, small, medium, large
+    
+    # Scaling configuration
+    scaling:
+      min: 1
+      max: 1
+    
+    # Environment variables (add as needed)
+    env:
+      - name: APP_ENV
+        value: production
+      - name: APP_NAME
+        value: 6Xpress
+    
+    # Regions (choose one or multiple)
+    regions:
+      - fra  # Frankfurt, Germany (Europe)
+      # - was  # Washington DC (US East)
+      # - sin  # Singapore (Asia)
+    
+    # Auto-deploy on git push
+    auto_deploy: true

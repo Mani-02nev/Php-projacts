@@ -1,0 +1,5 @@
+id,user_id,customer_name,customer_email,customer_phone,shipping_address,city,pincode,total_amount,status,created_at,items
+1,2,"KARUPPASAMY M",karuppasamy.murugesan02@gmail.com,8270374293,"Nadutheru
+palayam",Dindigul,624620,23587,pending,"2026-01-10 16:15:07","{""1"":2,""8"":1}"
+2,2,"KARUPPASAMY M",karuppasamy.murugesan02@gmail.com,8270374293,"Nadutheru
+palayam",Dindigul,624620,1893,pending,"2026-01-10 16:39:45","{""18"":2,""38"":1}"
