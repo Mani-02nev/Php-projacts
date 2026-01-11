@@ -21,6 +21,12 @@ foreach ($users as $u) {
     }
 }
 
+// Safety check: if user data not found in CSV but session exists
+if (!$user) {
+    session_destroy();
+    redirect('login.php');
+}
+
 // Get user's orders
 $all_orders = get_all_orders();
 $user_orders = array_filter($all_orders, function($order) use ($user_id) {
@@ -43,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     if (empty($name) || empty($email)) {
         $error = 'Please fill in all fields';
     } else {
-        // Update user in CSV
         foreach ($users as &$u) {
             if ($u['id'] == $user_id) {
                 $u['name'] = $name;
@@ -67,153 +72,138 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 include 'includes/header.php';
 ?>
 
-<div class="container">
-    <h1 class="section-title">My Profile</h1>
-    
-    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin: 2rem 0;">
+<div class="container py-5">
+    <div class="row g-4">
         <!-- Profile Sidebar -->
-        <div>
-            <div style="background: var(--white); padding: 2rem; border-radius: 8px; border: 2px solid var(--gray-200); text-align: center;">
-                <!-- Avatar -->
-                <div style="width: 120px; height: 120px; margin: 0 auto 1rem; background: var(--black); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700;">
-                    <?php echo strtoupper(substr($user['name'], 0, 1)); ?>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                <div class="bg-primary p-4 text-center">
+                    <div class="bg-white text-primary d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-sm border border-4 border-white-50" style="width: 100px; height: 100px;">
+                        <span class="display-4 fw-bold"><?php echo strtoupper(substr($user['name'], 0, 1)); ?></span>
+                    </div>
+                    <h4 class="fw-bold text-white mb-1"><?php echo htmlspecialchars($user['name']); ?></h4>
+                    <p class="text-white-50 small mb-0"><?php echo htmlspecialchars($user['email']); ?></p>
                 </div>
-                
-                <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem;"><?php echo htmlspecialchars($user['name']); ?></h2>
-                <p style="color: var(--gray-600); margin-bottom: 1rem;"><?php echo htmlspecialchars($user['email']); ?></p>
-                
-                <div style="padding: 1rem; background: var(--gray-100); border-radius: 4px; margin-bottom: 1rem;">
-                    <p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.25rem;">Account Type</p>
-                    <p style="font-weight: 700; text-transform: uppercase;">
-                        <?php echo $user['role'] === 'admin' ? '👑 Admin' : '👤 Customer'; ?>
-                    </p>
-                </div>
-                
-                <div style="padding: 1rem; background: var(--gray-100); border-radius: 4px;">
-                    <p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.25rem;">Total Orders</p>
-                    <p style="font-weight: 700; font-size: 1.5rem;"><?php echo count($user_orders); ?></p>
+                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush">
+                        <div class="list-group-item p-4 border-0 border-bottom bg-transparent">
+                            <label class="text-secondary small fw-bold text-uppercase d-block mb-1">Account Role</label>
+                            <span class="badge bg-primary text-white border-0 px-3 py-2 rounded-pill fw-normal shadow-sm">
+                                <?php echo $user['role'] === 'admin' ? '👑 Administrator' : '👤 Customer'; ?>
+                            </span>
+                        </div>
+                        <div class="list-group-item p-4 border-0 bg-transparent">
+                            <div class="row text-center g-0">
+                                <div class="col-6 border-end border-secondary-subtle">
+                                    <h3 class="fw-bold text-primary mb-0"><?php echo count($user_orders); ?></h3>
+                                    <small class="text-secondary text-uppercase fw-bold" style="font-size: 0.65rem;">Orders</small>
+                                </div>
+                                <div class="col-6">
+                                    <h3 class="fw-bold text-primary mb-0"><?php echo get_wishlist_count(); ?></h3>
+                                    <small class="text-secondary text-uppercase fw-bold" style="font-size: 0.65rem;">Wishlist</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
         <!-- Main Content -->
-        <div>
-            <!-- Profile Edit Form -->
-            <div style="background: var(--white); padding: 2rem; border-radius: 8px; border: 2px solid var(--gray-200); margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Edit Profile</h3>
-                
-                <?php if ($success): ?>
-                    <div class="alert alert-success"><?php echo $success; ?></div>
-                <?php endif; ?>
-                
-                <?php if ($error): ?>
-                    <div class="alert alert-error"><?php echo $error; ?></div>
-                <?php endif; ?>
-                
-                <form method="POST">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" 
-                               id="name" 
-                               name="name" 
-                               class="form-control" 
-                               value="<?php echo htmlspecialchars($user['name']); ?>"
-                               required>
-                    </div>
+        <div class="col-lg-8">
+            <!-- Edit Profile -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 bg-body">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="fw-bold mb-4 border-bottom pb-3"><i class="bi bi-person-gear me-2 text-primary"></i> Account Settings</h4>
                     
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" 
-                               id="email" 
-                               name="email" 
-                               class="form-control" 
-                               value="<?php echo htmlspecialchars($user['email']); ?>"
-                               required>
-                    </div>
+                    <?php if ($success): ?>
+                        <div class="alert alert-success rounded-4 border-0 shadow-sm small py-3 mb-4 animate__animated animate__fadeIn">
+                            <i class="bi bi-check-circle me-2"></i> <?php echo $success; ?>
+                        </div>
+                    <?php endif; ?>
                     
-                    <button type="submit" name="update_profile" class="btn btn-black">
-                        Update Profile
-                    </button>
-                </form>
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger rounded-4 border-0 shadow-sm small py-3 mb-4">
+                            <i class="bi bi-exclamation-circle me-2"></i> <?php echo $error; ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <form method="POST" class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase ms-1">Full Name</label>
+                            <input type="text" name="name" class="form-control rounded-pill border-light-subtle shadow-sm px-4 bg-body-tertiary" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase ms-1">Email Address</label>
+                            <input type="email" name="email" class="form-control rounded-pill border-light-subtle shadow-sm px-4 bg-body-tertiary" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                        </div>
+                        <div class="col-12 mt-4 text-end">
+                            <button type="submit" name="update_profile" class="btn btn-primary rounded-pill px-5 fw-bold py-2 shadow transition-hover">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             
-            <!-- Previous Orders -->
-            <div style="background: var(--white); padding: 2rem; border-radius: 8px; border: 2px solid var(--gray-200);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.25rem;">📦 Previous Orders</h3>
-                    <span style="background: var(--black); color: var(--white); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600;">
-                        <?php echo count($user_orders); ?> Orders
-                    </span>
+            <!-- Recent Orders -->
+            <div class="card border-0 shadow-sm rounded-4 bg-body">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="fw-bold mb-4 border-bottom pb-3"><i class="bi bi-box-seam me-2 text-primary"></i> Order History</h4>
+                    
+                    <?php if (!empty($user_orders)): ?>
+                        <div class="d-flex flex-column gap-3">
+                            <?php foreach ($user_orders as $order): ?>
+                                <?php 
+                                $items = json_decode($order['items'], true);
+                                $item_count = is_array($items) ? array_sum($items) : 0;
+                                ?>
+                                <div class="card border border-light-subtle rounded-4 p-4 transition-hover bg-body-tertiary shadow-sm">
+                                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Order #<?php echo $order['id']; ?></h6>
+                                            <p class="text-secondary small mb-0"><i class="bi bi-calendar3 me-1"></i> <?php echo date('M d, Y', strtotime($order['created_at'])); ?></p>
+                                        </div>
+                                        <div class="text-md-end">
+                                            <h5 class="fw-bold text-primary mb-1">₹<?php echo number_format($order['total_amount'], 0); ?></h5>
+                                            <span class="badge rounded-pill <?php 
+                                                echo $order['status'] === 'delivered' ? 'bg-success-subtle text-success' : 
+                                                    ($order['status'] === 'shipped' ? 'bg-primary-subtle text-primary' : 
+                                                    ($order['status'] === 'processing' ? 'bg-warning-subtle text-warning' : 'bg-danger-subtle text-danger')); 
+                                            ?> px-3 py-2 text-uppercase" style="font-size: 0.65rem;">
+                                                <?php echo $order['status']; ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-3 p-3 bg-body rounded-3 border border-light-subtle small text-secondary">
+                                        <div class="row g-3">
+                                            <div class="col-sm-6 col-md-3">
+                                                <span class="d-block fw-bold mb-0">Qty</span>
+                                                <span class="opacity-75">🛍️ <?php echo $item_count; ?> item(s)</span>
+                                            </div>
+                                            <div class="col-sm-6 col-md-3">
+                                                <span class="d-block fw-bold mb-0">City</span>
+                                                <span class="opacity-75"><?php echo htmlspecialchars($order['city']); ?></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="d-block fw-bold mb-0">Shipping Address</span>
+                                                <span class="opacity-75 text-truncate d-block"><?php echo htmlspecialchars($order['shipping_address']); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="text-center py-5">
+                            <div class="display-3 text-muted mb-4 opacity-25"><i class="bi bi-cart"></i></div>
+                            <h5 class="fw-bold">No orders found</h5>
+                            <p class="text-secondary mb-4">You haven't placed any orders yet.</p>
+                            <a href="products.php" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Start Shopping</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                
-                <?php if (!empty($user_orders)): ?>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <?php foreach ($user_orders as $order): ?>
-                            <?php 
-                            $items = json_decode($order['items'], true);
-                            $item_count = is_array($items) ? array_sum($items) : 0;
-                            ?>
-                            <div style="border: 1px solid var(--gray-200); border-radius: 4px; padding: 1.5rem; transition: var(--transition);" 
-                                 onmouseover="this.style.borderColor='var(--black)'" 
-                                 onmouseout="this.style.borderColor='var(--gray-200)'">
-                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                    <div>
-                                        <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">
-                                            Order #<?php echo $order['id']; ?>
-                                        </h4>
-                                        <p style="font-size: 0.875rem; color: var(--gray-600);">
-                                            📅 <?php echo date('M d, Y - h:i A', strtotime($order['created_at'])); ?>
-                                        </p>
-                                    </div>
-                                    <div style="text-align: right;">
-                                        <p style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem;">
-                                            <?php echo format_price($order['total_amount']); ?>
-                                        </p>
-                                        <span style="background: <?php 
-                                            echo $order['status'] === 'delivered' ? '#00a650' : 
-                                                ($order['status'] === 'shipped' ? '#2874f0' : 
-                                                ($order['status'] === 'processing' ? '#ffa500' : '#ff4444')); 
-                                        ?>; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
-                                            <?php echo $order['status']; ?>
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div style="padding: 1rem; background: var(--gray-100); border-radius: 4px; margin-bottom: 1rem;">
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
-                                        <div>
-                                            <p style="color: var(--gray-600); margin-bottom: 0.25rem;">Customer</p>
-                                            <p style="font-weight: 600;"><?php echo htmlspecialchars($order['customer_name']); ?></p>
-                                        </div>
-                                        <div>
-                                            <p style="color: var(--gray-600); margin-bottom: 0.25rem;">Phone</p>
-                                            <p style="font-weight: 600;"><?php echo htmlspecialchars($order['customer_phone']); ?></p>
-                                        </div>
-                                        <div>
-                                            <p style="color: var(--gray-600); margin-bottom: 0.25rem;">Items</p>
-                                            <p style="font-weight: 600;">🛍️ <?php echo $item_count; ?> item(s)</p>
-                                        </div>
-                                        <div>
-                                            <p style="color: var(--gray-600); margin-bottom: 0.25rem;">Delivery</p>
-                                            <p style="font-weight: 600;"><?php echo htmlspecialchars($order['city']); ?>, <?php echo htmlspecialchars($order['pincode']); ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div style="font-size: 0.875rem; color: var(--gray-600);">
-                                    <strong>Address:</strong> <?php echo htmlspecialchars($order['shipping_address']); ?>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <div style="text-align: center; padding: 3rem; color: var(--gray-600);">
-                        <p style="font-size: 3rem; margin-bottom: 1rem;">🛒</p>
-                        <p style="font-size: 1.25rem; margin-bottom: 1rem;">No orders yet</p>
-                        <p style="margin-bottom: 1.5rem;">Start shopping to see your orders here!</p>
-                        <a href="products.php" class="btn btn-black">Browse Products</a>
-                    </div>
-                <?php endif; ?>
             </div>
         </div>
     </div>

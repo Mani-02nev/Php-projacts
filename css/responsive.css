@@ -1,379 +1,175 @@
-    /* Enhanced Mobile-First Responsive Design */
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   Optimized for compact/mobile devices
+   ======================================== */
 
-    /* Logo adjustments - Rectangular & Fully Viewable - PERMANENTLY BIGGER */
-    .logo-img,
-    .site-logo {
-        height: 32px !important;
-        width: auto !important;
-        max-width: 100%;
-        object-fit: contain;
-        display: block;
+/* Hero Section - Mobile Optimization */
+@media (max-width: 768px) {
+    .hero-3d-slide {
+        min-height: 400px !important;
     }
 
-    /* Remove hover effect as it's now always zoomed */
-    .logo-img:hover {
-        cursor: pointer;
+    .hero-3d-slide .row {
+        flex-direction: column;
     }
 
-    /* Logo positioned absolute left 0 or minimal spacing */
-    .logo {
-        text-align: left;
-        margin-right: auto;
-        /* Pushes other nav elements to the right */
-        padding-left: 0;
-        /* Ensure it starts from the edge */
-        display: flex;
-        align-items: center;
+    .hero-3d-slide .col-md-5,
+    .hero-3d-slide .col-md-7 {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
-    .logo a {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        /* Better spacing between logo and text */
-        text-decoration: none;
+    .hero-3d-slide .p-5 {
+        padding: 2rem 1.5rem !important;
     }
 
-    /* Logo text visible and bold */
-    .logo-text {
-        font-size: 1.5rem;
-        font-weight: 900;
-        letter-spacing: 1px;
-        color: var(--primary-white);
-        display: inline-block;
-        text-transform: uppercase;
+    .hero-3d-slide .display-4 {
+        font-size: 1.8rem !important;
     }
 
-    /* Improved Navigation for Mobile */
-    @media (max-width: 1024px) {
-        .navbar {
-            flex-wrap: wrap;
-        }
-
-        .nav-menu {
-            gap: 1rem;
-        }
-
-        .nav-search {
-            max-width: 350px;
-        }
+    .hero-3d-slide .lead {
+        font-size: 0.95rem !important;
     }
 
-    /* Tablet and Mobile Optimizations */
-    @media (max-width: 768px) {
+    .hero-3d-slide .btn-lg {
+        padding: 0.75rem 2rem !important;
+        font-size: 1rem !important;
+    }
+}
 
-        /* Header adjustments */
-        .main-header {
-            padding: 0.15rem 0 !important;
-        }
-
-        .navbar {
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 0;
-        }
-
-        .logo {
-            text-align: left;
-            width: 100%;
-            padding-left: 0;
-        }
-
-        /* Logo - full viewable on mobile - BIGGER */
-        .logo-img,
-        .site-logo {
-            height: 36px !important;
-            width: auto !important;
-            max-width: 100% !important;
-            transform: none !important;
-            margin-left: 0 !important;
-            object-fit: contain;
-        }
-
-        .logo-text {
-            font-size: 1.5rem !important;
-        }
-
-        /* Section titles - smaller */
-        .section-title {
-            font-size: 1.5rem !important;
-            margin: 1.5rem 0 1rem !important;
-        }
-
-        /* Product grid - 2 columns */
-        .products-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 0.75rem !important;
-        }
-
-        /* Product cards - smaller images and fonts */
-        .product-card {
-            font-size: 0.8rem;
-        }
-
-        .product-image {
-            height: 140px !important;
-            /* Reduced from 200px */
-            padding: 0.5rem;
-        }
-
-        .product-name {
-            font-size: 0.75rem !important;
-            min-height: 2rem;
-            line-height: 1.2;
-        }
-
-        .product-price {
-            font-size: 1rem !important;
-            /* Reduced from 1.25rem */
-            margin-bottom: 0.5rem;
-        }
-
-        .product-info {
-            padding: 0.5rem !important;
-        }
-
-        .product-rating {
-            font-size: 0.7rem;
-        }
-
-        .product-meta {
-            font-size: 0.65rem;
-        }
-
-        .product-actions .btn {
-            padding: 0.5rem;
-            font-size: 0.75rem;
-            border-radius: 6px;
-        }
-
-        .product-card {
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .product-name {
-            font-weight: 600;
-            color: var(--black);
-        }
-
-        /* Carousel adjustments */
-        .carousel-section {
-            padding: 1.5rem 0;
-        }
-
-        .carousel-card {
-            min-width: 160px !important;
-            max-width: 160px !important;
-        }
-
-        .carousel-card-image {
-            height: 140px !important;
-            padding: 0.5rem;
-        }
-
-        .carousel-card-name {
-            font-size: 0.75rem !important;
-            min-height: 2rem;
-        }
-
-        .carousel-card-price {
-            font-size: 1rem !important;
-        }
-
-        .carousel-card-info {
-            padding: 0.75rem !important;
-        }
-
-        .carousel-nav {
-            width: 35px;
-            height: 35px;
-            font-size: 1.2rem;
-        }
-
-        /* Footer */
-        .footer-content {
-            grid-template-columns: 1fr;
-            text-align: center;
-            gap: 1.5rem;
-        }
-
-        .main-footer {
-            font-size: 0.9rem;
-        }
+/* Product Cards - Mobile */
+@media (max-width: 768px) {
+    .slider-item {
+        min-width: 220px !important;
+        flex: 0 0 220px !important;
     }
 
-    /* Small Mobile - Even more compact */
-    @media (max-width: 480px) {
-
-        /* Extra small devices */
-        .container {
-            padding: 0 10px;
-        }
-
-        /* Logo - slightly smaller but still wide */
-        .logo-img,
-        .site-logo {
-            height: 32px !important;
-            max-width: 180px !important;
-        }
-
-        .logo-text {
-            font-size: 1.2rem !important;
-        }
-
-        .section-title {
-            font-size: 1.3rem !important;
-        }
-
-        .section-title i {
-            display: none;
-            /* Hide icons to save space */
-        }
-
-        /* Single column on very small screens */
-        .products-grid {
-            grid-template-columns: 1fr !important;
-            gap: 0.5rem !important;
-        }
-
-        /* Product cards - very compact */
-        .product-card {
-            font-size: 0.75rem;
-        }
-
-        .product-image {
-            height: 180px !important;
-            /* Taller for single column */
-        }
-
-        .product-name {
-            font-size: 0.8rem !important;
-        }
-
-        .product-price {
-            font-size: 1.1rem !important;
-        }
-
-        /* Carousel - smaller */
-        .carousel-card {
-            min-width: 140px !important;
-            max-width: 140px !important;
-        }
-
-        .carousel-card-image {
-            height: 120px !important;
-        }
-
-        .carousel-card-name {
-            font-size: 0.7rem !important;
-        }
-
-        .carousel-card-price {
-            font-size: 0.9rem !important;
-        }
-
-        .carousel-nav {
-            width: 30px;
-            height: 30px;
-            font-size: 1rem;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.6rem 1.2rem;
-            font-size: 0.85rem;
-        }
+    .card-img-top {
+        height: 180px !important;
     }
 
-    /* Landscape orientation for phones */
-    @media (max-width: 896px) and (orientation: landscape) {
-        .main-header {
-            padding: 0.5rem 0;
-        }
-
-        .navbar {
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-
-        .nav-menu {
-            flex-direction: row;
-        }
-
-        .logo-img {
-            height: 45px !important;
-            max-width: 220px !important;
-        }
-
-        .products-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-        }
+    .card-body {
+        padding: 1rem !important;
     }
 
-    /* Tablet landscape */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .products-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-        }
-
-        .nav-search {
-            max-width: 400px;
-        }
-
-        .logo-img {
-            max-width: 280px !important;
-        }
+    .card-title {
+        font-size: 0.9rem !important;
     }
 
-    /* Large tablets and small laptops */
-    @media (min-width: 1025px) and (max-width: 1280px) {
-        .products-grid {
-            grid-template-columns: repeat(4, 1fr) !important;
-        }
+    .fs-5 {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Category Sliders - Mobile */
+@media (max-width: 768px) {
+    .category-slider {
+        gap: 1rem !important;
+        padding: 0 0.5rem !important;
     }
 
-    /* Ensure images are responsive */
+    .slider-prev,
+    .slider-next {
+        display: none !important;
+    }
+}
+
+/* Container Padding - Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    section {
+        padding: 2rem 0 !important;
+    }
+
+    h2.display-6 {
+        font-size: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Very Small Screens (< 480px) */
+@media (max-width: 480px) {
+    .hero-3d-slide {
+        min-height: 350px !important;
+    }
+
+    .hero-3d-slide .display-4 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-3d-slide .lead {
+        font-size: 0.85rem !important;
+    }
+
+    .slider-item {
+        min-width: 200px !important;
+        flex: 0 0 200px !important;
+    }
+
+    .card-img-top {
+        height: 160px !important;
+    }
+
+    .badge {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.6rem !important;
+    }
+}
+
+/* Tablet Landscape (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .slider-item {
+        min-width: 250px !important;
+        flex: 0 0 250px !important;
+    }
+
+    .hero-3d-slide {
+        min-height: 450px !important;
+    }
+}
+
+/* Touch-Friendly Buttons */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .btn-sm {
+        min-height: 36px;
+        min-width: 36px;
+    }
+}
+
+/* Prevent Horizontal Scroll */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden !important;
+    }
+
+    .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Image Optimization for Mobile */
+@media (max-width: 768px) {
     img {
         max-width: 100%;
         height: auto;
     }
 
-    /* Touch-friendly buttons on mobile */
-    @media (hover: none) and (pointer: coarse) {
-
-        .btn,
-        .nav-link,
-        .product-card,
-        .carousel-card {
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            min-height: 44px;
-            /* iOS recommended touch target */
-        }
+    .hero-img-hover {
+        object-fit: cover !important;
     }
-
-    /* Print styles */
-    @media print {
-
-        .main-header,
-        .main-footer,
-        .nav-actions,
-        .search-input,
-        .search-btn,
-        .mobile-bottom-nav {
-            display: none;
-        }
-    }
-
-    @media (min-width: 1025px) {
-
-        .logo-img,
-        .site-logo {
-            width: 450px !important;
-            max-width: 660px;
-        }
-    }
+}

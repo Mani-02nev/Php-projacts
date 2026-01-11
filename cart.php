@@ -14,307 +14,180 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 remove_from_cart($product_id);
             }
         }
-        $_SESSION['success_message'] = 'Cart updated successfully!';
+        $success_msg = 'Cart updated successfully!';
     }
     
     if (isset($_POST['remove_item'])) {
         $product_id = intval($_POST['product_id']);
         remove_from_cart($product_id);
-        $_SESSION['success_message'] = 'Item removed from cart!';
+        $success_msg = 'Item removed from cart!';
     }
 }
 
 include 'includes/header.php';
 ?>
 
-<style>
-.cart-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="fw-bold mb-0 text-dark"><i class="bi bi-cart3 me-2"></i> Shopping Cart</h1>
+        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill"><?php echo get_cart_count(); ?> items</span>
+    </div>
 
-.cart-items {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.cart-item {
-    display: grid;
-    grid-template-columns: 120px 1fr auto auto auto;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--gray-200);
-    align-items: center;
-}
-
-.cart-item:last-child {
-    border-bottom: none;
-}
-
-.cart-item-image {
-    width: 120px;
-    height: 120px;
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 0.5rem;
-}
-
-.cart-item-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.cart-item-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.cart-item-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--black);
-    margin-bottom: 0.25rem;
-}
-
-.cart-item-meta {
-    font-size: 0.875rem;
-    color: var(--gray-600);
-    display: flex;
-    gap: 1rem;
-}
-
-.cart-item-price {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--black);
-    min-width: 120px;
-    text-align: right;
-}
-
-.cart-item-quantity {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.quantity-input {
-    width: 80px;
-    padding: 0.5rem;
-    border: 1px solid var(--gray-300);
-    border-radius: 4px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.cart-item-subtotal {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--black);
-    min-width: 140px;
-    text-align: right;
-}
-
-.cart-item-remove {
-    background: transparent;
-    border: 1px solid var(--gray-300);
-    color: var(--gray-600);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.cart-item-remove:hover {
-    background: #ff4444;
-    color: var(--white);
-    border-color: #ff4444;
-}
-
-.cart-summary {
-    background: var(--white);
-    border: 2px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 2rem;
-    margin-top: 2rem;
-}
-
-.cart-summary-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--gray-200);
-}
-
-.cart-summary-row:last-child {
-    border-bottom: none;
-    padding-top: 1.5rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.cart-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2rem;
-}
-
-.empty-cart {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: var(--gray-100);
-    border-radius: 8px;
-}
-
-@media (max-width: 768px) {
-    .cart-item {
-        grid-template-columns: 80px 1fr;
-        gap: 1rem;
-    }
-    
-    .cart-item-price,
-    .cart-item-quantity,
-    .cart-item-subtotal,
-    .cart-item-remove {
-        grid-column: 2;
-    }
-}
-</style>
-
-<div class="container">
-    <h1 class="section-title"><i class="bi bi-cart3"></i> Shopping Cart</h1>
-    
-    <?php if (isset($_SESSION['success_message'])): ?>
-        <div class="alert alert-success">
-            <i class="bi bi-check-circle"></i>
-            <?php 
-            echo $_SESSION['success_message']; 
-            unset($_SESSION['success_message']);
-            ?>
-        </div>
+    <?php if (isset($success_msg)): ?>
+        <script>window.onload = () => showToast("<?php echo $success_msg; ?>", "success");</script>
     <?php endif; ?>
     
     <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])): ?>
-        <form method="POST">
-            <div class="cart-items">
-                <?php 
-                $total = 0;
-                $item_count = 0;
-                foreach ($_SESSION['cart'] as $product_id => $quantity): 
-                    $product = get_product_by_id($product_id);
+        <div class="row g-4">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <form method="POST" id="cartForm">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light text-secondary small text-uppercase fw-bold">
+                                    <tr>
+                                        <th class="ps-4 py-3">Product</th>
+                                        <th class="py-3">Price</th>
+                                        <th class="py-3 text-center" style="width: 150px;">Quantity</th>
+                                        <th class="py-3 text-end">Subtotal</th>
+                                        <th class="pe-4 py-3 text-end" style="width: 80px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $total = 0;
+                                    foreach ($_SESSION['cart'] as $product_id => $quantity): 
+                                        $product = get_product_by_id($product_id);
+                                        if ($product):
+                                            $subtotal = $product['price'] * $quantity;
+                                            $total += $subtotal;
+                                    ?>
+                                        <tr>
+                                            <td class="ps-4 py-4">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div class="bg-light rounded-3 d-flex align-items-center justify-content-center p-2" style="width: 80px; height: 80px;">
+                                                        <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="fw-bold mb-1"><?php echo htmlspecialchars($product['name']); ?></h6>
+                                                        <span class="badge bg-light text-secondary border fw-normal mb-0"><?php echo htmlspecialchars($product['category']); ?></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 fw-medium text-dark">₹<?php echo number_format($product['price'], 0); ?></td>
+                                            <td class="py-4">
+                                                <div class="input-group input-group-sm rounded-pill overflow-hidden border mx-auto" style="max-width: 120px;">
+                                                    <button type="button" class="btn btn-outline-secondary border-0 px-2" onclick="decrementQty(<?php echo $product_id; ?>)">-</button>
+                                                    <input type="number" 
+                                                           name="quantity[<?php echo $product_id; ?>]" 
+                                                           id="qty-<?php echo $product_id; ?>"
+                                                           value="<?php echo $quantity; ?>" 
+                                                           min="1" 
+                                                           max="<?php echo $product['stock']; ?>"
+                                                           class="form-control border-0 text-center fw-bold bg-transparent px-0 shadow-none">
+                                                    <button type="button" class="btn btn-outline-secondary border-0 px-2" onclick="incrementQty(<?php echo $product_id; ?>, <?php echo $product['stock']; ?>)">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 text-end fw-bold text-primary">₹<?php echo number_format($subtotal, 0); ?></td>
+                                            <td class="pe-4 py-4 text-end">
+                                                <form method="POST" class="d-inline">
+                                                    <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                                                    <button type="submit" name="remove_item" class="btn btn-outline-danger btn-sm border-0 rounded-circle p-2">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endif; endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     
-                    if ($product):
-                        $subtotal = $product['price'] * $quantity;
-                        $total += $subtotal;
-                        $item_count += $quantity;
-                ?>
-                    <div class="cart-item">
-                        <!-- Product Image -->
-                        <div class="cart-item-image">
-                            <?php if (!empty($product['image'])): ?>
-                                <img src="<?php echo htmlspecialchars($product['image']); ?>" 
-                                     alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'%3E%3Crect fill=\'%23f5f5f5\' width=\'100\' height=\'100\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'12\'%3E📦%3C/text%3E%3C/svg%3E'">
-                            <?php else: ?>
-                                <i class="bi bi-image" style="font-size: 3rem; color: var(--gray-400);"></i>
-                            <?php endif; ?>
-                        </div>
-                        
-                        <!-- Product Details -->
-                        <div class="cart-item-details">
-                            <div class="cart-item-name"><?php echo htmlspecialchars($product['name']); ?></div>
-                            <div class="cart-item-meta">
-                                <span><i class="bi bi-tag"></i> ₹<?php echo number_format($product['price'], 0); ?> each</span>
-                                <span><i class="bi bi-box-seam"></i> Stock: <?php echo $product['stock']; ?></span>
-                                <span><i class="bi bi-hash"></i> ID: <?php echo $product['id']; ?></span>
-                            </div>
-                        </div>
-                        
-                        <!-- Quantity -->
-                        <div class="cart-item-quantity">
-                            <label style="font-size: 0.875rem; font-weight: 600;">Qty:</label>
-                            <input type="number" 
-                                   name="quantity[<?php echo $product_id; ?>]" 
-                                   value="<?php echo $quantity; ?>" 
-                                   min="0" 
-                                   max="<?php echo $product['stock']; ?>"
-                                   class="quantity-input">
-                        </div>
-                        
-                        <!-- Subtotal -->
-                        <div class="cart-item-subtotal">
-                            ₹<?php echo number_format($subtotal, 0); ?>
-                        </div>
-                        
-                        <!-- Remove Button -->
-                        <button type="submit" 
-                                name="remove_item" 
-                                class="cart-item-remove">
-                            <i class="bi bi-trash"></i> Remove
-                            <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                    <div class="d-flex justify-content-between align-items-center px-2">
+                        <a href="products.php" class="btn btn-light rounded-pill px-4 fw-bold">
+                            <i class="bi bi-arrow-left me-2"></i> Continue Shopping
+                        </a>
+                        <button type="submit" name="update_cart" class="btn btn-dark rounded-pill px-4 fw-bold shadow">
+                            <i class="bi bi-arrow-clockwise me-1"></i> Update Cart
                         </button>
                     </div>
-                <?php 
-                    endif;
-                endforeach; 
-                ?>
+                </form>
             </div>
             
-            <!-- Cart Summary -->
-            <div class="cart-summary">
-                <div class="cart-summary-row">
-                    <span><i class="bi bi-box-seam"></i> Total Items</span>
-                    <strong><?php echo $item_count; ?> item(s)</strong>
-                </div>
-                <div class="cart-summary-row">
-                    <span><i class="bi bi-truck"></i> Shipping</span>
-                    <strong>FREE</strong>
-                </div>
-                <div class="cart-summary-row">
-                    <span><i class="bi bi-currency-rupee"></i> Total Amount</span>
-                    <strong>₹<?php echo number_format($total, 0); ?></strong>
+            <!-- Summary Sidebar -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px;">
+                    <h5 class="fw-bold text-dark mb-4">Order Summary</h5>
+                    
+                    <div class="d-flex justify-content-between mb-3 text-secondary">
+                        <span>Subtotal</span>
+                        <span class="fw-medium text-dark">₹<?php echo number_format($total, 0); ?></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 text-secondary">
+                        <span>Shipping</span>
+                        <span class="text-success fw-bold">FREE</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4 text-secondary border-bottom pb-3">
+                        <span>Tax (Estimated)</span>
+                        <span class="fw-medium text-dark">₹0.00</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold text-dark mb-0">Total</h5>
+                        <h4 class="fw-bold text-primary mb-0">₹<?php echo number_format($total, 0); ?></h4>
+                    </div>
+                    
+                    <div class="d-grid gap-3">
+                        <a href="checkout.php" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow border-0 transition-hover">
+                            <i class="bi bi-shield-lock-fill me-2"></i> Secure Checkout
+                        </a>
+                        <div class="text-center text-muted small">
+                            <i class="bi bi-lock me-1"></i> SSL Encrypted Payment
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-light rounded-4 border border-white small text-secondary">
+                        <div class="d-flex gap-2 mb-2">
+                            <i class="bi bi-truck text-primary fs-5"></i>
+                            <span>Fast delivery within 3-5 business days.</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <i class="bi bi-arrow-counterclockwise text-primary fs-5"></i>
+                            <span>Easy 30-day return policy.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Cart Actions -->
-            <div class="cart-actions">
-                <a href="products.php" class="btn" style="background: var(--gray-200); color: var(--black);">
-                    <i class="bi bi-arrow-left"></i> Continue Shopping
-                </a>
-                
-                <div style="display: flex; gap: 1rem;">
-                    <button type="submit" name="update_cart" class="btn" style="background: var(--gray-800); color: var(--white);">
-                        <i class="bi bi-arrow-clockwise"></i> Update Cart
-                    </button>
-                    <a href="checkout.php" class="btn btn-black" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
-                        <i class="bi bi-credit-card"></i> Proceed to Checkout
-                    </a>
-                </div>
-            </div>
-        </form>
+        </div>
     <?php else: ?>
-        <div class="empty-cart">
-            <i class="bi bi-cart-x" style="font-size: 5rem; color: var(--gray-400); margin-bottom: 1rem;"></i>
-            <h2 style="margin-bottom: 1rem;">Your cart is empty</h2>
-            <p style="color: var(--gray-600); margin-bottom: 2rem;">Add some products to get started!</p>
-            <a href="products.php" class="btn btn-black">
-                <i class="bi bi-grid"></i> Browse Products
+        <div class="text-center py-5 bg-white rounded-5 shadow-sm border">
+            <div class="display-1 text-muted mb-4 opacity-25">
+                <i class="bi bi-cart-x"></i>
+            </div>
+            <h3 class="fw-bold">Your cart is empty</h3>
+            <p class="text-secondary mb-4">Look like you haven't added anything to your cart yet.</p>
+            <a href="products.php" class="btn btn-primary rounded-pill px-5 fw-bold py-2 shadow">
+                Start Shopping
             </a>
         </div>
     <?php endif; ?>
 </div>
+
+<script>
+function incrementQty(id, max) {
+    const input = document.getElementById('qty-' + id);
+    if (parseInt(input.value) < max) {
+        input.value = parseInt(input.value) + 1;
+    }
+}
+function decrementQty(id) {
+    const input = document.getElementById('qty-' + id);
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>

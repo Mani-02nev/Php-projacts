@@ -4,405 +4,283 @@ require_once 'includes/functions.php';
 
 $page_title = 'Home';
 
-// Fetch featured products from CSV
+// Fetch all products
 $all_products = get_all_products();
-$featured_products = array_slice($all_products, 0, 15); // Get 15 products for carousel
+
+// Group products by category
+$categories_data = [];
+foreach ($all_products as $product) {
+    $categories_data[$product['category']][] = $product;
+}
+
+// Priority order: New categories first, then Groceries & Clothing, Electronics last
+$priority_order = [
+    'Audio & Speakers',
+    'Sports & Fitness', 
+    'Footwear',
+    'Men\'s Fashion',
+    'Men\'s Shirts',
+    'Travel & Accessories',
+    'Groceries',
+    'Clothing'
+];
+
+// Move Electronics to the end if it exists
+if (isset($categories_data['Electronics'])) {
+    $electronics = $categories_data['Electronics'];
+    unset($categories_data['Electronics']);
+}
+
+// Apply priority order
+foreach (array_reverse($priority_order) as $cat_name) {
+    if (isset($categories_data[$cat_name])) {
+        $temp = $categories_data[$cat_name];
+        unset($categories_data[$cat_name]);
+        $categories_data = [$cat_name => $temp] + $categories_data;
+    }
+}
+
+// Add Electronics at the end
+if (isset($electronics)) {
+    $categories_data['Electronics'] = $electronics;
+}
+
+// Quick Add to Cart logic
+if (isset($_GET['add_to_cart'])) {
+    $p_id = intval($_GET['add_to_cart']);
+    add_to_cart($p_id);
+    $script_toast = 'showToast("Product added to cart!", "success")';
+}
 
 include 'includes/header.php';
+if (isset($script_toast)) echo "<script>window.onload = () => $script_toast;</script>";
 ?>
 
+<!-- Fast Auto-Scrolling Hero Section (3 Slides) -->
+<section class="hero-carousel p-0 m-0">
+    <div class="container-fluid p-0">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            </div>
+            
+            <div class="carousel-inner">
+                <!-- Slide 1: Republic Day Sale -->
+                <div class="carousel-item active">
+                    <div class="position-relative" style="height: 500px; overflow: hidden;">
+                        <img src="data/images/hero/republic-day.png" class="w-100 h-100 object-fit-cover" alt="Republic Day Sale">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);">
+                            <div class="container">
+                                <div class="col-lg-6 col-md-8">
+                                    <span class="badge mb-3 py-2 px-3 fw-bold" style="background: rgba(255, 103, 31, 0.9); color: #fff; font-size: 0.9rem;">REPUBLIC DAY SALE</span>
+                                    <h1 class="display-3 fw-black text-white mb-3" style="font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">National Pride</h1>
+                                    <p class="lead text-white mb-4 fw-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Massive savings up to <span style="color: #FFD700;">60% OFF</span> on heritage crafts and essentials.</p>
+                                    <a href="products.php" class="btn btn-lg px-5 py-3 fw-bold" style="background: #FF671F; color: #fff; border: none;">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2: New Year Luxury -->
+                <div class="carousel-item">
+                    <div class="position-relative" style="height: 500px; overflow: hidden;">
+                        <img src="data/images/hero/luxury-watch.png" class="w-100 h-100 object-fit-cover" alt="New Year Luxury Sale">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);">
+                            <div class="container">
+                                <div class="col-lg-6 col-md-8">
+                                    <span class="badge mb-3 py-2 px-3 fw-bold" style="background: rgba(230, 168, 85, 0.9); color: #000; font-size: 0.9rem;">2026 PREMIUM DEALS</span>
+                                    <h1 class="display-3 fw-black text-white mb-3" style="font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">New Year Luxury</h1>
+                                    <p class="lead text-white mb-4 fw-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Exclusive <span style="color: #e6a855;">Flat ₹2000 OFF</span> on luxury watches and tech.</p>
+                                    <a href="products.php?category=Electronics" class="btn btn-lg px-5 py-3 fw-bold" style="background: #2d3261; color: #fff; border: none;">Browse Luxury</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3: Mega Festival Sale -->
+                <div class="carousel-item">
+                    <div class="position-relative" style="height: 500px; overflow: hidden;">
+                        <img src="data/images/hero/shopping-sale.png" class="w-100 h-100 object-fit-cover" alt="Mega Festival Sale">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);">
+                            <div class="container">
+                                <div class="col-lg-6 col-md-8">
+                                    <span class="badge mb-3 py-2 px-3 fw-bold" style="background: rgba(235, 64, 52, 0.9); color: #fff; font-size: 0.9rem;">EXCLUSIVE DISCOUNTS</span>
+                                    <h1 class="display-3 fw-black text-white mb-3" style="font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Mega Festival</h1>
+                                    <p class="lead text-white mb-4 fw-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Unbeatable offers across all categories for a limited time.</p>
+                                    <a href="products.php" class="btn btn-lg px-5 py-3 fw-bold" style="background: #eb4034; color: #fff; border: none;">Shop the Sale</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
 <style>
-/* Auto-Scrollable Carousel */
-.carousel-section {
-    padding: 3rem 0;
-    background: var(--white);
-    overflow: hidden;
-}
-
-.carousel-wrapper {
-    position: relative;
-    margin: 2rem 0;
-}
-
-.carousel-track-container {
-    overflow: hidden;
-    position: relative;
-    padding: 1rem 0;
-}
-
-.carousel-track {
-    display: flex;
-    gap: 1.5rem;
-    transition: transform 0.5s ease;
-    padding: 0 1rem;
-}
-
-.carousel-card {
-    min-width: 280px;
-    max-width: 280px;
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.carousel-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    border-color: var(--black);
-}
-
-.carousel-card-image {
+.hero-3d-container {
+    perspective: 2000px;
+    height: 600px; /* Increased height */
     width: 100%;
-    height: 220px;
-    background: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    border-bottom: 1px solid var(--gray-200);
-    position: relative;
-    overflow: hidden;
 }
-
-.carousel-card-image img {
+.hero-3d-slider {
+    position: relative;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
+}
+@keyframes heroBreath {
+    0% { opacity: 0; transform: scale(1.02) translateY(5px); filter: blur(10px); }
+    10% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    33% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    43% { opacity: 0; transform: scale(0.98) translateY(-5px); filter: blur(10px); }
+    100% { opacity: 0; }
 }
 
-.carousel-card:hover .carousel-card-image img {
-    transform: scale(1.1);
-}
-
-.carousel-card-badge {
+.hero-3d-slide {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background: var(--black);
-    color: var(--white);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 700;
-}
-
-.carousel-card-info {
-    padding: 1rem;
-}
-
-.carousel-card-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-height: 2.5rem;
-    line-height: 1.3;
-}
-
-.carousel-card-rating {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.75rem;
-    margin-bottom: 0.5rem;
-    color: var(--gray-600);
-}
-
-.carousel-card-rating .stars {
-    color: #ffa500;
-}
-
-.carousel-card-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--black);
-    margin-bottom: 0.75rem;
-}
-
-.carousel-card-btn {
     width: 100%;
-    padding: 0.625rem;
-    background: var(--black);
-    color: var(--white);
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    height: 100%;
+    backface-visibility: hidden;
+    overflow: hidden;
+    background: transparent !important; /* Emotional transparency */
+    opacity: 0;
 }
 
-.carousel-card-btn:hover {
-    background: var(--gray-800);
-}
-
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--white);
-    border: 2px solid var(--black);
-    color: var(--black);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.carousel-nav:hover {
-    background: var(--black);
-    color: var(--white);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.carousel-nav-prev {
-    left: -25px;
-}
-
-.carousel-nav-next {
-    right: -25px;
-}
-
-.carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-}
-
-.carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--gray-300);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.carousel-dot.active {
-    background: var(--black);
-    width: 24px;
-    border-radius: 4px;
-}
-
-.auto-scroll-indicator {
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.875rem;
-    color: var(--gray-600);
-}
-
-.auto-scroll-indicator i {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
+.hero-3d-slide:nth-child(1) { animation: heroBreath 18s infinite 0s; }
+.hero-3d-slide:nth-child(2) { animation: heroBreath 18s infinite 6s; }
+.hero-3d-slide:nth-child(3) { animation: heroBreath 18s infinite 12s; }
 </style>
 
 
-<!-- Auto-Scrollable Carousel -->
-<section class="carousel-section">
-    <div class="container">
-        <h2 class="section-title"><i class="bi bi-stars"></i> Featured Products</h2>
-        
-        <div class="carousel-wrapper">
-            <button class="carousel-nav carousel-nav-prev" onclick="moveCarousel(-1)">
-                <i class="bi bi-chevron-left"></i>
-            </button>
+
+<!-- Category Sliders (The "Crocer" Sections) -->
+<div class="container" id="categories">
+    <?php foreach ($categories_data as $category_name => $products): ?>
+        <div class="mb-5 section-category">
+            <div class="d-flex justify-content-between align-items-end mb-4 px-1">
+                <div>
+                    <h2 class="fw-bold mb-1 text-dark"><?php echo htmlspecialchars($category_name); ?></h2>
+                    <p class="text-secondary small mb-0">Discover 50+ handpicked items in <?php echo $category_name; ?></p>
+                </div>
+                <a href="products.php?category=<?php echo urlencode($category_name); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-4 fw-bold">View All <i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
             
-            <div class="carousel-track-container">
-                <div class="carousel-track" id="carouselTrack">
-                    <?php foreach ($featured_products as $index => $product): ?>
-                        <div class="carousel-card">
-                            <div class="carousel-card-image">
-                                <?php if (!empty($product['image'])): ?>
-                                    <img src="<?php echo htmlspecialchars($product['image']); ?>" 
-                                         alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23f5f5f5\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'14\'%3E📦%3C/text%3E%3C/svg%3E'">
-                                <?php endif; ?>
-                                <?php if ($product['stock'] < 20): ?>
-                                    <span class="carousel-card-badge">🔥 Hot</span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="carousel-card-info">
-                                <h3 class="carousel-card-name"><?php echo htmlspecialchars($product['name']); ?></h3>
-                                <div class="carousel-card-rating">
-                                    <span class="stars">⭐⭐⭐⭐☆</span>
-                                    <span>(<?php echo rand(100, 9999); ?>)</span>
+            <!-- Horizontal Slider Container -->
+            <div class="slider-wrapper position-relative">
+                <button class="btn btn-white shadow-sm rounded-circle position-absolute top-50 start-0 translate-middle-y z-3 d-none d-lg-flex align-items-center justify-content-center slider-prev" style="width: 45px; height: 45px; left: -22px !important;">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <div class="category-slider d-flex overflow-auto gap-4 pb-4 px-1" style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth;">
+                    <?php foreach ($products as $product): ?>
+                        <div class="slider-item" style="min-width: 280px; flex: 0 0 280px;">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card transition-hover position-relative">
+                                <div class="position-absolute top-0 end-0 m-3 z-2">
+                                    <a href="?wishlist_toggle=<?php echo $product['id']; ?>" class="btn btn-white btn-sm rounded-circle shadow-sm">
+                                        <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill text-danger' : 'bi-heart'; ?>"></i>
+                                    </a>
                                 </div>
-                                <div class="carousel-card-price">₹<?php echo number_format($product['price'], 0); ?></div>
-                                <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="carousel-card-btn">
-                                    <i class="bi bi-eye"></i> View Details
+                                
+                                <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="text-decoration-none h-100 d-flex flex-column">
+                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-0" style="height: 200px;">
+                                        <?php if ($product['stock'] == 0): ?>
+                                            <span class="badge position-absolute top-50 start-50 translate-middle shadow z-1 py-1 px-3 rounded-pill fw-bold border" style="background: white !important; color: black !important;">Sold Out</span>
+                                        <?php endif; ?>
+                                        <div class="img-wrapper w-100 h-100 overflow-hidden d-flex align-items-center justify-content-center">
+                                            <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid transition-all" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-height: 80%; object-fit: contain;" loading="lazy">
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <h6 class="card-title fw-bold mb-1 text-dark text-truncate"><?php echo htmlspecialchars($product['name']); ?></h6>
+                                        <div class="text-warning small mb-3">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fs-5 fw-bold text-dark">₹<?php echo number_format($product['price'], 0); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </a>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
+                <button class="btn btn-white shadow-sm rounded-circle position-absolute top-50 end-0 translate-middle-y z-3 d-none d-lg-flex align-items-center justify-content-center slider-next" style="width: 45px; height: 45px; right: -22px !important;">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
             </div>
-            
-            <button class="carousel-nav carousel-nav-next" onclick="moveCarousel(1)">
-                <i class="bi bi-chevron-right"></i>
-            </button>
         </div>
-        
-        <div class="carousel-dots" id="carouselDots"></div>
-        
-        <div class="auto-scroll-indicator">
-            <i class="bi bi-arrow-left-right"></i> Auto-scrolling • Hover to pause
+    <?php endforeach; ?>
+</div>
+
+<!-- Newsletter -->
+<section class="container mb-5 mt-5 pt-3">
+    <div class="bg-dark text-white p-5 rounded-5 shadow text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+        <div class="position-relative z-1">
+            <h2 class="fw-bold mb-3">Join the Univaut Circle</h2>
+            <p class="lead mb-4 opacity-75">Get early access to drops and exclusive content delivered to your inbox.</p>
+            <form class="d-flex gap-2 mx-auto flex-column flex-md-row" style="max-width: 500px;">
+                <input type="email" class="form-control rounded-pill px-4 border-0 shadow-sm py-3" placeholder="Enter your email address">
+                <button type="submit" class="btn btn-dark rounded-pill px-5 fw-bold shadow py-3">Subscribe Now</button>
+            </form>
         </div>
+        <i class="bi bi-envelope-paper-fill position-absolute text-white-50" style="font-size: 15rem; bottom: -5rem; right: -2rem; opacity: 0.1; transform: rotate(-15deg);"></i>
     </div>
 </section>
 
-<!-- Regular Products Grid -->
-<div class="container">
-    <h2 class="section-title"><i class="bi bi-grid"></i> More Products</h2>
-    
-    <div class="products-grid">
-        <?php 
-        $more_products = array_slice($all_products, 15, 6);
-        if (!empty($more_products)): 
-        ?>
-            <?php foreach ($more_products as $product): ?>
-                <div class="product-card">
-                    <div class="product-image">
-                        <?php if (!empty($product['image'])): ?>
-                            <img src="<?php echo htmlspecialchars($product['image']); ?>" 
-                                 alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'%3E%3Crect fill=\'%23f5f5f5\' width=\'150\' height=\'150\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'12\'%3E📦%3C/text%3E%3C/svg%3E'">
-                        <?php endif; ?>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h3>
-                        <div class="product-rating">
-                            <span class="stars">⭐⭐⭐⭐☆</span>
-                            <span>(<?php echo rand(100, 9999); ?>)</span>
-                        </div>
-                        <div class="product-price">₹<?php echo number_format($product['price'], 0); ?></div>
-                        <div class="product-meta">
-                            <span>📦 <?php echo $product['stock']; ?></span>
-                            <span>🆔 #<?php echo $product['id']; ?></span>
-                        </div>
-                        <div class="product-actions">
-                            <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="btn btn-black">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-    
-    <div style="text-align: center; margin: 3rem 0;">
-        <a href="products.php" class="btn btn-black" style="font-size: 1.1rem; padding: 1rem 3rem;">
-            <i class="bi bi-grid"></i> View All Products
-        </a>
-    </div>
-</div>
+<style>
+.category-slider::-webkit-scrollbar { display: none; }
+.category-slider { scroll-snap-type: x mandatory; }
+.slider-item { scroll-snap-align: start; }
+.slider-prev, .slider-next {
+    background: white !important;
+    border: 1px solid #eee !important;
+    color: #3b82f6 !important;
+    transition: all 0.2s ease;
+}
+.slider-prev:hover, .slider-next:hover {
+    background: #3b82f6 !important;
+    color: white !important;
+    transform: translateY(-50%) scale(1.1) !important;
+}
+</style>
 
 <script>
-const track = document.getElementById('carouselTrack');
-const cards = track.querySelectorAll('.carousel-card');
-const dotsContainer = document.getElementById('carouselDots');
-
-let currentIndex = 0;
-let autoScrollInterval;
-const cardWidth = 280 + 24; // card width + gap
-const visibleCards = Math.floor(window.innerWidth / cardWidth);
-const maxIndex = Math.max(0, cards.length - visibleCards);
-
-// Create dots
-const dotsCount = Math.ceil(cards.length / visibleCards);
-for (let i = 0; i < dotsCount; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    dot.onclick = () => goToPage(i);
-    dotsContainer.appendChild(dot);
-}
-
-function updateCarousel() {
-    const offset = -currentIndex * cardWidth;
-    track.style.transform = `translateX(${offset}px)`;
-    
-    // Update dots
-    const dots = dotsContainer.querySelectorAll('.carousel-dot');
-    const activeDot = Math.floor(currentIndex / visibleCards);
-    dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === activeDot);
-    });
-}
-
-function moveCarousel(direction) {
-    currentIndex += direction * visibleCards;
-    
-    // Loop around
-    if (currentIndex < 0) {
-        currentIndex = maxIndex;
-    } else if (currentIndex > maxIndex) {
-        currentIndex = 0;
-    }
-    
-    updateCarousel();
-}
-
-function goToPage(page) {
-    currentIndex = page * visibleCards;
-    if (currentIndex > maxIndex) currentIndex = maxIndex;
-    updateCarousel();
-}
-
-function startAutoScroll() {
-    autoScrollInterval = setInterval(() => {
-        currentIndex++;
-        if (currentIndex > maxIndex) {
-            currentIndex = 0;
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.slider-wrapper').forEach(wrapper => {
+        const slider = wrapper.querySelector('.category-slider');
+        const prevBtn = wrapper.querySelector('.slider-prev');
+        const nextBtn = wrapper.querySelector('.slider-next');
+        
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                slider.scrollBy({ left: -600, behavior: 'smooth' });
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                slider.scrollBy({ left: 600, behavior: 'smooth' });
+            });
         }
-        updateCarousel();
-    }, 3000);
-}
-
-function stopAutoScroll() {
-    clearInterval(autoScrollInterval);
-}
-
-// Auto-scroll
-startAutoScroll();
-
-// Pause on hover
-track.addEventListener('mouseenter', stopAutoScroll);
-track.addEventListener('mouseleave', startAutoScroll);
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    const newVisibleCards = Math.floor(window.innerWidth / cardWidth);
-    if (newVisibleCards !== visibleCards) {
-        location.reload();
-    }
+    });
 });
-
-// Initialize
-updateCarousel();
 </script>
 
 <?php include 'includes/footer.php'; ?>

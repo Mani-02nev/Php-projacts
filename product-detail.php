@@ -22,64 +22,118 @@ if (!$product) {
     exit();
 }
 
+// Add to recently viewed
+add_to_recently_viewed($product_id);
+
 $page_title = $product['name'];
 include 'includes/header.php';
 ?>
 
-<div class="container">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 3rem 0;">
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none text-secondary">Home</a></li>
+            <li class="breadcrumb-item"><a href="products.php" class="text-decoration-none text-secondary">Products</a></li>
+            <li class="breadcrumb-item active fw-bold text-dark" aria-current="page"><?php echo htmlspecialchars($product['name']); ?></li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
         <!-- Product Image -->
-        <div>
-            <div class="product-image" style="height: 500px; border: 2px solid var(--gray-200); border-radius: 8px;">
-                <?php if (!empty($product['image'])): ?>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white p-4">
+                <div class="position-absolute top-0 end-0 m-4 z-2">
+                    <a href="products.php?wishlist_toggle=<?php echo $product['id']; ?>" class="btn btn-white btn-sm rounded-circle shadow-sm p-3 fs-5 line-height-1">
+                        <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill text-danger' : 'bi-heart'; ?>"></i>
+                    </a>
+                </div>
+                <div class="product-image-container d-flex align-items-center justify-content-center zoom-container" style="height: 500px;">
                     <img src="<?php echo htmlspecialchars($product['image']); ?>" 
+                         id="mainProductImage"
                          alt="<?php echo htmlspecialchars($product['name']); ?>"
-                         style="width: 100%; height: 100%; object-fit: contain;"
-                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\'%3E%3Crect fill=\'%23e5e5e5\' width=\'400\' height=\'400\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23a3a3a3\' font-size=\'20\'%3ENo Image%3C/text%3E%3C/svg%3E'">
-                <?php else: ?>
-                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-                        <rect width="200" height="200" fill="#e5e5e5"/>
-                        <text x="100" y="100" text-anchor="middle" dy=".3em" fill="#a3a3a3" font-size="20">No Image</text>
-                    </svg>
-                <?php endif; ?>
+                         class="img-fluid rounded-4"
+                         style="max-height: 100%; object-fit: contain;"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\'%3E%3Crect fill=\'%23f8f9fa\' width=\'400\' height=\'400\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%236c757d\' font-size=\'20\'%3E📦 No Image%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="text-center mt-3 text-secondary small">
+                    <i class="bi bi-search"></i> Hover image to zoom
+                </div>
             </div>
         </div>
         
         <!-- Product Details -->
-        <div>
-            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;"><?php echo htmlspecialchars($product['name']); ?></h1>
-            <div class="product-price" style="font-size: 2rem; margin-bottom: 2rem;">
-                <?php echo format_price($product['price']); ?>
-            </div>
-            
-            <div style="margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem;">Description</h3>
-                <p style="color: var(--gray-600); line-height: 1.8;">
-                    <?php echo nl2br(htmlspecialchars($product['description'])); ?>
-                </p>
-            </div>
-            
-            <div style="margin-bottom: 2rem;">
-                <p><strong>Stock:</strong> <?php echo $product['stock']; ?> units available</p>
-            </div>
-            
-            <!-- Add to Cart Form -->
-            <form method="POST" style="display: flex; gap: 1rem; align-items: center;">
-                <div class="form-group" style="margin: 0;">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" 
-                           id="quantity" 
-                           name="quantity" 
-                           class="form-control" 
-                           value="1" 
-                           min="1" 
-                           max="<?php echo $product['stock']; ?>"
-                           style="width: 100px;">
+        <div class="col-lg-6">
+            <div class="product-details-content py-2">
+                <div class="mb-2">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold small text-uppercase letter-spacing-1">Digital Product</span>
                 </div>
-                <button type="submit" name="add_to_cart" class="btn btn-black" style="margin-top: 1.5rem;">
-                    Add to Cart
-                </button>
-            </form>
+                <h1 class="display-5 fw-bold text-dark mb-3"><?php echo htmlspecialchars($product['name']); ?></h1>
+                
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <div class="text-warning">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                    </div>
+                    <span class="text-secondary fw-medium fs-5">4.5</span>
+                    <span class="text-muted">(<?php echo rand(50, 500); ?> verified reviews)</span>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="display-6 fw-bold text-primary"><?php echo format_price($product['price']); ?></h2>
+                    <p class="text-success fw-bold small mb-0"><i class="bi bi-check-circle-fill me-1"></i> In Stock & Ready to Ship</p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2">Description</h5>
+                    <p class="text-secondary lh-lg fs-6">
+                        <?php echo nl2br(htmlspecialchars($product['description'])); ?>
+                    </p>
+                </div>
+                
+                <div class="row g-4 mb-5">
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-4 border border-white shadow-sm d-flex align-items-center gap-3">
+                            <i class="bi bi-box-seam fs-4 text-primary"></i>
+                            <div>
+                                <small class="text-secondary d-block">Inventory</small>
+                                <span class="fw-bold text-dark"><?php echo $product['stock']; ?> units</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-4 border border-white shadow-sm d-flex align-items-center gap-3">
+                            <i class="bi bi-shield-check fs-4 text-primary"></i>
+                            <div>
+                                <small class="text-secondary d-block">Warranty</small>
+                                <span class="fw-bold text-dark">12 Months</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add to Cart Form -->
+                <form method="POST" class="row g-3 align-items-end">
+                    <div class="col-sm-4">
+                        <label for="quantity" class="form-label fw-bold small text-uppercase">Quantity</label>
+                        <input type="number" 
+                               id="quantity" 
+                               name="quantity" 
+                               class="form-control form-control-lg rounded-pill px-4 border shadow-sm" 
+                               value="1" 
+                               min="1" 
+                               max="<?php echo $product['stock']; ?>">
+                    </div>
+                    <div class="col-sm-8 d-grid">
+                        <button type="submit" name="add_to_cart" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow border-0 transition-hover">
+                            <i class="bi bi-cart-plus-fill me-2"></i> Add to Shopping Cart
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

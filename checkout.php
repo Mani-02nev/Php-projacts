@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pincode = clean_input($_POST['pincode']);
     
     if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($city) || empty($pincode)) {
-        $error = 'Please fill in all fields';
+        $error = 'Please fill in all mandatory fields';
     } else {
         $total = get_cart_total();
         $user_id = is_logged_in() ? $_SESSION['user_id'] : 0;
@@ -39,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($order_id) {
             unset($_SESSION['cart']);
-            $success = 'Order placed successfully! Order ID: #' . $order_id;
+            $success = 'Order #' . $order_id . ' placed successfully!';
         } else {
-            $error = 'Failed to place order. Please try again.';
+            $error = 'Failed to process order. Please check your data.';
         }
     }
 }
@@ -49,80 +49,136 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include 'includes/header.php';
 ?>
 
-<div class="container">
-    <h1 class="section-title">Checkout</h1>
-    
-    <?php if ($error): ?>
-        <div class="alert alert-error"><?php echo $error; ?></div>
-    <?php endif; ?>
-    
+<div class="container py-5">
     <?php if ($success): ?>
-        <div class="alert alert-success">
-            <?php echo $success; ?>
-            <p style="margin-top: 1rem;"><a href="index.php" class="btn btn-black">Continue Shopping</a></p>
+        <div class="text-center py-5 bg-white rounded-5 shadow-sm border animate__animated animate__zoomIn">
+            <div class="display-1 text-success mb-4 text-center">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h1 class="fw-bold text-dark mb-3">Order Placed!</h1>
+            <p class="text-secondary fs-5 mb-4 px-4"><?php echo $success; ?><br>A confirmation email has been sent to your inbox.</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="index.php" class="btn btn-primary rounded-pill px-5 fw-bold py-2 shadow">Back to Home</a>
+                <a href="profile.php" class="btn btn-outline-dark rounded-pill px-5 fw-bold py-2">Track Order</a>
+            </div>
         </div>
     <?php else: ?>
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; margin: 2rem 0;">
-            <div>
-                <h2 style="margin-bottom: 1.5rem;">Shipping Information</h2>
-                <form method="POST">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Shipping Address</label>
-                        <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label for="city">City</label>
-                            <input type="text" id="city" name="city" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="pincode">Pincode</label>
-                            <input type="text" id="pincode" name="pincode" class="form-control" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-black" style="width: 100%; margin-top: 1rem; padding: 1rem;">
-                        Place Order
-                    </button>
-                </form>
+        <div class="row mb-5">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="cart.php" class="text-secondary text-decoration-none">Cart</a></li>
+                        <li class="breadcrumb-item active fw-bold text-primary">Checkout</li>
+                        <li class="breadcrumb-item text-muted">Success</li>
+                    </ol>
+                </nav>
+                <h1 class="fw-bold text-dark"><i class="bi bi-shield-lock me-2"></i> Secure Checkout</h1>
             </div>
-            
-            <div>
-                <h2 style="margin-bottom: 1.5rem;">Order Summary</h2>
-                <div style="background: var(--gray-100); padding: 1.5rem; border-radius: 8px;">
-                    <?php 
-                    $total = 0;
-                    foreach ($_SESSION['cart'] as $product_id => $quantity): 
-                        $product = get_product_by_id($product_id);
-                        if ($product):
-                            $subtotal = $product['price'] * $quantity;
-                            $total += $subtotal;
-                    ?>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-300);">
-                            <div>
-                                <strong><?php echo htmlspecialchars($product['name']); ?></strong><br>
-                                <small>Qty: <?php echo $quantity; ?></small>
+        </div>
+
+        <?php if ($error): ?>
+            <div class="alert alert-danger rounded-4 shadow-sm mb-4 border-0">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> <?php echo $error; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="row g-5">
+            <!-- Shipping Form -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4">
+                    <h4 class="fw-bold mb-4 border-bottom pb-3"><i class="bi bi-geo-alt me-2 text-primary"></i> Shipping Information</h4>
+                    <form method="POST" class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Full Name</label>
+                            <input type="text" name="name" class="form-control form-control-lg rounded-3 border-light-subtle shadow-sm px-4" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Email Address</label>
+                            <input type="email" name="email" class="form-control form-control-lg rounded-3 border-light-subtle shadow-sm px-4" placeholder="your@email.com" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control form-control-lg rounded-3 border-light-subtle shadow-sm px-4" placeholder="+91 00000 00000" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Shipping Address</label>
+                            <textarea name="address" rows="3" class="form-control rounded-3 border-light-subtle shadow-sm px-4" placeholder="Flat / House No / Street Name" required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">City</label>
+                            <input type="text" name="city" class="form-control form-control-lg rounded-3 border-light-subtle shadow-sm px-4" placeholder="City Name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Pincode</label>
+                            <input type="text" name="pincode" class="form-control form-control-lg rounded-3 border-light-subtle shadow-sm px-4" placeholder="000 000" required>
+                        </div>
+
+                        <div class="col-12 mt-5">
+                            <h4 class="fw-bold mb-4 border-bottom pb-3"><i class="bi bi-credit-card me-2 text-primary"></i> Payment Method</h4>
+                            <div class="form-check p-3 bg-light rounded-4 border border-primary-subtle shadow-sm d-flex align-items-center gap-3">
+                                <input class="form-check-input ms-0" type="radio" name="payment" id="cod" checked>
+                                <label class="form-check-label flex-grow-1" for="cod">
+                                    <span class="d-block fw-bold text-dark">Cash on Delivery (COD)</span>
+                                    <span class="small text-secondary">Pay securely at your doorstep</span>
+                                </label>
+                                <i class="bi bi-wallet2 fs-4 text-primary"></i>
                             </div>
-                            <div><?php echo format_price($subtotal); ?></div>
                         </div>
-                    <?php endif; endforeach; ?>
+
+                        <div class="col-12 mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 px-5 shadow border-0 transition-hover w-100">
+                                Confirm & Place Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Summary Sidebar -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px;">
+                    <h4 class="fw-bold text-dark mb-4 border-bottom pb-3">Order Summary</h4>
                     
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--black);">
-                        <div style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: 700;">
-                            <span>Total:</span>
-                            <span><?php echo format_price($total); ?></span>
+                    <div class="mb-4">
+                        <?php 
+                        foreach ($_SESSION['cart'] as $product_id => $quantity): 
+                            $product = get_product_by_id($product_id);
+                            if ($product):
+                                $subtotal = $product['price'] * $quantity;
+                        ?>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-light rounded-3 d-flex align-items-center justify-content-center p-1" style="width: 50px; height: 50px;">
+                                        <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid" style="max-height: 100%; object-fit: contain;">
+                                    </div>
+                                    <div style="max-width: 150px;">
+                                        <h6 class="fw-bold mb-0 text-truncate"><?php echo htmlspecialchars($product['name']); ?></h6>
+                                        <small class="text-secondary">Qty: <?php echo $quantity; ?></small>
+                                    </div>
+                                </div>
+                                <span class="fw-medium text-dark">₹<?php echo number_format($subtotal, 0); ?></span>
+                            </div>
+                        <?php endif; endforeach; ?>
+                    </div>
+                    
+                    <div class="border-top pt-3 mb-4">
+                        <div class="d-flex justify-content-between mb-2 text-secondary">
+                            <span>Merchandise Total</span>
+                            <span class="text-dark fw-medium">₹<?php echo number_format(get_cart_total(), 0); ?></span>
                         </div>
+                        <div class="d-flex justify-content-between mb-2 text-secondary">
+                            <span>Standard Shipping</span>
+                            <span class="text-success fw-bold">FREE</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3">
+                            <h5 class="fw-bold text-dark">Order Total</h5>
+                            <h4 class="fw-bold text-primary">₹<?php echo number_format(get_cart_total(), 0); ?></h4>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-primary-subtle rounded-4 text-primary small d-flex gap-3 align-items-center">
+                        <i class="bi bi-shield-check fs-4"></i>
+                        <span>Your data is protected by industry standard encryption. (SSL)</span>
                     </div>
                 </div>
             </div>

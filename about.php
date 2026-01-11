@@ -5,245 +5,261 @@ require_once 'includes/header.php';
 
 <style>
 .about-hero {
-    background: linear-gradient(135deg, var(--black) 0%, var(--gray-800) 100%);
-    color: var(--white);
-    padding: 4rem 0;
+    background: transparent;
+    color: var(--heritage-indigo);
+    padding: 6rem 0 4rem;
     text-align: center;
-    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .about-hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+    color: var(--heritage-indigo);
 }
 
 .about-hero p {
-    font-size: 1.2rem;
-    color: var(--gray-300);
-    max-width: 800px;
+    font-size: 1.25rem;
+    color: var(--heritage-indigo);
+    max-width: 700px;
     margin: 0 auto;
+    font-weight: 700;
 }
 
 .about-section {
     max-width: 1000px;
-    margin: 0 auto 4rem;
+    margin: 0 auto 6rem;
     padding: 0 20px;
 }
 
 .about-section h2 {
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
-    text-align: center;
+    margin-bottom: 2.5rem;
+    letter-spacing: -1px;
+    color: var(--heritage-indigo);
 }
 
 .about-section p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--gray-700);
-    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: var(--heritage-indigo);
+    opacity: 0.85;
 }
 
 .project-info {
-    background: var(--gray-100);
-    padding: 2rem;
-    border-radius: 8px;
-    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 3.5rem;
+    border-radius: 2rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-light);
 }
 
 .project-info h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--black);
-}
-
-.project-info ul {
-    list-style: none;
-    padding: 0;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    color: var(--heritage-indigo);
 }
 
 .project-info li {
-    padding: 0.5rem 0;
-    font-size: 1.05rem;
-    color: var(--gray-700);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(45, 50, 97, 0.05);
+    color: var(--heritage-indigo);
+}
+
+.project-info li:last-child {
+    border-bottom: none;
 }
 
 .project-info li strong {
-    color: var(--black);
+    color: var(--heritage-earth);
     font-weight: 600;
-}
-
-.team-section {
-    margin-top: 3rem;
-}
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    margin-right: 10px;
 }
 
 .team-member {
-    background: var(--white);
-    border: 2px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 2rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    border-radius: 2rem;
+    padding: 2.5rem 1.5rem;
+    transition: var(--flow-slow);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    transition: var(--transition);
 }
 
 .team-member:hover {
-    border-color: var(--black);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
+    transform: translateY(-12px);
+    box-shadow: var(--hover-shadow) !important;
 }
 
-.team-member-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--black);
-    color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin: 0 auto 1rem;
-}
-
-.team-member h3 {
-    font-size: 1.3rem;
+.team-member h5 {
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--black);
+    color: var(--heritage-indigo);
+    margin-top: 1rem;
 }
 
-.team-member .role {
-    color: var(--gray-600);
-    font-size: 0.95rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.team-member .badge {
-    display: inline-block;
-    background: var(--gray-200);
-    color: var(--black);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
+.team-member .text-primary {
+    color: var(--heritage-gold) !important;
     font-weight: 600;
-    margin-top: 0.5rem;
-}
-
-.lead-badge {
-    background: var(--black) !important;
-    color: var(--white) !important;
 }
 
 @media (max-width: 768px) {
-    .about-hero h1 {
-        font-size: 2rem;
-    }
-    
-    .team-grid {
-        grid-template-columns: 1fr;
-    }
+    .about-hero h1 { font-size: 2.5rem; }
+    .project-info { padding: 2rem; }
 }
 </style>
 
-<div class="about-hero">
+<div class="about-hero p-0 m-0" style="padding: 8rem 0 6rem !important;">
     <div class="container">
-        <h1><i class="bi bi-info-circle"></i> About UNIVAULT</h1>
-        <p>A modern e-commerce platform built with PHP for educational purposes</p>
+        <h1 class="animate__animated animate__fadeInDown"><i class="bi bi-info-circle"></i> About UNIVAULT</h1>
+        <p class="animate__animated animate__fadeInUp">A premium e-commerce platform built with PHP for educational excellence</p>
+    </div>
+</div>
+
+<!-- Namma Service / Features Section -->
+<div class="container mb-5" style="position: relative; z-index: 10; margin-top: 2rem;">
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="p-5 rounded-4 glass-card border-0 h-100 transition-hover animate__animated animate__zoomIn" style="animation-delay: 0.1s;">
+                <div class="text-gold mb-3"><i class="bi bi-flower1 fs-1"></i></div>
+                <h5 class="fw-black text-indigo">Heritage Service</h5>
+                <p class="text-indigo small mb-0 opacity-75">Local delivery across Tamil Nadu & Kerala. Fast & Secure.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-5 rounded-4 glass-card border-0 h-100 transition-hover animate__animated animate__zoomIn" style="animation-delay: 0.3s;">
+                <div class="text-indigo mb-3"><i class="bi bi-shield-lock-fill fs-1"></i></div>
+                <h5 class="fw-black text-indigo">Secured for You</h5>
+                <p class="text-indigo small mb-0 opacity-75">Every transaction is protected by bank-grade security protocols.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-5 rounded-4 glass-card border-0 h-100 transition-hover animate__animated animate__zoomIn" style="animation-delay: 0.5s;">
+                <div class="text-emerald mb-3"><i class="bi bi-headset fs-1"></i></div>
+                <h5 class="fw-black text-indigo">24/7 Support</h5>
+                <p class="text-indigo small mb-0 opacity-75">Support available in Tamil, Malayalam, and English.</p>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="about-section">
-    <div class="project-info">
-        <h3><i class="bi bi-file-code"></i> Project Information</h3>
-        <ul>
-            <li><strong>Project Name:</strong> UNIVAULT - E-Commerce Platform</li>
-            <li><strong>Academic Year:</strong> 2nd Year Diploma Project</li>
-            <li><strong>Subject:</strong> PHP Web Development</li>
-            <li><strong>Institution:</strong> Diploma in Computer Science</li>
-            <li><strong>Technology Stack:</strong> PHP, HTML5, CSS3, JavaScript, CSV Database</li>
-            <li><strong>Features:</strong> Product Catalog, Shopping Cart, User Authentication, Admin Panel</li>
+    <div class="project-info glass-card border-0 rounded-5">
+        <h3 class="fw-black text-indigo"><i class="bi bi-file-code"></i> Project Information</h3>
+        <ul class="list-unstyled">
+            <li><strong>Project Name:</strong> <span class="text-indigo"><?php echo SITE_NAME; ?> - Heritage E-Commerce</span></li>
+            <li><strong>Academic Year:</strong> <span class="text-indigo">2nd Year Diploma Excellence</span></li>
+            <li><strong>Subject:</strong> <span class="text-indigo">Creative PHP Development</span></li>
+            <li><strong>Institution:</strong> <span class="text-indigo">Computer Science Department</span></li>
+            <li><strong>Stack:</strong> <span class="badge bg-indigo text-white rounded-0">PHP</span> <span class="badge bg-indigo text-white rounded-0">HTML5</span> <span class="badge bg-indigo text-white rounded-0">CSV</span></li>
         </ul>
     </div>
 
-    <h2><i class="bi bi-people"></i> Our Team</h2>
-    <p style="text-align: center; margin-bottom: 2rem;">
-        A dedicated team of students working together to create this e-commerce platform
-    </p>
+    <h2 class="text-center fw-bold mb-5"><i class="bi bi-people-fill text-primary"></i> Meet Our Visionaries</h2>
 
-    <div class="team-grid">
-        <!-- Team Lead & Main Developer -->
-        <div class="team-member">
-            <div class="team-member-icon">
-                <i class="bi bi-person-badge"></i>
+    <!-- Lead Developer Spotlight -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-12">
+            <div class="card border-0 shadow-sm rounded-5 overflow-hidden transition-hover" style="background: #ffffff;">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-4 p-5 text-center" style="background: var(--heritage-indigo); position: relative; overflow: hidden;">
+                        <div class="bg-kolam position-absolute top-0 left-0 w-100 h-100 opacity-25"></div>
+                        <div class="rounded-circle bg-white text-indigo d-inline-flex align-items-center justify-content-center shadow-sm mb-4 position-relative" style="width: 130px; height: 130px; font-size: 3.5rem; opacity: 0.9;">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <h4 class="fw-black mb-1 text-white">KS</h4>
+                        <span class="badge bg-kolam border border-white text-white rounded-0 px-3 py-2 fw-bold">MASTER DEVELOPER</span>
+                    </div>
+                    <div class="col-md-8 p-5 bg-kolam">
+                        <h3 class="fw-black mb-1 text-indigo">KARUPPASAMY M (KS)</h3>
+                        <p class="text-indigo mb-3" style="color: var(--heritage-indigo); font-weight: 800; opacity: 0.7;">Chief Architect & Visionary</p>
+                        <p class="text-muted mb-4" style="line-height: 1.8;">
+                            Driving the technical vision of Univault with a focus on scalable PHP architecture and secure data systems. 
+                            Specializing in DevOps and backend optimization for educational frameworks.
+                        </p>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill px-5 fw-bold shadow-sm">View Portfolio</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3>KARUPPASAMY M(KS)</h3>
-            <div class="role">Project Lead</div>
-            <div class="role">Backend  • DevOps • Architect</div>
-            <span class="badge lead-badge">Team Lead</span>
         </div>
+    </div>
 
+    <!-- Senior Developer & Implementation -->
+    <div class="row g-4 team-grid mb-5">
         <!-- Backend Support -->
-        <div class="team-member">
-            <div class="team-member-icon">
-                <i class="bi bi-code-slash"></i>
+        <div class="col-md-6 col-lg-4">
+            <div class="team-member shadow-sm bg-terracotta">
+                <div class="text-indigo opacity-75 mb-3"><i class="bi bi-code-slash fs-1"></i></div>
+                <h5 class="fw-black mb-1">Nathakumar</h5>
+                <p class="text-indigo small fw-bold mb-3">natha backend developer</p>
+                <div class="mt-auto d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge bg-indigo text-white rounded-0 px-2">PHP</span>
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Logic</span>
+                </div>
             </div>
-            <h3>Nathakumar</h3>
-            <!-- <div class="role">Backend Developer</div> -->
-            <div class="role">Backend Support & Development</div>
-            <span class="badge">Developer</span>
         </div>
 
-        <!-- Frontend/UI Developer -->
-        <div class="team-member">
-            <div class="team-member-icon">
-                <i class="bi bi-palette"></i>
+        <!-- Frontend/UI Developer 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="team-member shadow-sm bg-kolam">
+                <div class="text-indigo opacity-75 mb-3"><i class="bi bi-palette fs-1"></i></div>
+                <h5 class="fw-black mb-1">Bharathvaj</h5>
+                <p class="text-indigo small fw-bold mb-3">UI/UX Developer</p>
+                <div class="mt-auto d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Interface</span>
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Visuals</span>
+                </div>
             </div>
-            <h3>Bharathvaj</h3>
-            <!-- <div class="role">Frontend Developer</div> -->
-            <div class="role">UI/UX Design & Implementation</div>
-            <span class="badge">Designer</span>
         </div>
 
-        <!-- Logo Designer -->
-        <div class="team-member">
-            <div class="team-member-icon">
-                <i class="bi bi-brush"></i>
+        <!-- Frontend/UI Developer 2 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="team-member shadow-sm bg-kolam">
+                <div class="text-indigo opacity-75 mb-3"><i class="bi bi-brush fs-1"></i></div>
+                <h5 class="fw-black mb-1">Tamil Arasan</h5>
+                <p class="text-indigo small fw-bold mb-3">UI/UX Developer</p>
+                <div class="mt-auto d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Branding</span>
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Motion</span>
+                </div>
             </div>
-            <h3>Tamil Arasan</h3>
-            <!-- <div class="role">Graphic Designer</div> -->
-            <div class="role">Logo & Icon Design</div>
-            <span class="badge">Designer</span>
         </div>
 
-        <!-- Tester -->
-        <div class="team-member">
-            <div class="team-member-icon">
-                <i class="bi bi-bug"></i>
+        <!-- System Tester -->
+        <div class="col-md-6 col-lg-4">
+            <div class="team-member shadow-sm">
+                <div class="text-indigo opacity-75 mb-3"><i class="bi bi-shield-check fs-1"></i></div>
+                <h5 class="fw-black mb-1">Tamil Selvan</h5>
+                <p class="text-indigo small fw-bold mb-3">QA Auditor</p>
+                <div class="mt-auto d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Testing</span>
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Security</span>
+                </div>
             </div>
-            <h3>Tamil Selvan</h3>
-            <!-- <div class="role">Quality Assurance</div> -->
-            <div class="role">Testing & Bug Reporting</div>
-            <span class="badge">Tester</span>
         </div>
 
-        <!-- Data Collector -->
-        <div class="team-member">
-            <div class="team-member-icon">
-                <i class="bi bi-database"></i>
+        <!-- Data Specialist -->
+        <div class="col-md-6 col-lg-4">
+            <div class="team-member shadow-sm">
+                <div class="text-indigo opacity-75 mb-3"><i class="bi bi-database-fill fs-1"></i></div>
+                <h5 class="fw-black mb-1">Kishor Kumar</h5>
+                <p class="text-indigo small fw-bold mb-3">Data Architect</p>
+                <div class="mt-auto d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Data</span>
+                    <span class="badge bg-indigo text-white rounded-0 px-2">Flow</span>
+                </div>
             </div>
-            <h3>Kishor Kumar</h3>
-            <!-- <div class="role">Data Manager</div> -->
-            <div class="role">Product Data Collection</div>
-            <span class="badge">Data Analyst</span>
         </div>
     </div>
 </div>
@@ -266,14 +282,14 @@ require_once 'includes/header.php';
     </p>
 </div>
 
-<div class="about-section" style="text-align: center; padding: 3rem 0;">
-    <h2><i class="bi bi-heart"></i> Thank You</h2>
-    <p>
-        Thank you for visiting UNIVAULT. This project represents our dedication to learning and applying 
-        web development concepts in a real-world scenario.
+<div class="about-section" style="text-align: center; padding: 5rem 0;">
+    <h2 class="text-indigo"><i class="bi bi-heart opacity-50"></i> With Heart & Soul</h2>
+    <p class="text-muted mb-5">
+        A tribute to craftsmanship and the digital fusion of tradition. 
+        Thank you for journeying through UNIVAULT.
     </p>
-    <a href="products.php" class="btn btn-black" style="margin-top: 1rem;">
-        <i class="bi bi-grid"></i> Browse Products
+    <a href="products.php" class="btn btn-primary px-5 btn-lg">
+        Explore Collections
     </a>
 </div>
 

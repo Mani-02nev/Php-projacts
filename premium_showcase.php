@@ -6,7 +6,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Premium | Modern Digital Product UI</title>
+    <title>U| Modern Digital Product UI</title>
     <meta name="description" content="Experience the next generation of digital product interfaces with Aura Premium.">
     
     <!-- Google Fonts -->

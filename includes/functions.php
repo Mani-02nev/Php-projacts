@@ -98,7 +98,7 @@ function get_all_products() {
 }
 
 // Add new product
-function add_product($name, $description, $price, $stock, $image = '') {
+function add_product($name, $description, $price, $stock, $image = '', $category = 'General') {
     $products = read_csv(PRODUCTS_CSV);
     $new_id = get_next_id($products);
     
@@ -108,11 +108,80 @@ function add_product($name, $description, $price, $stock, $image = '') {
         'description' => $description,
         'price' => $price,
         'stock' => $stock,
-        'image' => $image
+        'image' => $image,
+        'category' => $category
     ];
     
     $products[] = $new_product;
     return write_csv(PRODUCTS_CSV, $products);
+}
+
+// Wishlist Functions
+function add_to_wishlist($product_id) {
+    if (!isset($_SESSION['wishlist'])) {
+        $_SESSION['wishlist'] = array();
+    }
+    if (!in_array($product_id, $_SESSION['wishlist'])) {
+        $_SESSION['wishlist'][] = $product_id;
+        return true;
+    }
+    return false;
+}
+
+function remove_from_wishlist($product_id) {
+    if (isset($_SESSION['wishlist'])) {
+        $key = array_search($product_id, $_SESSION['wishlist']);
+        if ($key !== false) {
+            unset($_SESSION['wishlist'][$key]);
+            $_SESSION['wishlist'] = array_values($_SESSION['wishlist']);
+            return true;
+        }
+    }
+    return false;
+}
+
+function get_wishlist_count() {
+    return isset($_SESSION['wishlist']) ? count($_SESSION['wishlist']) : 0;
+}
+
+function is_in_wishlist($product_id) {
+    return isset($_SESSION['wishlist']) && in_array($product_id, $_SESSION['wishlist']);
+}
+
+// Recently Viewed Functions
+function add_to_recently_viewed($product_id) {
+    if (!isset($_SESSION['recently_viewed'])) {
+        $_SESSION['recently_viewed'] = array();
+    }
+    
+    // Remove if already exists to move to top
+    if (($key = array_search($product_id, $_SESSION['recently_viewed'])) !== false) {
+        unset($_SESSION['recently_viewed'][$key]);
+    }
+    
+    array_unshift($_SESSION['recently_viewed'], $product_id);
+    
+    // Keep only last 10
+    $_SESSION['recently_viewed'] = array_slice($_SESSION['recently_viewed'], 0, 10);
+}
+
+function get_recently_viewed_products() {
+    if (!isset($_SESSION['recently_viewed']) || empty($_SESSION['recently_viewed'])) {
+        return [];
+    }
+    
+    $all = get_all_products();
+    $result = [];
+    
+    foreach ($_SESSION['recently_viewed'] as $id) {
+        foreach ($all as $p) {
+            if ($p['id'] == $id) {
+                $result[] = $p;
+                break;
+            }
+        }
+    }
+    return $result;
 }
 
 // Delete product
