@@ -3,6 +3,19 @@
    Optimized for compact/mobile devices
    ======================================== */
 
+/* Mobile Header - Transparent Glass Effect */
+@media (max-width: 991px) {
+    .main-header {
+        background: rgba(255, 255, 255, 0.7) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+    }
+
+    [data-bs-theme="dark"] .main-header {
+        background: rgba(18, 20, 33, 0.7) !important;
+    }
+}
+
 /* Hero Section - Mobile Optimization */
 @media (max-width: 768px) {
     .hero-3d-slide {
