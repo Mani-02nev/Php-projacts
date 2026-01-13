@@ -52,8 +52,13 @@ $root_path = $is_admin_dir ? '../' : '';
     <header class="main-header sticky-top py-2">
         <div class="container">
             <nav class="navbar navbar-expand-lg p-0">
+                <!-- Hamburger Menu Toggler (Mobile) -->
+                <button class="navbar-toggler border-0 me-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span> <!-- Invert for dark icon if header is white -->
+                </button>
+
                 <!-- Desktop Brand / Home Link -->
-                <a class="navbar-brand d-flex align-items-center fw-extrabold fs-3" href="<?php echo $root_path; ?>index.php" style="color: #000 !important; font-weight: 900;">
+                <a class="navbar-brand d-flex align-items-center fw-extrabold fs-3 me-auto me-lg-2" href="<?php echo $root_path; ?>index.php" style="color: #000 !important; font-weight: 900;">
                     <div class="logo-wrapper me-2 overflow-hidden border border-3 border-dark bg-white" style="height: 45px; width: 45px;">
                         <img class="w-100 h-100 object-fit-contain" src="<?php echo $root_path; ?>assets/images/logo.png" alt="L" onerror="this.src='https://via.placeholder.com/45?text=U'">
                     </div>
@@ -66,7 +71,7 @@ $root_path = $is_admin_dir ? '../' : '';
                 
                 <!-- Desktop Menu -->
                 
-                <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex" id="navbarNav">
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul class="navbar-nav gap-3">
                         <li class="nav-item">
                             <a href="<?php echo $root_path; ?>index.php" class="nav-link px-3 fw-medium <?php echo $current_page == 'index.php' ? 'active' : ''; ?>">

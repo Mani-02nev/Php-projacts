@@ -138,8 +138,8 @@ body::before {
 
 /* Unified Clean Layout */
 .main-header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
+    /* Removed backdrop-filter for solid color */
     border-bottom: 1px solid var(--border-light);
     padding: 0.5rem 0;
     position: sticky;
