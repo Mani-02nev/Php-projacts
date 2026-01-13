@@ -186,3 +186,187 @@
         object-fit: cover !important;
     }
 }
+
+/* ========================================
+   MOBILE BOTTOM NAVBAR - VIBRANT DESIGN
+   ======================================== */
+
+/* Mobile Bottom Navbar - Base Styles */
+.mobile-bottom-navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(102, 126, 234, 0.2) !important;
+    border-radius: 20px 20px 0 0 !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+    padding: 8px 0 !important;
+}
+
+/* Dark Mode Support */
+[data-bs-theme="dark"] .mobile-bottom-navbar {
+    background: rgba(18, 20, 33, 0.95) !important;
+    border-top: 1px solid rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Mobile Nav Links - Default State */
+.mobile-nav-link {
+    color: #667eea !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 12px !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.mobile-nav-link i {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mobile-nav-link span {
+    display: block;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Mobile Nav Links - Hover State */
+.mobile-nav-link:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+    transform: translateY(-2px) !important;
+}
+
+.mobile-nav-link:hover i {
+    transform: scale(1.1);
+    color: #764ba2 !important;
+}
+
+/* Mobile Nav Links - Active State */
+.mobile-nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+}
+
+.mobile-nav-link.active i {
+    color: #ffffff !important;
+    animation: bounce-icon 0.5s ease-in-out;
+}
+
+.mobile-nav-link.active span {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Bounce Animation for Active Icons */
+@keyframes bounce-icon {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Dark Mode - Nav Link Colors */
+[data-bs-theme="dark"] .mobile-nav-link {
+    color: #8b9ef7 !important;
+}
+
+[data-bs-theme="dark"] .mobile-nav-link:hover {
+    background: linear-gradient(135deg, rgba(139, 158, 247, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%) !important;
+}
+
+[data-bs-theme="dark"] .mobile-nav-link:hover i {
+    color: #a5b4fc !important;
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Mobile Devices - Small (< 576px) */
+@media (max-width: 575px) {
+    .mobile-bottom-navbar {
+        padding: 6px 0 !important;
+    }
+
+    .mobile-nav-link {
+        padding: 6px 4px !important;
+    }
+
+    .mobile-nav-link i {
+        font-size: 1.3rem !important;
+    }
+
+    .mobile-nav-link span {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* Mobile Devices - Medium (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .mobile-bottom-navbar {
+        padding: 8px 0 !important;
+    }
+
+    .mobile-nav-link {
+        padding: 8px 6px !important;
+    }
+
+    .mobile-nav-link i {
+        font-size: 1.5rem !important;
+    }
+
+    .mobile-nav-link span {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* Tablet Devices (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .mobile-bottom-navbar {
+        padding: 10px 0 !important;
+    }
+
+    .mobile-nav-link {
+        padding: 10px 8px !important;
+    }
+
+    .mobile-nav-link i {
+        font-size: 1.6rem !important;
+    }
+
+    .mobile-nav-link span {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* Desktop - Hide Mobile Navbar (>= 992px) */
+@media (min-width: 992px) {
+    .mobile-bottom-navbar {
+        display: none !important;
+    }
+}
+
+/* Touch-Friendly Tap Targets */
+@media (max-width: 991px) {
+    .mobile-nav-link {
+        min-width: 60px;
+        min-height: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Prevent Content Overlap with Bottom Navbar */
+@media (max-width: 991px) {
+    body {
+        padding-bottom: 80px !important;
+    }
+
+    .main-content {
+        margin-bottom: 20px;
+    }
+}

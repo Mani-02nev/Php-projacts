@@ -28,12 +28,6 @@
     --hover-shadow: 0 20px 60px rgba(45, 50, 97, 0.12);
 }
 
-[data-bs-theme="dark"] {
-    --bg-clean: #121421;
-    --text-main: #ffffff;
-    --border-light: rgba(255, 255, 255, 0.1);
-}
-
 
 body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -381,6 +375,58 @@ img[src=""] {
 
 .zoom-container:hover img {
     transform: scale(1.8);
+}
+
+/* Glass Effect Search Bar */
+.glass-search-bar {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 50px;
+    padding: 4px;
+    box-shadow: 0 8px 32px rgba(45, 50, 97, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glass-search-bar:hover {
+    box-shadow: 0 12px 40px rgba(45, 50, 97, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.glass-search-bar input {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none !important;
+    color: var(--text-main);
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.glass-search-bar input::placeholder {
+    color: rgba(45, 50, 97, 0.5);
+    font-weight: 500;
+}
+
+.glass-search-bar input:focus {
+    background: rgba(255, 255, 255, 0.8) !important;
+    box-shadow: none;
+    outline: none;
+}
+
+.glass-search-bar button {
+    background: var(--heritage-indigo) !important;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.glass-search-bar button:hover {
+    background: var(--heritage-saffron) !important;
+    transform: scale(1.05);
 }
 
 /* Static Scrollbar */

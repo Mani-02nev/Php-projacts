@@ -19,6 +19,7 @@ require_once __DIR__ . '/functions.php';
     <!-- Custom Style (Keeping for premium touches only) -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="<?php echo $root_path; ?>assets/images/logo.svg" />
     <style>
         .logo-img {
             height: 50px;
@@ -50,7 +51,7 @@ require_once __DIR__ . '/functions.php';
                 <!-- Desktop Brand / Home Link -->
                 <a class="navbar-brand d-flex align-items-center fw-extrabold fs-3" href="<?php echo $root_path; ?>index.php" style="color: #000 !important; font-weight: 900;">
                     <div class="logo-wrapper me-2 overflow-hidden border border-3 border-dark bg-white" style="height: 45px; width: 45px;">
-                        <img class="w-100 h-100 object-fit-contain" src="<?php echo $root_path; ?>assets/images/logo.png" alt="L" onerror="this.src='https://via.placeholder.com/45?text=U'">
+                        <img class="w-100 h-100 object-fit-contain" src="<?php echo $root_path; ?>assets/images/logo.svg" alt="L" onerror="this.src='https://via.placeholder.com/45?text=U'">
                     </div>
                     <span class="d-none d-sm-inline" style="letter-spacing: -1.5px;"><?php echo SITE_NAME; ?></span>
                 </a>
@@ -90,10 +91,10 @@ require_once __DIR__ . '/functions.php';
                     </ul>
                 </div>
                 
-                <!-- Search Bar (Desktop) -->
+                <!-- Search Bar (Desktop) with Glass Effect -->
                 <div class="d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
-                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group">
-                        <input type="text" name="search" placeholder="Search products..." class="form-control rounded-pill-start border-0 bg-white" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar">
+                        <input type="text" name="search" placeholder="Search products..." class="form-control rounded-pill-start border-0" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                         <button type="submit" class="btn btn-primary rounded-pill-end border-0 px-3">
                             <i class="bi bi-search"></i>
                         </button>
@@ -105,11 +106,6 @@ require_once __DIR__ . '/functions.php';
                     <!-- Mobile Search Toggle -->
                     <button class="btn btn-link text-indigo p-2 border-0 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false">
                         <i class="bi bi-search fs-5"></i>
-                    </button>
-
-                    <!-- Theme Toggle -->
-                    <button class="btn btn-link text-indigo p-2 border-0" id="themeToggle" title="Toggle Dark/Light Mode">
-                        <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
                     </button>
 
                     <!-- Desktop Wishlist -->
@@ -148,10 +144,10 @@ require_once __DIR__ . '/functions.php';
                         </ul>
                     </div>
                 </div>
-                <!-- Mobile Search Collapse -->
+                <!-- Mobile Search Collapse with Glass Effect -->
                 <div class="collapse d-lg-none w-100 mt-2 pb-2" id="mobileSearch">
-                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group">
-                        <input type="text" name="search" placeholder="Search products..." class="form-control rounded-pill-start border-0 bg-white" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar">
+                        <input type="text" name="search" placeholder="Search products..." class="form-control rounded-pill-start border-0" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                         <button type="submit" class="btn btn-primary rounded-pill-end border-0 px-3" style="background: var(--heritage-indigo);">
                             <i class="bi bi-search text-white"></i>
                         </button>
@@ -160,35 +156,35 @@ require_once __DIR__ . '/functions.php';
 
                 <!-- Mobile Bottom Nav Logic -->
                 <div class="d-lg-none w-100">
-                    <ul class="nav nav-pills justify-content-around fixed-bottom shadow-lg py-2 border-top border-light rounded-top-4" style="z-index: 1050; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+                    <ul class="nav nav-pills justify-content-around fixed-bottom shadow-lg py-2 border-top mobile-bottom-navbar" style="z-index: 1050;">
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>index.php" class="nav-link text-center border-0 p-1 <?php echo $current_page == 'index.php' ? 'text-gold' : 'text-indigo'; ?>">
-                                <i class="bi bi-house-fill d-block fs-3"></i>
-                                <span style="font-size: 0.65rem;">Home</span>
+                            <a href="<?php echo $root_path; ?>index.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>">
+                                <i class="bi bi-house-fill d-block mb-1" style="font-size: 1.5rem;"></i>
+                                <span style="font-size: 0.7rem; font-weight: 500;">Home</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>products.php" class="nav-link text-center border-0 p-1 <?php echo ($current_page == 'products.php' || $current_page == 'product-detail.php') ? 'text-gold' : 'text-indigo'; ?>">
-                                <i class="bi bi-grid-fill d-block fs-3"></i>
-                                <span style="font-size: 0.65rem;">Shop</span>
+                            <a href="<?php echo $root_path; ?>products.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo ($current_page == 'products.php' || $current_page == 'product-detail.php') ? 'active' : ''; ?>">
+                                <i class="bi bi-grid-fill d-block mb-1" style="font-size: 1.5rem;"></i>
+                                <span style="font-size: 0.7rem; font-weight: 500;">Shop</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>cart.php" class="nav-link text-center border-0 p-1 <?php echo $current_page == 'cart.php' ? 'text-gold' : 'text-indigo'; ?>">
-                                <i class="bi bi-bag-fill d-block fs-3"></i>
-                                <span style="font-size: 0.65rem;">Cart</span>
+                            <a href="<?php echo $root_path; ?>cart.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo $current_page == 'cart.php' ? 'active' : ''; ?>">
+                                <i class="bi bi-bag-fill d-block mb-1" style="font-size: 1.5rem;"></i>
+                                <span style="font-size: 0.7rem; font-weight: 500;">Cart</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>wishlist.php" class="nav-link text-center border-0 p-1 <?php echo $current_page == 'wishlist.php' ? 'text-gold' : 'text-indigo'; ?>">
-                                <i class="bi bi-heart-fill d-block fs-3"></i>
-                                <span style="font-size: 0.65rem;">Wishlist</span>
+                            <a href="<?php echo $root_path; ?>wishlist.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo $current_page == 'wishlist.php' ? 'active' : ''; ?>">
+                                <i class="bi bi-heart-fill d-block mb-1" style="font-size: 1.5rem;"></i>
+                                <span style="font-size: 0.7rem; font-weight: 500;">Wishlist</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>profile.php" class="nav-link text-center border-0 p-1 <?php echo ($current_page == 'profile.php' || $current_page == 'login.php' || $current_page == 'register.php') ? 'text-gold' : 'text-indigo'; ?>">
-                                <i class="bi bi-person-circle d-block fs-3"></i>
-                                <span style="font-size: 0.65rem;">Account</span>
+                            <a href="<?php echo $root_path; ?>profile.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo ($current_page == 'profile.php' || $current_page == 'login.php' || $current_page == 'register.php') ? 'active' : ''; ?>">
+                                <i class="bi bi-person-circle d-block mb-1" style="font-size: 1.5rem;"></i>
+                                <span style="font-size: 0.7rem; font-weight: 500;">Account</span>
                             </a>
                         </li>
                     </ul>
@@ -208,33 +204,13 @@ require_once __DIR__ . '/functions.php';
         </div>
     </div>
 
-    <!-- Theme Toggle and Toast Script -->
+    <!-- Toast Script -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Theme Management
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
+        // Force light theme only
         const html = document.documentElement;
-
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-bs-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                themeIcon.className = 'bi bi-sun-fill fs-5 text-warning';
-            } else {
-                themeIcon.className = 'bi bi-moon-stars-fill fs-5';
-            }
-        }
+        html.setAttribute('data-bs-theme', 'light');
+        localStorage.setItem('theme', 'light');
     });
 
     // Global Toast Function

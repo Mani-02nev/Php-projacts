@@ -45,6 +45,21 @@ if (isset($electronics)) {
     $categories_data['Electronics'] = $electronics;
 }
 
+// Wishlist Toggle logic
+if (isset($_GET['wishlist_toggle'])) {
+    $p_id = intval($_GET['wishlist_toggle']);
+    if (is_in_wishlist($p_id)) {
+        remove_from_wishlist($p_id);
+        $script_toast = 'showToast("Removed from wishlist", "info")';
+    } else {
+        add_to_wishlist($p_id);
+        $script_toast = 'showToast("Added to wishlist! ❤️", "success")';
+    }
+    // Redirect to remove the query parameter and prevent re-submission
+    header("Location: index.php#categories");
+    exit();
+}
+
 // Quick Add to Cart logic
 if (isset($_GET['add_to_cart'])) {
     $p_id = intval($_GET['add_to_cart']);
