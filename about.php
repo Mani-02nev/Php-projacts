@@ -187,7 +187,7 @@ require_once 'includes/header.php';
                             Specializing in DevOps and backend optimization for educational frameworks.
                         </p>
                         <div class="d-flex gap-3">
-                            <a href="#" class="btn btn-primary btn-sm rounded-pill px-5 fw-bold shadow-sm">View Portfolio</a>
+                            <a href="https://ks-02.vercel.app/" class="btn btn-primary btn-sm rounded-pill px-5 fw-bold shadow-sm" target="_blank">View Portfolio</a>
                         </div>
                     </div>
                 </div>

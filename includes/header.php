@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/functions.php';
+
+// Calculate root path for includes
+$is_admin_dir = strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
+$root_path = $is_admin_dir ? '../' : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,15 +55,13 @@ require_once __DIR__ . '/functions.php';
                 <!-- Desktop Brand / Home Link -->
                 <a class="navbar-brand d-flex align-items-center fw-extrabold fs-3" href="<?php echo $root_path; ?>index.php" style="color: #000 !important; font-weight: 900;">
                     <div class="logo-wrapper me-2 overflow-hidden border border-3 border-dark bg-white" style="height: 45px; width: 45px;">
-                        <img class="w-100 h-100 object-fit-contain" src="<?php echo $root_path; ?>assets/images/logo.svg" alt="L" onerror="this.src='https://via.placeholder.com/45?text=U'">
+                        <img class="w-100 h-100 object-fit-contain" src="<?php echo $root_path; ?>assets/images/logo.png" alt="L" onerror="this.src='https://via.placeholder.com/45?text=U'">
                     </div>
                     <span class="d-none d-sm-inline" style="letter-spacing: -1.5px;"><?php echo SITE_NAME; ?></span>
                 </a>
 
                 <?php 
                 $current_page = basename($_SERVER['PHP_SELF']); 
-                $is_admin_dir = strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
-                $root_path = $is_admin_dir ? '../' : '';
                 ?>
                 
                 <!-- Desktop Menu -->
