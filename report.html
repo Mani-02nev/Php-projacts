@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Univault Project Report</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+
+        section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #334155;
+            margin-top: 25px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: #0f172a;
+        }
+
+        pre {
+            background-color: #1e293b;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .diagram-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .badge-php {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-csv {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-js {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Univault Project Report</h1>
+            <div class="subtitle">Complete Technical Documentation for Development Team</div>
+        </header>
+
+        <section id="overview">
+            <h2>1. Project Overview</h2>
+            <p><strong>Univault</strong> is a fully functional, lightweight e-commerce platform built effectively using
+                <strong>PHP</strong> and <strong>flat-file CSV storage</strong>. The project demonstrates a complete
+                online shopping experience—from product browsing to secure checkout—without requiring a complex SQL
+                database setup. It focuses on performance, simplicity, and a modern user interface.
+            </p>
+        </section>
+
+        <section id="architecture">
+            <h2>2. System Architecture & Workflow</h2>
+            <p>The system follows a standard <strong>Client-Server architecture</strong> where the PHP backend processes
+                requests, interacts with the file-based database (CSV files), and serves dynamic HTML content to the
+                client.</p>
+
+            <h3>System Architecture</h3>
+            <div class="diagram-container">
+                <pre class="mermaid">
+graph TB
+    subgraph Client ["🖥️ Client Side (Browser)"]
+        UI[User Interface<br/>HTML5 / CSS3]
+        JS[Interactivity<br/>JavaScript / DOM]
+    end
+
+    subgraph Server ["⚙️ Server Side (PHP)"]
+        Controller[Page Controllers<br/>index.php, cart.php]
+        Auth[Auth Logic<br/>Session Mgmt]
+        Core[Core Functions<br/>csv_helper, cart_logic]
+    end
+
+    subgraph Storage ["💾 Data Layer (CSV)"]
+        P_DB[(products.csv)]
+        U_DB[(users.csv)]
+        O_DB[(orders.csv)]
+    end
+
+    %% Connections
+    UI <--> JS
+    JS --"AJAX Requests"--> Controller
+    UI --"HTTP GET/POST"--> Controller
+    
+    Controller --"Validate"--> Auth
+    Controller --"Process"--> Core
+    
+    Core <--"Read/Write"--> Storage
+    
+    classDef client fill:#e0f2fe,stroke:#0284c7,stroke-width:2px;
+    classDef server fill:#fef3c7,stroke:#d97706,stroke-width:2px;
+    classDef storage fill:#dcfce7,stroke:#166534,stroke-width:2px;
+    
+    class UI,JS client;
+    class Controller,Auth,Core server;
+    class P_DB,U_DB,O_DB storage;
+                </pre>
+            </div>
+
+            <h3>Core Workflow: Order Processing</h3>
+            <p>The following sequence diagram illustrates the step-by-step flow of data during a product checkout event,
+                highlighting the interaction between the user, the server, and the file storage.</p>
+            <div class="diagram-container">
+                <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant User
+    participant Browser
+    participant Server as PHP Server
+    participant DB as CSV Files
+
+    User->>Browser: Clicks "Place Order"
+    Browser->>Server: POST /checkout.php
+    
+    rect rgb(240, 248, 255)
+        Note over Server: Server-Side Validation
+        Server->>Server: Validate Session (Auth)
+        Server->>Server: Validate Cart & Inputs
+    end
+
+    Server->>DB: Read products.csv (Check Stock)
+    
+    alt Stock Available
+        Server->>DB: Update products.csv (Deduct Quantity)
+        Server->>DB: Append to orders.csv (Create Record)
+        Server->>Server: Clear Session Cart
+        Server-->>Browser: Redirect to Success Page
+        Browser-->>User: Show "Order Placed" Message
+    else Out of Stock
+        Server-->>Browser: Show Error Notification
+        Browser-->>User: Display "Item unavailable"
+    end
+                </pre>
+            </div>
+
+            <h3>Workflow Explanation</h3>
+            <ol>
+                <li><strong>Request Handling:</strong> When a user accesses a page (e.g., <code>index.php</code>), the
+                    PHP server intercepts the request.</li>
+                <li><strong>Data Retrieval:</strong> The application uses custom helper functions
+                    (<code>read_csv</code>) in <code>includes/functions.php</code> to fetch data from
+                    <code>data/products.csv</code>.
+                </li>
+                <li><strong>Session Management:</strong> User-specific data (Cart items, Wishlist, Login status) is
+                    managed using PHP Sessions (<code>$_SESSION</code>), ensuring data persists as the user navigates
+                    different pages.</li>
+                <li><strong>Rendering:</strong> The server processes this data and merges it with HTML templates to
+                    produce the final webpage.</li>
+                <li><strong>Data Persistence:</strong> When a user registers or places an order, the system writes the
+                    new data securely back to <code>users.csv</code> or <code>orders.csv</code>.</li>
+            </ol>
+        </section>
+
+        <section id="tech-stack">
+            <h2>3. Technology Stack</h2>
+
+            <h3>Frontend (Client-Side)</h3>
+            <ul>
+                <li><span class="badge badge-js">HTML5</span> Semantic structure for accessibility and SEO.</li>
+                <li><span class="badge badge-js">CSS3</span> Custom styling with a focus on responsiveness
+                    (Flexbox/Grid).</li>
+                <li><span class="badge badge-js">JavaScript</span> Vanilla JS for client-side interactivity and AJAX
+                    operations.</li>
+            </ul>
+
+            <h3>Backend (Server-Side)</h3>
+            <ul>
+                <li><span class="badge badge-php">PHP</span> Core server-side language using modular functions and
+                    session management.</li>
+                <li><span class="badge badge-php">File System I/O</span> Direct file manipulation for reading/writing
+                    database records.</li>
+            </ul>
+
+            <h3>Database (Storage)</h3>
+            <ul>
+                <li><span class="badge badge-csv">CSV</span> <code>products.csv</code> for inventory.</li>
+                <li><span class="badge badge-csv">CSV</span> <code>users.csv</code> for authentication.</li>
+                <li><span class="badge badge-csv">CSV</span> <code>orders.csv</code> for transaction capability.</li>
+            </ul>
+        </section>
+
+        <section id="functionality">
+            <h2>4. Key Functionalities</h2>
+
+            <h3>🛒 Product Catalog</h3>
+            <p>Products are dynamically fetched from the CSV database and displayed in a responsive grid. Includes
+                category filtering and detailed views.</p>
+
+            <h3>🔐 User Authentication</h3>
+            <p>Secure registration and login system. Passwords are hashed using <code>password_hash()</code> before
+                storage. Session-based authentication keeps users logged in.</p>
+
+            <h3>❤️ Shopping Cart & Wishlist</h3>
+            <p><strong>Persistent State:</strong> Cart and Wishlist data are stored in PHP Sessions, allowing users to
+                browse continuously without losing selected items.</p>
+            <p><strong>AJAX Integration:</strong> The Wishlist feature uses asynchronous JavaScript calls to
+                <code>api/wishlist_toggle.php</code>, providing instant feedback (heart animation) without a page
+                reload.
+            </p>
+
+            <h3>💳 Checkout System</h3>
+            <p>Compiles cart data, calculates totals, and creates a permanent order record in <code>orders.csv</code>.
+                Automatically manages inventory by decrementing stock upon successful order placement.</p>
+        </section>
+
+        <section id="structure">
+            <h2>5. Directory Structure</h2>
+            <pre>
+/
+├── assets/             # Images and static resources
+├── css/                # Stylesheets (style.css, responsive.css)
+├── data/               # CSV Database files
+├── includes/           # Reusable PHP components (config, functions)
+├── js/                 # Javascript files
+├── api/                # Backend endpoints for AJAX
+├── index.php           # Homepage
+├── product-detail.php  # Individual product view
+├── cart.php            # Shopping cart page
+└── checkout.php        # Order finalization</pre>
+        </section>
+
+        <footer>
+            <p>Generated for Univault Development Team &copy; 2026</p>
+        </footer>
+    </div>
+
+    <!-- Mermaid JS for Diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose'
+        });
+    </script>
+</body>
+
+</html>

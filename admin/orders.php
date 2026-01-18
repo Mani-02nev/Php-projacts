@@ -17,57 +17,132 @@ if (isset($_POST['update_status'])) {
 
 $orders = get_all_orders();
 
+// Sort orders by date (newest first)
+usort($orders, function($a, $b) {
+    return strtotime($b['created_at']) - strtotime($a['created_at']);
+});
+
 include '../includes/header.php';
 ?>
 
-<div class="container">
-    <h1 class="section-title">Manage Orders</h1>
-    
-    <?php if (!empty($orders)): ?>
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($orders as $order): ?>
-                    <tr>
-                        <td>#<?php echo $order['id']; ?></td>
-                        <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
-                        <td><?php echo format_price($order['total_amount']); ?></td>
-                        <td>
-                            <span style="padding: 0.25rem 0.75rem; background: var(--black); color: var(--white); border-radius: 4px;">
-                                <?php echo ucfirst($order['status']); ?>
-                            </span>
-                        </td>
-                        <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
-                        <td>
-                            <form method="POST" style="display: inline;">
-                                <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
-                                <select name="status" class="form-control" style="width: auto; display: inline; padding: 0.5rem;">
-                                    <option value="pending" <?php echo $order['status'] == 'pending' ? 'selected' : ''; ?>>Pending</option>
-                                    <option value="processing" <?php echo $order['status'] == 'processing' ? 'selected' : ''; ?>>Processing</option>
-                                    <option value="shipped" <?php echo $order['status'] == 'shipped' ? 'selected' : ''; ?>>Shipped</option>
-                                    <option value="delivered" <?php echo $order['status'] == 'delivered' ? 'selected' : ''; ?>>Delivered</option>
-                                </select>
-                                <button type="submit" name="update_status" class="btn btn-black" style="padding: 0.5rem 1rem;">Update</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <div class="alert alert-error">
-            <p>No orders yet.</p>
+<!-- Admin Orders -->
+<style>
+    body { background-color: #0E1116 !important; }
+    .admin-card { background-color: #141821; border: 1px solid #1F2937; }
+    .table-dark-custom { --bs-table-bg: transparent; --bs-table-color: #9CA3AF; --bs-table-border-color: #2D2D35; }
+    .table-dark-custom th { color: #E5E7EB; background-color: #1F2937; border-bottom: 1px solid #374151; }
+    .table-dark-custom td { vertical-align: middle; border-bottom: 1px solid #2D2D35; color: #9CA3AF; }
+    .hover-row:hover td { background-color: rgba(255,255,255,0.02); color: #F3F4F6; }
+</style>
+
+<div class="container-fluid px-4 py-5" style="min-height: 100vh;">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <div class="d-flex align-items-center gap-3 mb-1">
+                <span class="badge rounded-pill px-3 py-1 fw-bold" style="background-color: #374151; color: #E5E7EB; border: 1px solid #4B5563;">
+                    <i class="bi bi-receipt me-1 text-success"></i> ORDERS
+                </span>
+            </div>
+            <h1 class="fw-bold mb-0 text-white display-6">Order Management</h1>
+            <p class="text-secondary mb-0">Track shipments and update statuses</p>
         </div>
-    <?php endif; ?>
+        <div>
+            <a href="index.php" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
+                <i class="bi bi-arrow-left me-2"></i> Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <div class="card admin-card rounded-4 overflow-hidden shadow-lg">
+        <div class="card-body p-0">
+            <?php if (!empty($orders)): ?>
+                <div class="table-responsive">
+                    <table class="table table-dark-custom align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="py-4 ps-4 text-uppercase small fw-bold">Order ID & Date</th>
+                                <th class="py-4 text-uppercase small fw-bold">Customer Info</th>
+                                <th class="py-4 text-uppercase small fw-bold">Amount & Items</th>
+                                <th class="py-4 text-uppercase small fw-bold">Current Status</th>
+                                <th class="py-4 pe-4 text-uppercase small fw-bold text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($orders as $order): ?>
+                                <tr class="hover-row transition-hover">
+                                    <td class="ps-4 py-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+                                                <i class="bi bi-bag-check-fill"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-white">#<?php echo $order['id']; ?></div>
+                                                <div class="small" style="color: #6B7280;"><?php echo date('M d, Y', strtotime($order['created_at'])); ?></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3">
+                                        <div class="fw-bold text-white"><?php echo htmlspecialchars($order['customer_name']); ?></div>
+                                        <div class="small" style="color: #6B7280;"><?php echo htmlspecialchars($order['customer_email']); ?></div>
+                                    </td>
+                                    <td class="py-3">
+                                        <div class="fw-bold text-success">₹<?php echo number_format($order['total_amount'], 2); ?></div>
+                                        <?php 
+                                            $items = json_decode($order['items'], true);
+                                            $count = is_array($items) ? array_sum($items) : 0;
+                                        ?>
+                                        <div class="small" style="color: #6B7280;"><?php echo $count; ?> Items</div>
+                                    </td>
+                                    <td class="py-3">
+                                        <?php 
+                                            $statusColor = '';
+                                            $statusIcon = '';
+                                            switch($order['status']) {
+                                                case 'pending': $statusColor = '#F59E0B'; $statusIcon = 'bi-hourglass-split'; break;
+                                                case 'processing': $statusColor = '#3B82F6'; $statusIcon = 'bi-gear-wide-connected'; break;
+                                                case 'shipped': $statusColor = '#8B5CF6'; $statusIcon = 'bi-truck'; break;
+                                                case 'delivered': $statusColor = '#10B981'; $statusIcon = 'bi-check-circle-fill'; break;
+                                                case 'cancelled': $statusColor = '#EF4444'; $statusIcon = 'bi-x-circle-fill'; break;
+                                            }
+                                        ?>
+                                        <span class="badge rounded-pill px-3 py-2 fw-bold d-inline-flex align-items-center gap-2" 
+                                              style="background-color: <?php echo $statusColor . '20'; ?>; color: <?php echo $statusColor; ?>; border: 1px solid <?php echo $statusColor . '40'; ?>;">
+                                            <i class="bi <?php echo $statusIcon; ?>"></i>
+                                            <?php echo ucfirst($order['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td class="pe-4 py-3 text-end">
+                                        <form method="POST" class="d-flex align-items-center justify-content-end gap-2">
+                                            <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
+                                            <select name="status" class="form-select form-select-sm rounded-pill border-secondary bg-dark text-white shadow-none" 
+                                                    style="width: 130px; cursor: pointer; border-color: #374151;">
+                                                <option value="pending" <?php echo $order['status'] == 'pending' ? 'selected' : ''; ?>>Pending</option>
+                                                <option value="processing" <?php echo $order['status'] == 'processing' ? 'selected' : ''; ?>>Processing</option>
+                                                <option value="shipped" <?php echo $order['status'] == 'shipped' ? 'selected' : ''; ?>>Shipped</option>
+                                                <option value="delivered" <?php echo $order['status'] == 'delivered' ? 'selected' : ''; ?>>Delivered</option>
+                                                <option value="cancelled" <?php echo $order['status'] == 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+                                            </select>
+                                            <button type="submit" name="update_status" class="btn btn-primary btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm hover-scale" 
+                                                    style="width: 34px; height: 34px;" title="Update Status">
+                                                <i class="bi bi-save"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-5">
+                    <div class="display-1 mb-3" style="color: #374151;"><i class="bi bi-inbox"></i></div>
+                    <h4 class="fw-bold text-white">No orders found</h4>
+                    <p class="text-secondary">Orders will appear here once customers start purchasing.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>

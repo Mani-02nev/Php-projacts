@@ -72,135 +72,181 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 include 'includes/header.php';
 ?>
 
-<div class="container py-5">
-    <div class="row g-4">
-        <!-- Profile Sidebar -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
-                <div class="bg-primary p-4 text-center">
-                    <div class="bg-white text-primary d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-sm border border-4 border-white-50" style="width: 100px; height: 100px;">
-                        <span class="display-4 fw-bold"><?php echo strtoupper(substr($user['name'], 0, 1)); ?></span>
+<div class="container-fluid px-3 px-lg-5 py-5" style="background-color: #0B0B0E; min-height: 100vh;">
+    <div class="row g-4 justify-content-center">
+        <!-- 
+            LEFT COLUMN: User Profile Card 
+            Premium Dark Card | Vertically Centered Content
+        -->
+        <div class="col-lg-3 col-md-5">
+            <div class="card border-0 h-100" style="background-color: #14161A; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+                <div class="card-body p-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    
+                    <!-- Avatar -->
+                    <div class="position-relative mb-4">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg" 
+                             style="width: 120px; height: 120px; background: linear-gradient(135deg, #7C3AED, #A78BFA); color: #fff; font-size: 3rem; font-weight: 700; border: 4px solid #14161A;">
+                            <?php echo strtoupper(substr($user['name'], 0, 1)); ?>
+                        </div>
+                        <span class="position-absolute bottom-0 end-0 p-2 rounded-circle border border-dark" style="background-color: #10B981; width: 20px; height: 20px;"></span>
                     </div>
-                    <h4 class="fw-bold text-white mb-1"><?php echo htmlspecialchars($user['name']); ?></h4>
-                    <p class="text-white-50 small mb-0"><?php echo htmlspecialchars($user['email']); ?></p>
-                </div>
-                <div class="card-body p-0">
-                                    <div class="list-group list-group-flush">
-                        <div class="list-group-item p-4 border-0 border-bottom bg-transparent">
-                            <label class="text-secondary small fw-bold text-uppercase d-block mb-1">Account Role</label>
-                            <span class="badge bg-primary text-white border-0 px-3 py-2 rounded-pill fw-normal shadow-sm">
-                                <?php echo $user['role'] === 'admin' ? '👑 Administrator' : '👤 Customer'; ?>
-                            </span>
+
+                    <!-- User Details -->
+                    <h3 class="mb-1" style="color: #E5E7EB; font-weight: 700; letter-spacing: -0.5px;"><?php echo htmlspecialchars($user['name']); ?></h3>
+                    <p class="mb-3" style="color: #9CA3AF; font-size: 0.95rem;"><?php echo htmlspecialchars($user['email']); ?></p>
+
+                    <!-- Role Badge -->
+                    <div class="mb-4">
+                        <span class="px-3 py-1 rounded-pill" style="background-color: rgba(124, 58, 237, 0.15); color: #A78BFA; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <?php echo $user['role'] === 'admin' ? 'Administrator' : 'Verified Customer'; ?>
+                        </span>
+                    </div>
+
+                    <!-- Stats Divider -->
+                    <div class="w-100 my-3" style="height: 1px; background-color: #2D2D35;"></div>
+
+                    <!-- Stats Row -->
+                    <div class="row w-100 text-center mt-2">
+                        <div class="col-6 border-end" style="border-color: #2D2D35 !important;">
+                            <h4 class="mb-0" style="color: #E5E7EB; font-weight: 700;"><?php echo count($user_orders); ?></h4>
+                            <small style="color: #6B7280; text-transform: uppercase; font-size: 0.7rem; font-weight: 600;">Orders</small>
                         </div>
-                        <div class="list-group-item p-4 border-0 bg-transparent">
-                            <div class="row text-center g-0">
-                                <div class="col-6 border-end border-secondary-subtle">
-                                    <h3 class="fw-bold text-primary mb-0"><?php echo count($user_orders); ?></h3>
-                                    <small class="text-secondary text-uppercase fw-bold" style="font-size: 0.65rem;">Orders</small>
-                                </div>
-                                <div class="col-6">
-                                    <h3 class="fw-bold text-primary mb-0"><?php echo get_wishlist_count(); ?></h3>
-                                    <small class="text-secondary text-uppercase fw-bold" style="font-size: 0.65rem;">Wishlist</small>
-                                </div>
-                            </div>
+                        <div class="col-6">
+                            <h4 class="mb-0" style="color: #E5E7EB; font-weight: 700;"><?php echo get_wishlist_count(); ?></h4>
+                            <small style="color: #6B7280; text-transform: uppercase; font-size: 0.7rem; font-weight: 600;">Wishlist</small>
                         </div>
+                    </div>
+
+                    <!-- Logout Button (Mobile Only) -->
+                    <div class="d-md-none w-100 mt-4">
+                        <a href="logout.php" class="btn w-100" style="background-color: rgba(239, 68, 68, 0.1); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.2); font-weight: 600;">
+                            Sign Out
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Main Content -->
-        <div class="col-lg-8">
-            <!-- Edit Profile -->
-            <div class="card border-0 shadow-sm rounded-4 mb-4 bg-body">
+        <!-- 
+            RIGHT COLUMN: Settings & History 
+            Stacked Layout | Consistent styling
+        -->
+        <div class="col-lg-8 col-md-7">
+            
+            <!-- SECTION 1: ACCOUNT SETTINGS -->
+            <div class="card border-0 mb-4" style="background-color: #14161A; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
                 <div class="card-body p-4 p-md-5">
-                    <h4 class="fw-bold mb-4 border-bottom pb-3"><i class="bi bi-person-gear me-2 text-primary"></i> Account Settings</h4>
-                    
+                    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom" style="border-color: #2D2D35 !important; padding-bottom: 20px;">
+                        <h4 class="mb-0" style="color: #E5E7EB; font-weight: 700;">Account Settings</h4>
+                        <i class="bi bi-gear-fill" style="color: #6B7280; font-size: 1.5rem;"></i>
+                    </div>
+
                     <?php if ($success): ?>
-                        <div class="alert alert-success rounded-4 border-0 shadow-sm small py-3 mb-4 animate__animated animate__fadeIn">
-                            <i class="bi bi-check-circle me-2"></i> <?php echo $success; ?>
+                        <div class="alert border-0 d-flex align-items-center rounded-3 mb-4" style="background-color: rgba(16, 185, 129, 0.1); color: #10B981;">
+                            <i class="bi bi-check-circle-fill me-2"></i> <?php echo $success; ?>
                         </div>
                     <?php endif; ?>
                     
                     <?php if ($error): ?>
-                        <div class="alert alert-danger rounded-4 border-0 shadow-sm small py-3 mb-4">
-                            <i class="bi bi-exclamation-circle me-2"></i> <?php echo $error; ?>
+                        <div class="alert border-0 d-flex align-items-center rounded-3 mb-4" style="background-color: rgba(239, 68, 68, 0.1); color: #EF4444;">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i> <?php echo $error; ?>
                         </div>
                     <?php endif; ?>
-                    
-                    <form method="POST" class="row g-3">
+
+                    <form method="POST" class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-secondary text-uppercase ms-1">Full Name</label>
-                            <input type="text" name="name" class="form-control rounded-pill border-light-subtle shadow-sm px-4 bg-body-tertiary" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                            <label class="form-label small text-uppercase" style="color: #9CA3AF; font-weight: 600; letter-spacing: 0.5px;">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-0" style="background-color: #0B0B0E; color: #6B7280;">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input type="text" name="name" class="form-control border-0 px-3 py-2" 
+                                       style="background-color: #0B0B0E; color: #E5E7EB; font-weight: 500;" 
+                                       value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-secondary text-uppercase ms-1">Email Address</label>
-                            <input type="email" name="email" class="form-control rounded-pill border-light-subtle shadow-sm px-4 bg-body-tertiary" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                            <label class="form-label small text-uppercase" style="color: #9CA3AF; font-weight: 600; letter-spacing: 0.5px;">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-0" style="background-color: #0B0B0E; color: #6B7280;">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" name="email" class="form-control border-0 px-3 py-2" 
+                                       style="background-color: #0B0B0E; color: #E5E7EB; font-weight: 500;" 
+                                       value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                            </div>
                         </div>
-                        <div class="col-12 mt-4 text-end">
-                            <button type="submit" name="update_profile" class="btn btn-primary rounded-pill px-5 fw-bold py-2 shadow transition-hover">
+                        <div class="col-12 text-end mt-4">
+                            <button type="submit" name="update_profile" class="btn px-5 py-2 rounded-pill shadow-lg" 
+                                    style="background-color: #7C3AED; color: white; font-weight: 600; letter-spacing: 0.5px; border: none; transition: all 0.2s;">
                                 Save Changes
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            
-            <!-- Recent Orders -->
-            <div class="card border-0 shadow-sm rounded-4 bg-body">
+
+            <!-- SECTION 2: ORDER HISTORY -->
+            <div class="card border-0" style="background-color: #14161A; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
                 <div class="card-body p-4 p-md-5">
-                    <h4 class="fw-bold mb-4 border-bottom pb-3"><i class="bi bi-box-seam me-2 text-primary"></i> Order History</h4>
-                    
+                    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom" style="border-color: #2D2D35 !important; padding-bottom: 20px;">
+                        <h4 class="mb-0" style="color: #E5E7EB; font-weight: 700;">Order History</h4>
+                        <span class="badge rounded-pill" style="background-color: rgba(124, 58, 237, 0.1); color: #A78BFA;">
+                            <?php echo count($user_orders); ?> Orders
+                        </span>
+                    </div>
+
                     <?php if (!empty($user_orders)): ?>
-                        <div class="d-flex flex-column gap-3">
-                            <?php foreach ($user_orders as $order): ?>
-                                <?php 
-                                $items = json_decode($order['items'], true);
-                                $item_count = is_array($items) ? array_sum($items) : 0;
-                                ?>
-                                <div class="card border border-light-subtle rounded-4 p-4 transition-hover bg-body-tertiary shadow-sm">
-                                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-                                        <div>
-                                            <h6 class="fw-bold mb-1">Order #<?php echo $order['id']; ?></h6>
-                                            <p class="text-secondary small mb-0"><i class="bi bi-calendar3 me-1"></i> <?php echo date('M d, Y', strtotime($order['created_at'])); ?></p>
-                                        </div>
-                                        <div class="text-md-end">
-                                            <h5 class="fw-bold text-primary mb-1">₹<?php echo number_format($order['total_amount'], 0); ?></h5>
-                                            <span class="badge rounded-pill <?php 
-                                                echo $order['status'] === 'delivered' ? 'bg-success-subtle text-success' : 
-                                                    ($order['status'] === 'shipped' ? 'bg-primary-subtle text-primary' : 
-                                                    ($order['status'] === 'processing' ? 'bg-warning-subtle text-warning' : 'bg-danger-subtle text-danger')); 
-                                            ?> px-3 py-2 text-uppercase" style="font-size: 0.65rem;">
-                                                <?php echo $order['status']; ?>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mt-3 p-3 bg-body rounded-3 border border-light-subtle small text-secondary">
-                                        <div class="row g-3">
-                                            <div class="col-sm-6 col-md-3">
-                                                <span class="d-block fw-bold mb-0">Qty</span>
-                                                <span class="opacity-75">🛍️ <?php echo $item_count; ?> item(s)</span>
-                                            </div>
-                                            <div class="col-sm-6 col-md-3">
-                                                <span class="d-block fw-bold mb-0">City</span>
-                                                <span class="opacity-75"><?php echo htmlspecialchars($order['city']); ?></span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <span class="d-block fw-bold mb-0">Shipping Address</span>
-                                                <span class="opacity-75 text-truncate d-block"><?php echo htmlspecialchars($order['shipping_address']); ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                        <div class="table-responsive">
+                            <table class="table align-middle" style="background: transparent;">
+                                <thead>
+                                    <tr>
+                                        <th class="border-0 pb-3" style="color: #6B7280; font-size: 0.8rem; text-transform: uppercase;">Order ID</th>
+                                        <th class="border-0 pb-3" style="color: #6B7280; font-size: 0.8rem; text-transform: uppercase;">Date</th>
+                                        <th class="border-0 pb-3" style="color: #6B7280; font-size: 0.8rem; text-transform: uppercase;">Items</th>
+                                        <th class="border-0 pb-3 text-end" style="color: #6B7280; font-size: 0.8rem; text-transform: uppercase;">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($user_orders as $order): ?>
+                                        <?php 
+                                        $items = json_decode($order['items'], true);
+                                        $item_count = is_array($items) ? array_sum($items) : 0;
+                                        ?>
+                                        <tr style="border-color: #2D2D35;">
+                                            <td class="py-3">
+                                                <span style="color: #E5E7EB; font-weight: 600; font-family: monospace;">#<?php echo $order['id']; ?></span>
+                                            </td>
+                                            <td class="py-3">
+                                                <div style="color: #9CA3AF; font-size: 0.9rem;">
+                                                    <i class="bi bi-calendar3 me-2" style="color: #6B7280;"></i>
+                                                    <?php echo date('M d, Y', strtotime($order['created_at'])); ?>
+                                                </div>
+                                            </td>
+                                            <td class="py-3">
+                                                <span class="px-3 py-1 rounded-pill" style="background-color: #0B0B0E; color: #9CA3AF; border: 1px solid #2D2D35; font-size: 0.85rem;">
+                                                    <?php echo $item_count; ?> Items
+                                                </span>
+                                            </td>
+                                            <td class="text-end py-3">
+                                                <a href="track-order.php?id=<?php echo $order['id']; ?>" class="btn btn-sm px-3 rounded-pill" 
+                                                   style="background-color: rgba(124, 58, 237, 0.1); color: #A78BFA; font-weight: 600; border: none;">
+                                                    Track
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                     <?php else: ?>
                         <div class="text-center py-5">
-                            <div class="display-3 text-muted mb-4 opacity-25"><i class="bi bi-cart"></i></div>
-                            <h5 class="fw-bold">No orders found</h5>
-                            <p class="text-secondary mb-4">You haven't placed any orders yet.</p>
-                            <a href="products.php" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Start Shopping</a>
+                            <div class="mb-3" style="color: #2D2D35; font-size: 4rem;"><i class="bi bi-bag-x"></i></div>
+                            <h5 style="color: #E5E7EB; font-weight: 700;">No orders found</h5>
+                            <p class="mb-4" style="color: #6B7280;">You haven't placed any orders yet.</p>
+                            <a href="products.php" class="btn px-4 py-2 rounded-pill" style="background-color: #7C3AED; color: white; font-weight: 600; border: none;">
+                                Start Shopping
+                            </a>
                         </div>
                     <?php endif; ?>
                 </div>

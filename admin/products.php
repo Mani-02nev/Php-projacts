@@ -17,8 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $price = floatval($_POST['price']);
     $stock = intval($_POST['stock']);
     $image = clean_input($_POST['image']);
+    $category = clean_input($_POST['category'] ?? 'General');
     
-    if (add_product($name, $description, $price, $stock, $image)) {
+    if (add_product($name, $description, $price, $stock, $image, $category)) {
         $success = 'Product added successfully!';
     } else {
         $error = 'Failed to add product.';
@@ -37,80 +38,190 @@ if (isset($_GET['delete'])) {
 
 $products = get_all_products();
 
+// Sort by ID descending
+usort($products, function($a, $b) {
+    return $b['id'] - $a['id'];
+});
+
 include '../includes/header.php';
 ?>
 
-<div class="container">
-    <h1 class="section-title">Manage Products</h1>
+<!-- Admin Products -->
+<style>
+    body { background-color: #0E1116 !important; }
+    .admin-card { background-color: #141821; border: 1px solid #1F2937; }
+    .table-dark-custom { --bs-table-bg: transparent; --bs-table-color: #9CA3AF; --bs-table-border-color: #2D2D35; }
+    .table-dark-custom th { color: #E5E7EB; background-color: #1F2937; border-bottom: 1px solid #374151; }
+    .table-dark-custom td { vertical-align: middle; border-bottom: 1px solid #2D2D35; color: #9CA3AF; }
+    .form-control-dark { background-color: #0B0B0E; border: 1px solid #374151; color: #E5E7EB; }
+    .form-control-dark:focus { background-color: #0B0B0E; border-color: #7C3AED; color: #FFFFFF; box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25); }
+    .form-select-dark { background-color: #0B0B0E; border: 1px solid #374151; color: #E5E7EB; }
+    .form-select-dark:focus { border-color: #7C3AED; color: #FFFFFF; box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25); }
+    .hover-row:hover td { background-color: rgba(255,255,255,0.02); color: #F3F4F6; }
+</style>
+
+<div class="container-fluid px-4 py-5" style="min-height: 100vh;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <div class="d-flex align-items-center gap-3 mb-1">
+                <span class="badge rounded-pill px-3 py-1 fw-bold" style="background-color: #374151; color: #E5E7EB; border: 1px solid #4B5563;">
+                    <i class="bi bi-box-seam me-1 text-primary"></i> INVENTORY
+                </span>
+            </div>
+            <h1 class="fw-bold mb-0 text-white display-6">Manage Products</h1>
+            <p class="text-secondary mb-0">Add, edit, and remove store items</p>
+        </div>
+        <div>
+            <a href="index.php" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
+                <i class="bi bi-arrow-left me-2"></i> Dashboard
+            </a>
+        </div>
+    </div>
     
     <?php if ($success): ?>
-        <div class="alert alert-success"><?php echo $success; ?></div>
+        <div class="alert alert-success rounded-4 border-0 shadow-sm animate__animated animate__fadeIn mb-4 bg-success-subtle border-success text-success fw-bold">
+            <i class="bi bi-check-circle-fill me-2"></i> <?php echo $success; ?>
+        </div>
     <?php endif; ?>
     
     <?php if ($error): ?>
-        <div class="alert alert-error"><?php echo $error; ?></div>
+        <div class="alert alert-danger rounded-4 border-0 shadow-sm animate__animated animate__fadeIn mb-4 bg-danger-subtle border-danger text-danger fw-bold">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> <?php echo $error; ?>
+        </div>
     <?php endif; ?>
-    
-    <div class="form-container">
-        <h2>Add New Product</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label for="name">Product Name</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                    <label for="price">Price (₹)</label>
-                    <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+
+    <div class="row g-4">
+        <!-- Add Product Form -->
+        <div class="col-lg-4">
+            <div class="card admin-card rounded-4 h-100 shadow-lg">
+                <div class="card-header border-bottom border-secondary border-opacity-25 py-3 px-4" style="background-color: transparent;">
+                    <h5 class="fw-bold mb-0 text-white"><i class="bi bi-plus-circle me-2 text-primary"></i>Add New Product</h5>
                 </div>
-                <div class="form-group">
-                    <label for="stock">Stock</label>
-                    <input type="number" id="stock" name="stock" class="form-control" required>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Product Name</label>
+                            <input type="text" id="name" name="name" class="form-control form-control-dark rounded-3 px-3 py-2" placeholder="e.g. Wireless Headset" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Category</label>
+                            <select id="category" name="category" class="form-select form-select-dark rounded-3 px-3 py-2">
+                                <option value="Electronics">Electronics</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Home">Home</option>
+                                <option value="Beauty">Beauty</option>
+                                <option value="Sports">Sports</option>
+                                <option value="General" selected>General</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Description</label>
+                            <textarea id="description" name="description" class="form-control form-control-dark px-3 py-2" rows="4" style="border-radius: 0.75rem;" placeholder="Product details..." required></textarea>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label for="price" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Price (₹)</label>
+                                <input type="number" id="price" name="price" class="form-control form-control-dark rounded-3 px-3 py-2" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="stock" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Stock</label>
+                                <input type="number" id="stock" name="stock" class="form-control form-control-dark rounded-3 px-3 py-2" placeholder="0" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="image" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Image Filename</label>
+                            <input type="text" id="image" name="image" class="form-control form-control-dark rounded-3 px-3 py-2" placeholder="e.g. product.jpg">
+                            <div class="form-text small ms-1" style="color: #6B7280;"><i class="bi bi-info-circle me-1"></i>File must exist in assets/images/</div>
+                        </div>
+                        <button type="submit" name="add_product" class="btn btn-primary rounded-3 w-100 fw-bold py-2 shadow-sm transition-hover" 
+                                style="background-color: #3B82F6; border: none;">
+                            <i class="bi bi-save me-2"></i> Add Product
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="image">Image Filename (optional)</label>
-                <input type="text" id="image" name="image" class="form-control" placeholder="e.g., product.jpg">
-                <small style="color: var(--gray-600);">Place image in assets/images/ folder</small>
+        </div>
+
+        <!-- Product List -->
+        <div class="col-lg-8">
+            <div class="card admin-card rounded-4 h-100 overflow-hidden shadow-lg">
+                <div class="card-header border-bottom border-secondary border-opacity-25 py-3 px-4 d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                    <h5 class="fw-bold mb-0 text-white"><i class="bi bi-list-ul me-2 text-primary"></i>Product Inventory</h5>
+                    <span class="badge rounded-pill px-3" style="background-color: #374151; color: #E5E7EB; border: 1px solid #4B5563;"><?php echo count($products); ?> Items</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-dark-custom align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="py-3 ps-4 text-uppercase small fw-bold" style="width: 50px;">ID</th>
+                                    <th class="py-3 text-uppercase small fw-bold">Product Details</th>
+                                    <th class="py-3 text-uppercase small fw-bold">Price</th>
+                                    <th class="py-3 text-uppercase small fw-bold">Stock Status</th>
+                                    <th class="py-3 text-uppercase small fw-bold text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($products as $product): ?>
+                                    <tr class="hover-row transition-hover">
+                                        <td class="ps-4 small" style="color: #6B7280;">#<?php echo $product['id']; ?></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3 border border-secondary border-opacity-25 bg-dark" style="width: 48px; height: 48px; min-width: 48px;">
+                                                    <?php if(!empty($product['image'])): ?>
+                                                        <i class="bi bi-image text-secondary"></i>
+                                                    <?php else: ?>
+                                                        <i class="bi bi-box text-secondary"></i>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-bold text-white mb-0 text-truncate" style="max-width: 200px;"><?php echo htmlspecialchars($product['name']); ?></div>
+                                                    <div class="small text-truncate" style="color: #6B7280; max-width: 200px;">
+                                                        <?php echo htmlspecialchars($product['category'] ?? '-'); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-white">₹<?php echo number_format($product['price'], 2); ?></td>
+                                        <td>
+                                            <?php if ($product['stock'] > 10): ?>
+                                                <span class="badge rounded-pill px-2" style="background-color: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                                    <?php echo $product['stock']; ?> in stock
+                                                </span>
+                                            <?php elseif ($product['stock'] > 0): ?>
+                                                <span class="badge rounded-pill px-2" style="background-color: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                                    Low: <?php echo $product['stock']; ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="badge rounded-pill px-2" style="background-color: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3);">Out of Stock</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <a href="?delete=<?php echo $product['id']; ?>" 
+                                               class="btn btn-outline-danger btn-sm rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm hover-scale"
+                                               style="width: 32px; height: 32px; padding: 0;"
+                                               onclick="return confirm('Are you sure you want to delete this product?')"
+                                               title="Delete Product">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($products)): ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5">
+                                            <i class="bi bi-inbox display-4 d-block mb-3" style="color: #374151;"></i>
+                                            <span class="text-secondary">No products found. Add one to get started!</span>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <button type="submit" name="add_product" class="btn btn-black" style="width: 100%;">Add Product</button>
-        </form>
+        </div>
     </div>
-    
-    <h2 style="margin: 3rem 0 1rem;">All Products</h2>
-    <table class="cart-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Image</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($products as $product): ?>
-                <tr>
-                    <td><?php echo $product['id']; ?></td>
-                    <td><?php echo htmlspecialchars($product['name']); ?></td>
-                    <td><?php echo format_price($product['price']); ?></td>
-                    <td><?php echo $product['stock']; ?></td>
-                    <td><?php echo htmlspecialchars($product['image']); ?></td>
-                    <td>
-                        <a href="?delete=<?php echo $product['id']; ?>" 
-                           class="btn" 
-                           style="padding: 0.5rem 1rem; background: var(--black); color: var(--white);"
-                           onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
 </div>
 
 <?php include '../includes/footer.php'; ?>

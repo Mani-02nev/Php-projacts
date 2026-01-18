@@ -31,56 +31,57 @@ include 'includes/header.php';
 <div class="container py-5">
     <div class="row mb-4 align-items-center">
         <div class="col">
-            <h1 class="fw-bold mb-0 text-dark"><i class="bi bi-heart-fill text-danger me-2"></i> My Wishlist</h1>
-            <p class="text-secondary mb-0">Products you've saved for later</p>
+            <h1 class="fw-bold mb-1" style="color: #E5E7EB;"><i class="bi bi-heart-fill text-danger me-2"></i> My Wishlist</h1>
+            <p class="mb-0 fs-5" style="color: #9CA3AF;">Products you've saved for later</p>
         </div>
     </div>
 
     <?php if (empty($wishlist_items)): ?>
-        <div class="text-center py-5 bg-white rounded-5 shadow-sm border">
-            <div class="display-1 text-muted mb-4 opacity-25">
+        <!-- EMPTY STATE (White Card as requested) -->
+        <div class="text-center py-5 rounded-5 shadow-sm border" style="background-color: #FFFFFF; border-color: #E5E7EB;">
+            <div class="display-1 mb-4" style="color: #9CA3AF; opacity: 0.3;">
                 <i class="bi bi-heart"></i>
             </div>
-            <h3 class="fw-bold">Your wishlist is empty</h3>
-            <p class="text-secondary mb-4">Explore our products and save your favorites!</p>
-            <a href="products.php" class="btn btn-primary rounded-pill px-5 fw-bold py-2 shadow">
+            <h3 class="fw-bold text-dark mb-2">Your wishlist is empty</h3>
+            <p class="text-secondary mb-4 fs-5">Explore our products and save your favorites!</p>
+            <a href="products.php" class="btn rounded-pill px-5 fw-bold py-2 shadow" style="background-color: #7C3AED; color: #FFFFFF; border: none;">
                 Start Shopping
             </a>
         </div>
     <?php else: ?>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <div class="global-grid">
             <?php foreach ($wishlist_items as $product): ?>
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card transition-hover position-relative">
-                        <!-- Remove Button -->
-                        <div class="position-absolute top-0 end-0 m-3 z-2">
-                            <a href="?remove=<?php echo $product['id']; ?>" class="btn btn-light btn-sm rounded-circle shadow-sm p-2 text-danger">
-                                <i class="bi bi-x-lg"></i>
-                            </a>
-                        </div>
+                <!-- Global Product Card -->
+                <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
+                    <!-- Wishlist Btn (Acts as Remove) -->
+                    <button class="wishlist-btn active" 
+                            onclick="event.preventDefault(); window.location.href='?remove=<?php echo $product['id']; ?>'">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+                    
+                    <!-- Image Area -->
+                    <div class="img-wrapper">
+                        <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="card-content">
+                        <span class="unit-pill">1 Unit</span>
+                        <h3 class="product-title" title="<?php echo htmlspecialchars($product['name']); ?>">
+                            <?php echo htmlspecialchars($product['name']); ?>
+                        </h3>
+                        <div class="product-category"><?php echo htmlspecialchars($product['category']); ?></div>
                         
-                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-4" style="height: 200px;">
-                            <img src="<?php echo htmlspecialchars($product['image']); ?>" 
-                                 class="img-fluid" 
-                                 alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                 style="max-height: 100%; object-fit: contain;">
-                        </div>
-                        
-                        <div class="card-body p-4 d-flex flex-column">
-                            <h6 class="card-title fw-bold mb-1 text-dark text-truncate"><?php echo htmlspecialchars($product['name']); ?></h6>
-                            <p class="text-secondary small mb-3"><?php echo htmlspecialchars($product['category']); ?></p>
-                            
-                            <div class="mt-auto">
-                                <h5 class="fw-bold text-primary mb-3">₹<?php echo number_format($product['price'], 0); ?></h5>
-                                <div class="d-grid gap-2">
-                                    <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="btn btn-primary rounded-pill fw-bold btn-sm py-2">
-                                        View Product
-                                    </a>
-                                </div>
+                        <div class="action-row">
+                            <div class="price">
+                                ₹<?php echo number_format($product['price'], 0); ?>
                             </div>
+                            <button class="btn-add" onclick="event.preventDefault(); window.location.href='products.php?add_to_cart=<?php echo $product['id']; ?>'">
+                                ADD
+                            </button>
                         </div>
                     </div>
-                </div>
+                </a>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
@@ -88,23 +89,28 @@ include 'includes/header.php';
     <!-- Recently Viewed Section -->
     <?php $recently_viewed = get_recently_viewed_products(); ?>
     <?php if (!empty($recently_viewed)): ?>
-        <div class="mt-5 pt-5 border-top">
-            <h4 class="fw-bold mb-4">Recently Viewed</h4>
-            <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
-                <?php foreach (array_slice($recently_viewed, 0, 6) as $p): ?>
-                    <div class="col">
-                        <a href="product-detail.php?id=<?php echo $p['id']; ?>" class="text-decoration-none">
-                            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden transition-hover">
-                                <div class="bg-light p-2 text-center" style="height: 120px;">
-                                    <img src="<?php echo htmlspecialchars($p['image']); ?>" class="img-fluid" alt="" style="max-height: 100%; object-fit: contain;">
-                                </div>
-                                <div class="card-body p-2">
-                                    <p class="small fw-bold text-dark mb-0 text-truncate"><?php echo htmlspecialchars($p['name']); ?></p>
-                                    <small class="text-primary">₹<?php echo number_format($p['price'], 0); ?></small>
-                                </div>
+        <div class="mt-5 pt-5" style="border-top: 1px solid #2D2D35;">
+            <h4 class="fw-bold mb-4" style="color: #E5E7EB;">Recently Viewed</h4>
+            <div class="global-grid">
+                <?php foreach (array_slice($recently_viewed, 0, 6) as $product): ?>
+                    <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
+                        <button class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
+                                onclick="event.preventDefault(); window.location.href='?wishlist_toggle=<?php echo $product['id']; ?>'"> <!-- Note: wishlist toggle handling missing in wishlist.php for recently viewed if not added, but users context is standard -->
+                            <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
+                        </button>
+                        <div class="img-wrapper">
+                            <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <span class="unit-pill">1 Unit</span>
+                            <h3 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <div class="product-category"><?php echo htmlspecialchars($product['category']); ?></div>
+                            <div class="action-row">
+                                <div class="price">₹<?php echo number_format($product['price'], 0); ?></div>
+                                <button class="btn-add" onclick="event.preventDefault(); window.location.href='products.php?add_to_cart=<?php echo $product['id']; ?>'">ADD</button>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>

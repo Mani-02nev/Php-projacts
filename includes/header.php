@@ -20,37 +20,19 @@ $root_path = $is_admin_dir ? '../' : '';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <!-- Custom Style (Keeping for premium touches only) -->
+    <!-- Material Design 3 (MD3) Styles -->
+    <link rel="stylesheet" href="css/md3-design.css">
+    <!-- Custom Style -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <!-- Enterprise Dark Theme (FINAL OVERRIDE) -->
+    <link rel="stylesheet" href="css/enterprise-dark-theme.css">
     <link rel="icon" type="image/svg+xml" href="<?php echo $root_path; ?>assets/images/logo.svg" />
-    <style>
-        .logo-img {
-            height: 50px;
-            width: auto;
-            object-fit: contain;
-            border: 3px solid #000; /* Subtle border for logo */
-            padding: 2px;
-            background: #fff;
-            transition: transform 0.3s ease;
-        }
-        .logo-img:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 <body>
-    <!-- Motion Canvas Layer -->
-    <div class="motion-canvas">
-        <div class="breath-orb orb-1"></div>
-        <div class="breath-orb orb-2"></div>
-        <div class="silk-line" style="top: 10%;"></div>
-        <div class="silk-line" style="top: 50%;"></div>
-        <div class="silk-line" style="top: 80%;"></div>
-    </div>
 
     <header class="main-header sticky-top py-2">
-        <div class="container">
+        <div class="container-fluid px-3 px-lg-4 px-xl-5">
             <nav class="navbar navbar-expand-lg p-0">
                 <!-- Hamburger Menu Toggler (Mobile) -->
                 <button class="navbar-toggler border-0 me-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,11 +40,11 @@ $root_path = $is_admin_dir ? '../' : '';
                 </button>
 
                 <!-- Desktop Brand / Home Link -->
-                <a class="navbar-brand d-flex align-items-center fw-extrabold fs-3 me-auto me-lg-2" href="<?php echo $root_path; ?>index.php" style="color: #000 !important; font-weight: 900;">
-                    <div class="logo-wrapper me-2 overflow-hidden border border-3 border-dark bg-white" style="height: 45px; width: 45px;">
-                        <img class="w-100 h-100 object-fit-contain" src="<?php echo $root_path; ?>assets/images/logo.png" alt="L" onerror="this.src='https://via.placeholder.com/45?text=U'">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="<?php echo $root_path; ?>index.php">
+                    <div class="logo-wrapper">
+                        <img class="logo-img" src="<?php echo $root_path; ?>assets/images/logo.png" alt="<?php echo SITE_NAME; ?>" onerror="this.src='https://via.placeholder.com/45?text=U'">
                     </div>
-                    <span class="d-none d-sm-inline" style="letter-spacing: -1.5px;"><?php echo SITE_NAME; ?></span>
+                    <span class="d-none d-sm-inline brand-text"><?php echo SITE_NAME; ?></span>
                 </a>
 
                 <?php 
@@ -70,27 +52,31 @@ $root_path = $is_admin_dir ? '../' : '';
                 ?>
                 
                 <!-- Desktop Menu -->
-                
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <ul class="navbar-nav gap-3">
+                    <ul class="navbar-nav gap-1">
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>index.php" class="nav-link px-3 fw-medium <?php echo $current_page == 'index.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo $root_path; ?>index.php" class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>">
                                 Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>products.php" class="nav-link px-3 fw-medium <?php echo ($current_page == 'products.php' || $current_page == 'product-detail.php') ? 'active' : ''; ?>">
+                            <a href="<?php echo $root_path; ?>products.php" class="nav-link <?php echo ($current_page == 'products.php' || $current_page == 'product-detail.php') && !isset($_GET['fresh']) ? 'active' : ''; ?>">
                                 Shop
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>about.php" class="nav-link px-3 fw-medium <?php echo $current_page == 'about.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo $root_path; ?>fresh-mart.php" class="nav-link fresh-mart-link <?php echo $current_page == 'fresh-mart.php' ? 'active' : ''; ?>">
+                                <i class="bi bi-basket2-fill me-1 text-success"></i> Fresh Mart
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $root_path; ?>about.php" class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>">
                                 About
                             </a>
                         </li>
                         <?php if (is_admin()): ?>
                             <li class="nav-item">
-                                <a href="<?php echo $is_admin_dir ? 'index.php' : 'admin/index.php'; ?>" class="nav-link px-3 fw-medium <?php echo strpos($current_page, 'admin') !== false ? 'active' : ''; ?>">
+                                <a href="<?php echo $is_admin_dir ? 'index.php' : 'admin/index.php'; ?>" class="nav-link <?php echo strpos($current_page, 'admin') !== false ? 'active' : ''; ?>">
                                     Admin
                                 </a>
                             </li>
@@ -98,65 +84,65 @@ $root_path = $is_admin_dir ? '../' : '';
                     </ul>
                 </div>
                 
-                <!-- Search Bar (Desktop) with Glass Effect -->
-                <div class="d-none d-lg-flex flex-grow-1 mx-4" style="max-width: 400px;">
-                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar">
-                        <input type="text" name="search" placeholder="Search products..." class="form-control rounded-pill-start border-0" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                        <button type="submit" class="btn btn-primary rounded-pill-end border-0 px-3">
+                <!-- Search Bar (Desktop) -->
+                <div class="d-none d-lg-flex flex-grow-1 mx-4 justify-content-end" style="max-width: 320px;">
+                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar w-100">
+                        <input type="text" name="search" placeholder="Search..." class="form-control" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                        <button type="submit" class="btn">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
                 </div>
                 
                 <!-- Right Actions / Desktop & Mobile -->
-                <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto ms-lg-0">
+                <div class="d-flex align-items-center gap-2 ms-auto ms-lg-0">
                     <!-- Mobile Search Toggle -->
-                    <button class="btn btn-link text-indigo p-2 border-0 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false">
-                        <i class="bi bi-search fs-5"></i>
+                    <button class="btn btn-link p-2 border-0 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false">
+                        <i class="bi bi-search fs-5 text-secondary"></i>
                     </button>
 
                     <!-- Desktop Wishlist -->
-                    <a href="<?php echo $root_path; ?>wishlist.php" class="d-none d-lg-block text-gold p-2" title="Wishlist">
-                        <i class="bi bi-heart-fill fs-4"></i>
+                    <a href="<?php echo $root_path; ?>wishlist.php" class="d-none d-lg-flex btn btn-link p-2" title="Wishlist">
+                        <i class="bi bi-heart-fill fs-5"></i>
                     </a>
 
                     <!-- Desktop Cart -->
-                    <a href="<?php echo $root_path; ?>cart.php" class="d-none d-lg-block text-indigo p-2" title="Cart">
-                        <i class="bi bi-bag-fill fs-4"></i>
+                    <a href="<?php echo $root_path; ?>cart.php" class="d-none d-lg-flex btn btn-link p-2" title="Cart">
+                        <i class="bi bi-bag-fill fs-5"></i>
                     </a>
 
-                    <!-- Profile Tooltip/Dropdown (Visible on All Screens) -->
+                    <!-- Profile Tooltip/Dropdown -->
                     <div class="dropdown">
-                        <button class="btn btn-link p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" data-bs-display="static" data-bs-offset="0,10" aria-expanded="false">
-                            <i class="bi bi-person-circle fs-3 text-indigo"></i>
+                        <button class="btn btn-link p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-3 text-primary"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-2 text-center animate__animated animate__fadeIn animate__faster" style="min-width: 240px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-radius: 1.25rem; z-index: 9999; border: 1px solid rgba(49, 46, 129, 0.1) !important;">
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-2 text-center" style="min-width: 200px;">
                             <?php if (is_logged_in()): ?>
-                                <li class="p-3 border-bottom mb-2 bg-light rounded-top-4">
-                                    <div class="fw-bold fs-6 text-primary"><?php echo htmlspecialchars($_SESSION['user_name']); ?></div>
+                                <li class="p-3 border-bottom mb-2 rounded-top">
+                                    <div class="fw-bold text-primary"><?php echo htmlspecialchars($_SESSION['user_name']); ?></div>
                                     <small class="text-muted d-block text-truncate"><?php echo htmlspecialchars($_SESSION['user_email']); ?></small>
                                 </li>
-                                <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $root_path; ?>profile.php"><i class="bi bi-person"></i> Profile</a></li>
-                                <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $root_path; ?>wishlist.php"><i class="bi bi-heart"></i> Wishlist</a></li>
-                                <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $root_path; ?>cart.php"><i class="bi bi-bag"></i> Cart</a></li>
+                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>profile.php"><i class="bi bi-person me-2"></i> Profile</a></li>
+                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>wishlist.php"><i class="bi bi-heart me-2"></i> Wishlist</a></li>
+                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>cart.php"><i class="bi bi-bag me-2"></i> Cart</a></li>
                                 <?php if (is_admin()): ?>
-                                    <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $is_admin_dir ? 'index.php' : 'admin/index.php'; ?>"><i class="bi bi-speedometer2"></i> Admin Panel</a></li>
+                                    <li><a class="dropdown-item rounded-2" href="<?php echo $is_admin_dir ? 'index.php' : 'admin/index.php'; ?>"><i class="bi bi-speedometer2 me-2"></i> Admin</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $root_path; ?>logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                <li><a class="dropdown-item text-danger rounded-2" href="<?php echo $root_path; ?>logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                             <?php else: ?>
-                                <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $root_path; ?>login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
-                                <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="<?php echo $root_path; ?>register.php"><i class="bi bi-person-plus"></i> Register</a></li>
+                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>login.php"><i class="bi bi-box-arrow-in-right me-2"></i> Login</a></li>
+                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>register.php"><i class="bi bi-person-plus me-2"></i> Register</a></li>
                             <?php endif; ?>
                         </ul>
                     </div>
                 </div>
-                <!-- Mobile Search Collapse with Glass Effect -->
+                <!-- Mobile Search Collapse -->
                 <div class="collapse d-lg-none w-100 mt-2 pb-2" id="mobileSearch">
                     <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar">
-                        <input type="text" name="search" placeholder="Search products..." class="form-control rounded-pill-start border-0" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                        <button type="submit" class="btn btn-primary rounded-pill-end border-0 px-3" style="background: var(--heritage-indigo);">
-                            <i class="bi bi-search text-white"></i>
+                        <input type="text" name="search" placeholder="Search products..." class="form-control" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                        <button type="submit" class="btn">
+                            <i class="bi bi-search"></i>
                         </button>
                     </form>
                 </div>
@@ -201,7 +187,7 @@ $root_path = $is_admin_dir ? '../' : '';
 
     <!-- Toast Container -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast align-items-center text-white bg-primary border-0 rounded-4 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="liveToast" class="toast align-items-center text-white border-0 rounded-4 shadow" role="alert" aria-live="assertive" aria-atomic="true" style="background: var(--dark-bg-elevated); border: 1px solid var(--dark-border-primary) !important;">
             <div class="d-flex">
                 <div class="toast-body" id="toastMessage">
                     Hello, world! This is a toast message.
@@ -214,10 +200,10 @@ $root_path = $is_admin_dir ? '../' : '';
     <!-- Toast Script -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Force light theme only
+        // Force dark theme
         const html = document.documentElement;
-        html.setAttribute('data-bs-theme', 'light');
-        localStorage.setItem('theme', 'light');
+        html.setAttribute('data-bs-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
     });
 
     // Global Toast Function
@@ -226,7 +212,12 @@ $root_path = $is_admin_dir ? '../' : '';
         const toastBody = document.getElementById('toastMessage');
         const toast = new bootstrap.Toast(toastEl);
         
-        toastEl.className = `toast align-items-center text-white bg-${type} border-0 rounded-4 shadow`;
+        let bgColor = 'var(--accent-purple)';
+        if (type === 'success') bgColor = '#059669';
+        if (type === 'danger' || type === 'error') bgColor = '#DC2626';
+        if (type === 'info') bgColor = 'var(--dark-surface-4)';
+        
+        toastEl.style.background = bgColor;
         toastBody.innerText = message;
         toast.show();
     }

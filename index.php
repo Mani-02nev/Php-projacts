@@ -10,292 +10,300 @@ $all_products = get_all_products();
 // Group products by category
 $categories_data = [];
 foreach ($all_products as $product) {
-    $categories_data[$product['category']][] = $product;
-}
-
-// Priority order: New categories first, then Groceries & Clothing, Electronics last
-$priority_order = [
-    'Audio & Speakers',
-    'Sports & Fitness', 
-    'Footwear',
-    'Men\'s Fashion',
-    'Men\'s Shirts',
-    'Travel & Accessories',
-    'Groceries',
-    'Clothing'
-];
-
-// Move Electronics to the end if it exists
-if (isset($categories_data['Electronics'])) {
-    $electronics = $categories_data['Electronics'];
-    unset($categories_data['Electronics']);
-}
-
-// Apply priority order
-foreach (array_reverse($priority_order) as $cat_name) {
-    if (isset($categories_data[$cat_name])) {
-        $temp = $categories_data[$cat_name];
-        unset($categories_data[$cat_name]);
-        $categories_data = [$cat_name => $temp] + $categories_data;
+    if ($product['stock'] > 0) { // Only show in-stock for homepage
+        $categories_data[$product['category']][] = $product;
     }
 }
 
-// Add Electronics at the end
-if (isset($electronics)) {
-    $categories_data['Electronics'] = $electronics;
-}
+// Custom Category Ordering
+$priority_order = [
+    'Electronics',
+    'Men\'s Fashion',
+    'Audio & Speakers',
+    'Clothing'
+];
 
-// Wishlist Toggle logic
+// Reorder categories
+$ordered_categories = [];
+foreach ($priority_order as $cat) {
+    if (isset($categories_data[$cat])) {
+        $ordered_categories[$cat] = $categories_data[$cat];
+        unset($categories_data[$cat]);
+    }
+}
+// Add remaining categories
+$categories_data = $ordered_categories + $categories_data;
+
+// Wishlist Logic
 if (isset($_GET['wishlist_toggle'])) {
     $p_id = intval($_GET['wishlist_toggle']);
     if (is_in_wishlist($p_id)) {
         remove_from_wishlist($p_id);
-        $script_toast = 'showToast("Removed from wishlist", "info")';
     } else {
         add_to_wishlist($p_id);
-        $script_toast = 'showToast("Added to wishlist! ❤️", "success")';
     }
-    // Redirect to remove the query parameter and prevent re-submission
-    header("Location: index.php#categories");
-    exit();
-}
-
-// Quick Add to Cart logic
-if (isset($_GET['add_to_cart'])) {
-    $p_id = intval($_GET['add_to_cart']);
-    add_to_cart($p_id);
-    $script_toast = 'showToast("Product added to cart!", "success")';
+    // Maintain scroll position
+    $redirect_url = strtok($_SERVER["REQUEST_URI"], '?') . '?' . http_build_query(array_diff_key($_GET, ['wishlist_toggle' => '']));
+    header("Location: $redirect_url");
+    exit;
 }
 
 include 'includes/header.php';
-if (isset($script_toast)) echo "<script>window.onload = () => $script_toast;</script>";
 ?>
 
-<!-- Fast Auto-Scrolling Hero Section (3 Slides) -->
-<section class="hero-carousel p-0 m-0">
-    <div class="container-fluid p-0">
-        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-            </div>
-            
-            <div class="carousel-inner">
-                <!-- Slide 1: Republic Day Sale -->
-                <div class="carousel-item active">
-                    <div class="position-relative" style="height: 500px; overflow: hidden;">
-                        <img src="data/images/hero/republic-day.png" class="w-100 h-100 object-fit-cover" alt="Republic Day Sale">
-                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);">
-                            <div class="container">
-                                <div class="col-lg-6 col-md-8">
-                                    <span class="badge mb-3 py-2 px-3 fw-bold" style="background: rgba(255, 103, 31, 0.9); color: #fff; font-size: 0.9rem;">REPUBLIC DAY SALE</span>
-                                    <h1 class="display-3 fw-black text-white mb-3" style="font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">National Pride</h1>
-                                    <p class="lead text-white mb-4 fw-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Massive savings up to <span style="color: #FFD700;">60% OFF</span> on heritage crafts and essentials.</p>
-                                    <a href="products.php" class="btn btn-lg px-5 py-3 fw-bold" style="background: #FF671F; color: #fff; border: none;">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 2: New Year Luxury -->
-                <div class="carousel-item">
-                    <div class="position-relative" style="height: 500px; overflow: hidden;">
-                        <img src="data/images/hero/luxury-watch.png" class="w-100 h-100 object-fit-cover" alt="New Year Luxury Sale">
-                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);">
-                            <div class="container">
-                                <div class="col-lg-6 col-md-8">
-                                    <span class="badge mb-3 py-2 px-3 fw-bold" style="background: rgba(230, 168, 85, 0.9); color: #000; font-size: 0.9rem;">2026 PREMIUM DEALS</span>
-                                    <h1 class="display-3 fw-black text-white mb-3" style="font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">New Year Luxury</h1>
-                                    <p class="lead text-white mb-4 fw-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Exclusive <span style="color: #e6a855;">Flat ₹2000 OFF</span> on luxury watches and tech.</p>
-                                    <a href="products.php?category=Electronics" class="btn btn-lg px-5 py-3 fw-bold" style="background: #2d3261; color: #fff; border: none;">Browse Luxury</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 3: Mega Festival Sale -->
-                <div class="carousel-item">
-                    <div class="position-relative" style="height: 500px; overflow: hidden;">
-                        <img src="data/images/hero/shopping-sale.png" class="w-100 h-100 object-fit-cover" alt="Mega Festival Sale">
-                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);">
-                            <div class="container">
-                                <div class="col-lg-6 col-md-8">
-                                    <span class="badge mb-3 py-2 px-3 fw-bold" style="background: rgba(235, 64, 52, 0.9); color: #fff; font-size: 0.9rem;">EXCLUSIVE DISCOUNTS</span>
-                                    <h1 class="display-3 fw-black text-white mb-3" style="font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Mega Festival</h1>
-                                    <p class="lead text-white mb-4 fw-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Unbeatable offers across all categories for a limited time.</p>
-                                    <a href="products.php" class="btn btn-lg px-5 py-3 fw-bold" style="background: #eb4034; color: #fff; border: none;">Shop the Sale</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
-</section>
-
 <style>
-.hero-3d-container {
-    perspective: 2000px;
-    height: 600px; /* Increased height */
-    width: 100%;
-}
-.hero-3d-slider {
+/* GLOBAL HERO 3D STYLES */
+.hero-3d-wrapper {
     position: relative;
-    width: 100%;
-    height: 100%;
-}
-@keyframes heroBreath {
-    0% { opacity: 0; transform: scale(1.02) translateY(5px); filter: blur(10px); }
-    10% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-    33% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-    43% { opacity: 0; transform: scale(0.98) translateY(-5px); filter: blur(10px); }
-    100% { opacity: 0; }
-}
-
-.hero-3d-slide {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
+    height: 70vh;
+    min-height: 500px;
+    max-height: 700px;
+    background: radial-gradient(circle at center, #1A1D23 0%, #0B0B0E 100%);
     overflow: hidden;
-    background: transparent !important; /* Emotional transparency */
-    opacity: 0;
+    perspective: 1000px;
 }
 
-.hero-3d-slide:nth-child(1) { animation: heroBreath 18s infinite 0s; }
-.hero-3d-slide:nth-child(2) { animation: heroBreath 18s infinite 6s; }
-.hero-3d-slide:nth-child(3) { animation: heroBreath 18s infinite 12s; }
+.hero-content-layer {
+    z-index: 10;
+    position: relative;
+}
+
+.hero-floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.float-item {
+    position: absolute;
+    opacity: 0.1;
+    filter: blur(2px);
+    animation: floatAnimation 20s infinite ease-in-out;
+}
+
+@keyframes floatAnimation {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-40px) rotate(5deg); }
+}
+
+/* PREMIUM PRODUCT CARD ANIMATIONS */
+.premium-product-card {
+    background-color: #14161A;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(124, 58, 237, 0.3);
+    background-color: #1A1D23;
+}
+
+.product-img-zoom {
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.premium-product-card:hover .product-img-zoom {
+    transform: scale(1.08) translateY(-5px);
+}
+
+.wishlist-btn-hover {
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+}
+
+.premium-product-card:hover .wishlist-btn-hover {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* SECTION TYPOGRAPHY */
+.section-title {
+    color: #F3F4F6;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    font-size: 1.75rem;
+}
+
+.section-subtitle {
+    color: #9CA3AF;
+    font-size: 0.95rem;
+}
+
+/* NAVIGATION BUTTONS */
+.nav-btn-custom {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #2D2D35;
+    border: 1px solid #374151;
+    color: #E5E7EB;
+    transition: all 0.2s;
+}
+
+.nav-btn-custom:hover {
+    background: #7C3AED;
+    border-color: #7C3AED;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* SCROLLBAR HIDE */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 
+<!-- 3D HERO SECTION -->
+<div class="hero-3d-wrapper d-flex align-items-center justify-content-center">
+    <!-- Floating Background Elements -->
+    <div class="hero-floating-elements">
+        <div class="float-item" style="top: 20%; left: 10%; width: 100px; height: 100px; background: radial-gradient(circle, #7C3AED, transparent); animation-delay: 0s;"></div>
+        <div class="float-item" style="top: 60%; right: 15%; width: 150px; height: 150px; background: radial-gradient(circle, #10B981, transparent); animation-delay: -5s;"></div>
+        <div class="float-item" style="top: 10%; right: 25%; width: 80px; height: 80px; background: radial-gradient(circle, #F59E0B, transparent); animation-delay: -10s;"></div>
+    </div>
 
+    <!-- Main Content -->
+    <div class="container hero-content-layer text-center position-relative">
+        <span class="badge rounded-pill px-3 py-2 mb-4" 
+              style="background: rgba(124, 58, 237, 0.15); color: #A78BFA; border: 1px solid rgba(124, 58, 237, 0.3); letter-spacing: 1px;">
+            NEW COLLECTION 2026
+        </span>
+        <h1 class="display-3 fw-bold mb-4" style="color: #E5E7EB; letter-spacing: -2px; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            Future of <span style="color: #7C3AED;">Shopping</span>
+        </h1>
+        <p class="lead mb-5 mx-auto" style="color: #9CA3AF; max-width: 600px; font-weight: 500;">
+            Experience the next generation of e-commerce. Premium products, secure transactions, and lightning-fast delivery.
+        </p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="products.php" class="btn btn-lg rounded-pill px-5 fw-bold" 
+               style="background-color: #7C3AED; color: white; border: none; box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);">
+                Shop Now
+            </a>
+            <a href="#categories" class="btn btn-lg btn-outline-light rounded-pill px-4 fw-bold" 
+               style="border-color: #374151; color: #E5E7EB;">
+                Explore Categories
+            </a>
+        </div>
+    </div>
+    
+    <!-- Bottom Fade -->
+    <div class="position-absolute bottom-0 w-100" style="height: 100px; background: linear-gradient(to top, #0B0B0E, transparent);"></div>
+</div>
 
-<!-- Category Sliders (The "Crocer" Sections) -->
-<div class="container" id="categories">
+<!-- CATEGORY SECTIONS -->
+<div id="categories" class="container-fluid px-0 py-5" style="background-color: #0B0B0E;">
+    
     <?php foreach ($categories_data as $category_name => $products): ?>
-        <div class="mb-5 section-category">
-            <div class="d-flex justify-content-between align-items-end mb-4 px-1">
+        <?php if (count($products) > 0): // Only show categories with items ?>
+        <section class="mb-5 px-lg-5 px-3">
+            <!-- Section Header -->
+            <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-3" style="border-color: #1F2937 !important;">
                 <div>
-                    <h2 class="fw-bold mb-1 text-dark"><?php echo htmlspecialchars($category_name); ?></h2>
-                    <p class="text-secondary small mb-0">Discover 50+ handpicked items in <?php echo $category_name; ?></p>
+                    <h2 class="section-title mb-1"><?php echo htmlspecialchars($category_name); ?></h2>
+                    <p class="section-subtitle mb-0">Top picks for you</p>
                 </div>
-                <a href="products.php?category=<?php echo urlencode($category_name); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-4 fw-bold">View All <i class="bi bi-arrow-right ms-1"></i></a>
+                
+                <!-- Desktop Nav -->
+                <div class="d-none d-md-flex gap-2">
+                    <button class="nav-btn-custom d-flex align-items-center justify-content-center" onclick="scrollSlider('slider-<?php echo md5($category_name); ?>', -300)">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="nav-btn-custom d-flex align-items-center justify-content-center" onclick="scrollSlider('slider-<?php echo md5($category_name); ?>', 300)">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                    <a href="products.php?category=<?php echo urlencode($category_name); ?>" class="btn btn-outline-secondary rounded-pill px-4 ms-2 fw-bold" 
+                       style="border-color: #374151; color: #9CA3AF;">
+                        View All
+                    </a>
+                </div>
             </div>
-            
-            <!-- Horizontal Slider Container -->
-            <div class="slider-wrapper position-relative">
-                <button class="btn btn-white shadow-sm rounded-circle position-absolute top-50 start-0 translate-middle-y z-3 d-none d-lg-flex align-items-center justify-content-center slider-prev" style="width: 45px; height: 45px; left: -22px !important;">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <div class="category-slider d-flex overflow-auto gap-4 pb-4 px-1" style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth;">
+
+            <!-- Horizontal Slider -->
+            <div class="position-relative">
+                <div id="slider-<?php echo md5($category_name); ?>" 
+                     class="d-flex overflow-auto gap-4 py-4 px-1 scrollbar-hide" 
+                     style="scroll-behavior: smooth; snap-type: x mandatory;">
+                    
                     <?php foreach ($products as $product): ?>
-                        <div class="slider-item" style="min-width: 280px; flex: 0 0 280px;">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card transition-hover position-relative">
-                                <div class="position-absolute top-0 end-0 m-3 z-2">
-                                    <a href="?wishlist_toggle=<?php echo $product['id']; ?>" class="btn btn-white btn-sm rounded-circle shadow-sm">
-                                        <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill text-danger' : 'bi-heart'; ?>"></i>
-                                    </a>
+                        <div style="min-width: 280px; max-width: 280px; scroll-snap-align: start;">
+                            <!-- Global Product Card Component -->
+                            <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
+                                <!-- Wishlist Btn -->
+                                <button class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
+                                        onclick="event.preventDefault(); window.location.href='?wishlist_toggle=<?php echo $product['id']; ?>'">
+                                    <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
+                                </button>
+                                
+                                <!-- Image Area -->
+                                <div class="img-wrapper">
+                                    <?php if ($product['stock'] == 0): ?>
+                                        <div class="sold-out-overlay">Sold Out</div>
+                                    <?php endif; ?>
+                                    
+                                    <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
                                 </div>
                                 
-                                <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="text-decoration-none h-100 d-flex flex-column">
-                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-0" style="height: 200px;">
-                                        <?php if ($product['stock'] == 0): ?>
-                                            <span class="badge position-absolute top-50 start-50 translate-middle shadow z-1 py-1 px-3 rounded-pill fw-bold border" style="background: white !important; color: black !important;">Sold Out</span>
-                                        <?php endif; ?>
-                                        <div class="img-wrapper w-100 h-100 overflow-hidden d-flex align-items-center justify-content-center">
-                                            <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid transition-all" alt="<?php echo htmlspecialchars($product['name']); ?>" style="max-height: 80%; object-fit: contain;" loading="lazy">
+                                <!-- Content -->
+                                <div class="card-content">
+                                    <span class="unit-pill">1 Unit</span>
+                                    <h3 class="product-title" title="<?php echo htmlspecialchars($product['name']); ?>">
+                                        <?php echo htmlspecialchars($product['name']); ?>
+                                    </h3>
+                                    <div class="product-category"><?php echo htmlspecialchars($product['category']); ?></div>
+                                    
+                                    <div class="action-row">
+                                        <div class="price">
+                                            ₹<?php echo number_format($product['price'], 0); ?>
+                                            <?php if ($product['price'] > 500): ?>
+                                                <span class="old-price">₹<?php echo number_format($product['price'] * 1.2, 0); ?></span>
+                                            <?php endif; ?>
                                         </div>
+                                        <button class="btn-add" onclick="event.preventDefault(); window.location.href='products.php?add_to_cart=<?php echo $product['id']; ?>'">
+                                            ADD
+                                        </button>
                                     </div>
-                                    <div class="card-body p-4 d-flex flex-column">
-                                        <h6 class="card-title fw-bold mb-1 text-dark text-truncate"><?php echo htmlspecialchars($product['name']); ?></h6>
-                                        <div class="text-warning small mb-3">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                        </div>
-                                        <div class="mt-auto">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-5 fw-bold text-dark">₹<?php echo number_format($product['price'], 0); ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <button class="btn btn-white shadow-sm rounded-circle position-absolute top-50 end-0 translate-middle-y z-3 d-none d-lg-flex align-items-center justify-content-center slider-next" style="width: 45px; height: 45px; right: -22px !important;">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
+            </div>
+        </section>
+        <?php endif; ?>
+    <?php endforeach; ?>
+
+    <!-- Bottom Newsletter -->
+    <section class="container my-5">
+        <div class="p-5 rounded-4 text-center position-relative overflow-hidden" 
+             style="background: linear-gradient(135deg, #1F2937, #111827); border: 1px solid #374151;">
+            <div class="position-relative z-1">
+                <h2 class="fw-bold text-white mb-3">Join the Future</h2>
+                <p class="text-secondary mb-4 mx-auto" style="max-width: 500px;">Subscribe to our newsletter for exclusive drops and early access to new collections.</p>
+                <form class="d-flex justify-content-center gap-2 max-w-md mx-auto" style="max-width: 400px;">
+                    <input type="email" class="form-control bg-dark border-secondary text-white" placeholder="Enter your email">
+                    <button class="btn fw-bold" style="background: #7C3AED; color: white;">Subscribe</button>
+                </form>
             </div>
         </div>
-    <?php endforeach; ?>
+    </section>
+
 </div>
 
-<!-- Newsletter -->
-<section class="container mb-5 mt-5 pt-3">
-    <div class="bg-dark text-white p-5 rounded-5 shadow text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-        <div class="position-relative z-1">
-            <h2 class="fw-bold mb-3">Join the Univaut Circle</h2>
-            <p class="lead mb-4 opacity-75">Get early access to drops and exclusive content delivered to your inbox.</p>
-            <form class="d-flex gap-2 mx-auto flex-column flex-md-row" style="max-width: 500px;">
-                <input type="email" class="form-control rounded-pill px-4 border-0 shadow-sm py-3" placeholder="Enter your email address">
-                <button type="submit" class="btn btn-dark rounded-pill px-5 fw-bold shadow py-3">Subscribe Now</button>
-            </form>
-        </div>
-        <i class="bi bi-envelope-paper-fill position-absolute text-white-50" style="font-size: 15rem; bottom: -5rem; right: -2rem; opacity: 0.1; transform: rotate(-15deg);"></i>
-    </div>
-</section>
-
-<style>
-.category-slider::-webkit-scrollbar { display: none; }
-.category-slider { scroll-snap-type: x mandatory; }
-.slider-item { scroll-snap-align: start; }
-.slider-prev, .slider-next {
-    background: white !important;
-    border: 1px solid #eee !important;
-    color: #3b82f6 !important;
-    transition: all 0.2s ease;
-}
-.slider-prev:hover, .slider-next:hover {
-    background: #3b82f6 !important;
-    color: white !important;
-    transform: translateY(-50%) scale(1.1) !important;
-}
-</style>
-
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.slider-wrapper').forEach(wrapper => {
-        const slider = wrapper.querySelector('.category-slider');
-        const prevBtn = wrapper.querySelector('.slider-prev');
-        const nextBtn = wrapper.querySelector('.slider-next');
-        
-        if (prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => {
-                slider.scrollBy({ left: -600, behavior: 'smooth' });
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                slider.scrollBy({ left: 600, behavior: 'smooth' });
-            });
-        }
-    });
-});
+function scrollSlider(id, amount) {
+    const slider = document.getElementById(id);
+    slider.scrollBy({ left: amount, behavior: 'smooth' });
+}
 </script>
 
 <?php include 'includes/footer.php'; ?>
