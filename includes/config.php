@@ -116,4 +116,3 @@ function get_next_id($data) {
     
     return $max_id + 1;
 }
-?>

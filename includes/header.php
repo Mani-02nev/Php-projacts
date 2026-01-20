@@ -111,13 +111,13 @@ $root_path = $is_admin_dir ? '../' : '';
                         <i class="bi bi-bag-fill fs-5"></i>
                     </a>
 
-                    <!-- Profile Tooltip/Dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-link p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle fs-3 text-primary"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-2 text-center" style="min-width: 200px;">
-                            <?php if (is_logged_in()): ?>
+                    <!-- Profile Logic -->
+                    <?php if (is_logged_in()): ?>
+                        <div class="dropdown">
+                            <button class="btn btn-link p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-3 text-primary"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-2 text-center" style="min-width: 200px;">
                                 <li class="p-3 border-bottom mb-2 rounded-top">
                                     <div class="fw-bold text-primary"><?php echo htmlspecialchars($_SESSION['user_name']); ?></div>
                                     <small class="text-muted d-block text-truncate"><?php echo htmlspecialchars($_SESSION['user_email']); ?></small>
@@ -130,12 +130,13 @@ $root_path = $is_admin_dir ? '../' : '';
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger rounded-2" href="<?php echo $root_path; ?>logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
-                            <?php else: ?>
-                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>login.php"><i class="bi bi-box-arrow-in-right me-2"></i> Login</a></li>
-                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>register.php"><i class="bi bi-person-plus me-2"></i> Register</a></li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    <?php else: ?>
+                        <a href="<?php echo $root_path; ?>login.php" class="btn btn-primary rounded-pill px-4 fw-bold ms-2 shadow-sm" style="background-color: #7C3AED; border: none;">
+                            Login
+                        </a>
+                    <?php endif; ?>
                 </div>
                 <!-- Mobile Search Collapse -->
                 <div class="collapse d-lg-none w-100 mt-2 pb-2" id="mobileSearch">

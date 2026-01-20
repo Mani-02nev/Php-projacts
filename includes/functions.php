@@ -321,4 +321,3 @@ function show_success($message) {
 function show_error($message) {
     return '<div class="alert alert-error">' . $message . '</div>';
 }
-?>

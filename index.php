@@ -17,13 +17,21 @@ foreach ($all_products as $product) {
 
 // Custom Category Ordering
 $priority_order = [
-    'Electronics',
-    'Men\'s Fashion',
     'Audio & Speakers',
-    'Clothing'
+    'Sports & Fitness',
+    'Men\'s Shirts',
+    'Footwear',
+    'Travel & Accessories'
 ];
 
-// Reorder categories
+// Handle Electronics specifically to move it to the last position
+$electronics_data = [];
+if (isset($categories_data['Electronics'])) {
+    $electronics_data['Electronics'] = $categories_data['Electronics'];
+    unset($categories_data['Electronics']);
+}
+
+// Reorder categories based on priority
 $ordered_categories = [];
 foreach ($priority_order as $cat) {
     if (isset($categories_data[$cat])) {
@@ -31,8 +39,9 @@ foreach ($priority_order as $cat) {
         unset($categories_data[$cat]);
     }
 }
-// Add remaining categories
-$categories_data = $ordered_categories + $categories_data;
+
+// Compose final array: Priority + Remaining + Electronics (Last)
+$categories_data = $ordered_categories + $categories_data + $electronics_data;
 
 // Wishlist Logic
 if (isset($_GET['wishlist_toggle'])) {

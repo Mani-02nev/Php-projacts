@@ -22,3 +22,4 @@ temp/
 
 # Uploaded files (if you have an uploads directory)
 uploads/
+.vercel
