@@ -5,10 +5,38 @@ define('SITE_URL', 'http://localhost/6xpress');
 define('CURRENCY', '₹');
 
 // CSV File Paths
-define('DATA_DIR', __DIR__ . '/../data/');
+// Check if we are in a writable environment (like local dev) or read-only (like Vercel)
+$original_data_dir = __DIR__ . '/../data/';
+$writable_dir = $original_data_dir;
+
+// If we are on Vercel or the directory is not writable, use /tmp
+if (getenv('VERCEL') || (!is_writable($original_data_dir) && php_sapi_name() !== 'cli')) {
+    $writable_dir = '/tmp/';
+}
+
+define('DATA_DIR', $writable_dir);
 define('PRODUCTS_CSV', DATA_DIR . 'products.csv');
 define('USERS_CSV', DATA_DIR . 'users.csv');
 define('ORDERS_CSV', DATA_DIR . 'orders.csv');
+
+// Initialize /tmp data text files if needed
+if ($writable_dir === '/tmp/') {
+    $files = ['products.csv', 'users.csv', 'orders.csv'];
+    foreach ($files as $file) {
+        $source = $original_data_dir . $file;
+        $dest = DATA_DIR . $file;
+        
+        // Only copy if destination doesn't exist (preserve session data if container reuse)
+        if (!file_exists($dest)) {
+            if (file_exists($source)) {
+                copy($source, $dest);
+            } else {
+                // Initialize empty file if source doesn't exist
+                touch($dest);
+            }
+        }
+    }
+}
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
