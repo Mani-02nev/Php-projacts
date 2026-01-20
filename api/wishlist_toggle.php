@@ -1,6 +1,6 @@
 <?php
-require_once '../includes/config.php';
-require_once '../includes/functions.php';
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // Set JSON header
 header('Content-Type: application/json');
@@ -22,7 +22,7 @@ if ($is_in_wishlist) {
     $in_wishlist = false;
 } else {
     $result = add_to_wishlist($product_id);
-    $message = 'Added to wishlist! ❤️';
+    $message = 'Added to wishlist! ❤️ ';
     $in_wishlist = true;
 }
 

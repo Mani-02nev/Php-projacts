@@ -66,17 +66,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => icon.style.animation = '', 500);
             }
 
-            // Send AJAX request to API
-            fetch(`api/wishlist_toggle.php?product_id=${productId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Show toast notification
-                        if (typeof showToast === 'function') {
-                            showToast(data.message, data.in_wishlist ? 'success' : 'info');
+            // Send AJAX request to API (using absolute path)
+            if (productId) {
+                fetch(`/api/wishlist_toggle.php?product_id=${productId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show toast notification
+                            if (typeof showToast === 'function') {
+                                showToast(data.message, data.in_wishlist ? 'success' : 'info');
+                            }
+                        } else {
+                            // Revert UI on failure
+                            if (isCurrentlyInWishlist) {
+                                icon.classList.remove('bi-heart');
+                                icon.classList.add('bi-heart-fill', 'text-danger');
+                            } else {
+                                icon.classList.remove('bi-heart-fill', 'text-danger');
+                                icon.classList.add('bi-heart');
+                            }
+                            if (typeof showToast === 'function') {
+                                showToast(data.message || 'Error updating wishlist', 'danger');
+                            }
                         }
-                    } else {
-                        // Revert UI on failure
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Revert UI on error
                         if (isCurrentlyInWishlist) {
                             icon.classList.remove('bi-heart');
                             icon.classList.add('bi-heart-fill', 'text-danger');
@@ -85,24 +101,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             icon.classList.add('bi-heart');
                         }
                         if (typeof showToast === 'function') {
-                            showToast(data.message || 'Error updating wishlist', 'danger');
+                            showToast('Error updating wishlist', 'danger');
                         }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Revert UI on error
-                    if (isCurrentlyInWishlist) {
-                        icon.classList.remove('bi-heart');
-                        icon.classList.add('bi-heart-fill', 'text-danger');
-                    } else {
-                        icon.classList.remove('bi-heart-fill', 'text-danger');
-                        icon.classList.add('bi-heart');
-                    }
-                    if (typeof showToast === 'function') {
-                        showToast('Error updating wishlist', 'danger');
-                    }
-                });
+                    });
+            } else {
+                console.error('Product ID not found in URL');
+                if (typeof showToast === 'function') {
+                    showToast('Invalid product link', 'danger');
+                }
+            }
         });
     });
 });
