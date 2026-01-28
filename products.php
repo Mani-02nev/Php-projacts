@@ -116,7 +116,7 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
                 <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
                     <!-- Wishlist Btn -->
                     <button class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
-                            onclick="event.preventDefault(); window.location.href='?wishlist_toggle=<?php echo $product['id']; ?>&<?php echo http_build_query($_GET); ?>'">
+                            data-id="<?php echo $product['id']; ?>">
                         <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
                     </button>
                     
@@ -148,7 +148,7 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
                                     <span class="old-price">₹<?php echo number_format($product['price'] * 1.2, 0); ?></span>
                                 <?php endif; ?>
                             </div>
-                            <button class="btn-add" onclick="event.preventDefault(); window.location.href='?add_to_cart=<?php echo $product['id']; ?>'">
+                            <button class="btn-add" data-id="<?php echo $product['id']; ?>">
                                 ADD
                             </button>
                         </div>

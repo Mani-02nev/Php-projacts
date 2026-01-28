@@ -15,7 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: checkout.php');
         } else {
             $_SESSION['success_message'] = 'Product added to cart!';
-            header('Location: cart.php');
+            // header('Location: cart.php'); 
+            // Redirect back to same page to show success + animation completion
+            header("Location: " . $_SERVER['REQUEST_URI']);
         }
         exit();
     }
@@ -210,7 +212,7 @@ if(count($related_products) < 4) {
                     </div>
 
                     <div class="d-flex gap-3 flex-column flex-sm-row">
-                        <button type="submit" name="add_to_cart" class="btn btn-lg rounded-pill px-5 fw-bold flex-grow-1" 
+                        <button type="button" id="btn-ajax-add-cart" class="btn btn-lg rounded-pill px-5 fw-bold flex-grow-1" 
                                 style="border: 2px solid #7C3AED; color: #E5E7EB; background: transparent;">
                             Add to Cart
                         </button>
@@ -231,6 +233,8 @@ if(count($related_products) < 4) {
         </div>
     </div>
 </div>
+
+
 
 <!-- Related Products -->
 <div class="container py-5" style="border-top: 1px solid #2D2D35;">

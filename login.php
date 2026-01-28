@@ -5,7 +5,7 @@ require_once 'includes/functions.php';
 $page_title = 'Login';
 
 if (is_logged_in()) {
-    redirect('index.php');
+    redirect('./');
 }
 
 $error = '';
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_role'] = $user['role'];
-            redirect('index.php');
+            redirect('./');
         } else {
             $error = 'Invalid email or password';
         }

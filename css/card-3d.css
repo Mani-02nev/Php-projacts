@@ -1,0 +1,67 @@
+/* 3D Card Base Styles */
+.global-product-card {
+    /* Critical for 3D effect */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    will-change: transform;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Inner content layers must also preserve 3D to be moved in Z-space */
+.global-product-card .img-wrapper,
+.global-product-card .card-content,
+.global-product-card .wishlist-btn {
+    transform-style: preserve-3d;
+    transition: transform 0.1s;
+    /* Instant reaction for mouse, handled by JS primarily */
+}
+
+/* Depth Layers */
+.global-product-card .img-wrapper {
+    /* Image sits back slightly or middle */
+    transform: translateZ(20px);
+}
+
+.global-product-card .card-content {
+    /* Text floats above image */
+    transform: translateZ(40px);
+    background: rgba(20, 22, 26, 0.8) !important;
+    /* Ensure readable against 3D overlapping */
+    backdrop-filter: blur(4px);
+}
+
+.global-product-card .wishlist-btn {
+    /* Button floats highest */
+    transform: translateZ(60px);
+}
+
+/* Dynamic Glow/Sheen Overlay */
+.card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    /* Match card radius */
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    mix-blend-mode: overlay;
+    z-index: 10;
+    transform: translateZ(1px);
+    /* Just above bg */
+}
+
+.global-product-card:hover .card-glow {
+    opacity: 1;
+}
+
+/* High Performance Shadow on Hover */
+.global-product-card:hover {
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(124, 58, 237, 0.2);
+    /* Purple Glow */
+}

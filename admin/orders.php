@@ -16,6 +16,11 @@ if (isset($_POST['update_status'])) {
 }
 
 $orders = get_all_orders();
+$all_products = get_all_products();
+$products_map = [];
+foreach ($all_products as $p) {
+    $products_map[$p['id']] = $p;
+}
 
 // Sort orders by date (newest first)
 usort($orders, function($a, $b) {
@@ -48,7 +53,7 @@ include '../includes/header.php';
             <p class="text-secondary mb-0">Track shipments and update statuses</p>
         </div>
         <div>
-            <a href="index.php" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
+            <a href="./" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
                 <i class="bi bi-arrow-left me-2"></i> Dashboard
             </a>
         </div>
@@ -90,9 +95,17 @@ include '../includes/header.php';
                                         <div class="fw-bold text-success">₹<?php echo number_format($order['total_amount'], 2); ?></div>
                                         <?php 
                                             $items = json_decode($order['items'], true);
-                                            $count = is_array($items) ? array_sum($items) : 0;
+                                            if (is_array($items)) {
+                                                echo '<div class="d-flex flex-column gap-1 mt-1">';
+                                                foreach ($items as $pid => $qty) {
+                                                    $p_name = isset($products_map[$pid]) ? htmlspecialchars($products_map[$pid]['name']) : 'Unknown Product';
+                                                    echo '<div class="small text-secondary"><i class="bi bi-dot"></i> ' . $qty . 'x ' . $p_name . '</div>';
+                                                }
+                                                echo '</div>';
+                                            } else {
+                                                echo '<div class="small" style="color: #6B7280;">0 Items</div>';
+                                            }
                                         ?>
-                                        <div class="small" style="color: #6B7280;"><?php echo $count; ?> Items</div>
                                     </td>
                                     <td class="py-3">
                                         <?php 

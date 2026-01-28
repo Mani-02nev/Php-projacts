@@ -72,7 +72,7 @@ include '../includes/header.php';
             <p class="text-secondary mb-0">Add, edit, and remove store items</p>
         </div>
         <div>
-            <a href="index.php" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
+            <a href="./" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
                 <i class="bi bi-arrow-left me-2"></i> Dashboard
             </a>
         </div>
@@ -121,11 +121,11 @@ include '../includes/header.php';
                         <div class="row g-3 mb-3">
                             <div class="col-6">
                                 <label for="price" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Price (₹)</label>
-                                <input type="number" id="price" name="price" class="form-control form-control-dark rounded-3 px-3 py-2" step="0.01" placeholder="0.00" required>
+                                <input type="number" id="price" name="price" class="form-control form-control-dark rounded-3 px-3 py-2" step="0.01" min="0" placeholder="0.00" required>
                             </div>
                             <div class="col-6">
                                 <label for="stock" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Stock</label>
-                                <input type="number" id="stock" name="stock" class="form-control form-control-dark rounded-3 px-3 py-2" placeholder="0" required>
+                                <input type="number" id="stock" name="stock" class="form-control form-control-dark rounded-3 px-3 py-2" min="0" placeholder="0" required>
                             </div>
                         </div>
                         <div class="mb-4">
@@ -168,8 +168,11 @@ include '../includes/header.php';
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="rounded-3 d-flex align-items-center justify-content-center me-3 border border-secondary border-opacity-25 bg-dark" style="width: 48px; height: 48px; min-width: 48px;">
-                                                    <?php if(!empty($product['image'])): ?>
-                                                        <i class="bi bi-image text-secondary"></i>
+                                                    <?php 
+                                                    $is_url = strpos($product['image'], 'http') === 0;
+                                                    if(!empty($product['image']) && ($is_url || file_exists('../assets/images/' . $product['image']))): 
+                                                    ?>
+                                                        <img src="<?php echo $is_url ? htmlspecialchars($product['image']) : '../assets/images/' . htmlspecialchars($product['image']); ?>" alt="Product" class="rounded-3" style="width: 100%; height: 100%; object-fit: cover;">
                                                     <?php else: ?>
                                                         <i class="bi bi-box text-secondary"></i>
                                                     <?php endif; ?>

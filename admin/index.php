@@ -38,7 +38,7 @@ include '../includes/header.php';
             <p class="text-secondary mb-0">System performance and management controls</p>
         </div>
         <div class="d-flex gap-3">
-            <a href="../index.php" class="btn btn-outline-secondary rounded-pill fw-bold bg-dark text-white border-secondary">
+            <a href="../" class="btn btn-outline-secondary rounded-pill fw-bold bg-dark text-white border-secondary">
                 <i class="bi bi-box-arrow-up-right me-2"></i> View Store
             </a>
             <a href="../logout.php" class="btn btn-danger rounded-pill fw-bold">

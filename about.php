@@ -11,7 +11,7 @@ $team = [
         'icon' => 'bi-lightning-charge-fill',
         'bio' => 'Driving the technical vision with scalable PHP architecture and secure systems.',
         'skills' => ['PHP', 'DevOps', 'Security'],
-        'color' => '#7C3AED'
+        'color' => '#5203dcff'
     ],
     [
         'name' => 'Nathakumar',
