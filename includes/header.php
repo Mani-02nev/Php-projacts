@@ -78,6 +78,11 @@ $root_path = $is_admin_dir ? '../' : '';
                                 About
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $root_path; ?>ai-assistant.php" class="nav-link <?php echo $current_page == 'ai-assistant.php' ? 'active' : ''; ?>" style="color: #A78BFA !important;">
+                                <i class="bi bi-stars"></i> AI Shop
+                            </a>
+                        </li>
                         <?php if (is_admin()): ?>
                             <li class="nav-item">
                                 <a href="<?php echo $is_admin_dir ? './' : 'admin/'; ?>" class="nav-link <?php echo strpos($current_page, 'admin') !== false ? 'active' : ''; ?>">

@@ -48,4 +48,5 @@ EXPOSE 80
 ENV PORT=80
 
 # Start Apache with PHP support
-CMD ["apache2-foreground"]
+# Start Apache with custom entrypoint
+CMD ["./docker-entrypoint.sh"]
