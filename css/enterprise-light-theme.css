@@ -1,62 +1,56 @@
 /*
    ═══════════════════════════════════════════════════════════════
-   ENTERPRISE-GRADE DARK THEME
-   MNC-Level Professional UI/UX for PHP E-Commerce
+   CLEAN WHITE THEME
+   Modern Professional UI/UX for PHP E-Commerce
    ═══════════════════════════════════════════════════════════════
 */
 
 :root {
     /* ═══════════════════════════════════════════════════════════
-       DARK THEME COLOR SYSTEM (MANDATORY)
+       WHITE THEME COLOR SYSTEM
        ═══════════════════════════════════════════════════════════ */
 
     /* Primary Backgrounds */
-    --dark-bg-primary: #121212;
-    --dark-bg-secondary: #0A0A0A;
-    --dark-bg-elevated: #1E1E1E;
+    --dark-bg-primary: #FFFFFF;
+    --dark-bg-secondary: #F8F9FA;
+    --dark-bg-elevated: #FFFFFF;
 
     /* Surface Colors */
-    --dark-surface-1: #1E1E1E;
-    --dark-surface-2: #242424;
-    --dark-surface-3: #2A2A2A;
-    --dark-surface-4: #333333;
+    --dark-surface-1: #FFFFFF;
+    --dark-surface-2: #F8F9FA;
+    --dark-surface-3: #F0F1F3;
+    --dark-surface-4: #E8EAED;
 
-    /* Text Colors - High Contrast Visibility Standard */
-    --dark-text-primary: #E5E7EB;
-    /* High Contrast Main (was #F5F5F5) */
-    --dark-text-secondary: #9CA3AF;
-    /* Secondary / Descriptions (was #D4D4D4) */
-    --dark-text-tertiary: #6B7280;
-    /* Muted / Helper */
-    --dark-text-disabled: #4B5563;
+    /* Text Colors - Dark text on light background */
+    --dark-text-primary: #1A1A1A;
+    /* Dark text for main content */
+    --dark-text-secondary: #4B5563;
+    /* Gray for secondary text */
+    --dark-text-tertiary: #737B85;
+    /* Muted gray */
+    --dark-text-disabled: #A0A8B0;
     /* Disabled but visible */
 
     /* Accent & Status */
     --accent-purple: #7C3AED;
     --accent-purple-hover: #6D28D9;
     --accent-purple-light: #A78BFA;
-    --accent-purple-subtle: rgba(124, 58, 237, 0.15);
+    --accent-purple-subtle: rgba(124, 58, 237, 0.1);
 
-    /* Status Indicators (Visible on Dark) */
+    /* Status Indicators */
     --status-success: #10B981;
-    /* Emerald 500 */
     --status-warning: #F59E0B;
-    /* Amber 500 */
     --status-error: #EF4444;
-    /* Red 500 */
     --status-info: #3B82F6;
-    /* Blue 500 */
 
     /* Borders */
     --dark-border-primary: #374151;
-    /* Gray 700 */
-    --dark-border-secondary: #4B5563;
-    /* Gray 600 */
+    --dark-border-light-subtle: #D1D5DB;
 
     /* Shadows */
-    --shadow-dark-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-    --shadow-dark-md: 0 4px 6px -1px rgba(0, 0, 0, 0.7);
-    --shadow-dark-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
+    --shadow-dark-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-dark-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    --shadow-dark-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -99,8 +93,8 @@ div {
     color: var(--dark-text-secondary) !important;
 }
 
-.text-white {
-    color: #FFFFFF !important;
+.text-body {
+    color: var(--dark-text-primary) !important;
 }
 
 .text-success {
@@ -140,9 +134,9 @@ a:hover {
    ═══════════════════════════════════════════════════════════ */
 
 .main-header {
-    background: rgba(18, 18, 18, 0.95) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: blur(12px) !important;
-    border-bottom: 1px solid var(--dark-border-primary) !important;
+    border-bottom: 1px solid var(--light-border-primary) !important;
     padding-top: 12px !important;
     padding-bottom: 12px !important;
 }
@@ -199,7 +193,7 @@ a:hover {
 
 .nav-link:hover {
     color: var(--dark-text-primary) !important;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .nav-link.active {
@@ -214,7 +208,7 @@ a:hover {
 .dropdown-menu {
     background: rgba(30, 30, 30, 0.95) !important;
     backdrop-filter: blur(16px) !important;
-    border: 1px solid var(--dark-border-primary) !important;
+    border: 1px solid var(--light-border-primary) !important;
     border-radius: 16px !important;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
     padding: 8px !important;
@@ -238,7 +232,7 @@ a:hover {
 
 /* User Info Header */
 .dropdown-menu li:first-child {
-    border-bottom: 1px solid var(--dark-border-primary) !important;
+    border-bottom: 1px solid var(--light-border-primary) !important;
     margin-bottom: 8px;
     padding-bottom: 8px;
 }
@@ -290,7 +284,7 @@ a:hover {
 
 /* Divider */
 .dropdown-divider {
-    border-top: 1px solid var(--dark-border-primary) !important;
+    border-top: 1px solid var(--light-border-primary) !important;
     opacity: 1;
     margin: 8px 0;
 }
@@ -299,14 +293,15 @@ a:hover {
    SEARCH BAR - MNC PREMIUM PILL DESIGN
    ═══════════════════════════════════════════════════════════ */
 .glass-search-bar {
-    background: var(--dark-surface-2) !important;
-    border: 1px solid var(--dark-border-primary) !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
     border-radius: 9999px !important;
     /* Full pill shape */
     padding: 2px 2px 2px 20px;
     /* Left padding for text, right for button */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: none !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
     display: flex;
     align-items: center;
     position: relative;
@@ -316,9 +311,9 @@ a:hover {
 
 /* Premium Focus State */
 .glass-search-bar:focus-within {
-    background: var(--dark-surface-3) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
     border-color: var(--accent-purple) !important;
-    box-shadow: 0 0 0 4px var(--accent-purple-subtle) !important;
+    box-shadow: 0 0 0 4px var(--accent-purple-subtle), 0 8px 20px rgba(0, 0, 0, 0.06) !important;
     transform: translateY(-1px);
 }
 
@@ -326,8 +321,8 @@ a:hover {
 .glass-search-bar input {
     background: transparent !important;
     border: none !important;
-    color: #FFFFFF !important;
-    /* Pure white for max visibility */
+    color: var(--dark-text-primary) !important;
+    /* Dark text for visibility */
     font-size: 0.95rem;
     font-weight: 500;
     padding: 0;
@@ -337,7 +332,7 @@ a:hover {
     outline: none !important;
     /* Prevent default browser white flash */
     background-clip: text !important;
-    -webkit-text-fill-color: #FFFFFF !important;
+    -webkit-text-fill-color: var(--dark-text-primary) !important;
 }
 
 /* Force dark background on autofill/focus */
@@ -345,9 +340,9 @@ a:hover {
 .glass-search-bar input:-webkit-autofill:hover,
 .glass-search-bar input:-webkit-autofill:focus,
 .glass-search-bar input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px var(--dark-surface-2) inset !important;
-    -webkit-text-fill-color: #FFFFFF !important;
-    caret-color: #FFFFFF !important;
+    -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.8) inset !important;
+    -webkit-text-fill-color: var(--dark-text-primary) !important;
+    caret-color: var(--dark-text-primary) !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -356,7 +351,7 @@ a:hover {
 .glass-search-bar input:active {
     background: transparent !important;
     background-color: transparent !important;
-    color: #FFFFFF !important;
+    color: var(--dark-text-primary) !important;
     outline: none !important;
     box-shadow: none !important;
 }
@@ -464,14 +459,14 @@ a:hover {
    ═══════════════════════════════════════════════════════════ */
 .card-header {
     background-color: var(--dark-surface-3) !important;
-    border-bottom: 1px solid var(--dark-border-primary) !important;
+    border-bottom: 1px solid var(--light-border-primary) !important;
     color: var(--dark-text-primary) !important;
     font-weight: 700;
 }
 
 .list-group-item {
-    background-color: var(--dark-bg-elevated) !important;
-    border-color: var(--dark-border-primary) !important;
+    background-color: var(--light-bg-elevated) !important;
+    border-color: var(--light-border-primary) !important;
     color: var(--dark-text-secondary) !important;
 }
 
@@ -512,15 +507,15 @@ a:hover {
    PRODUCT CARDS (ENTERPRISE STANDARD)
    ═══════════════════════════════════════════════════════════ */
 .product-card {
-    background: var(--dark-bg-elevated) !important;
-    border: 1px solid var(--dark-border-primary) !important;
+    background: var(--light-bg-elevated) !important;
+    border: 1px solid var(--light-border-primary) !important;
     color: var(--dark-text-primary) !important;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-dark-lg) !important;
-    border-color: var(--dark-border-secondary) !important;
+    border-color: var(--dark-border-light-subtle) !important;
 }
 
 /* Image Area */
@@ -529,7 +524,7 @@ a:hover {
     padding: 24px !important;
     /* Proper padding for centered product 'studio' look */
     position: relative;
-    border-bottom: 1px solid var(--dark-border-primary);
+    border-bottom: 1px solid var(--light-border-primary);
 }
 
 .product-card img {
@@ -575,7 +570,7 @@ a:hover {
 
 /* Wishlist Icon */
 .product-card .btn-link {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(0, 0, 0, 0.05) !important;
     border: 1px solid transparent;
 }
 
@@ -609,7 +604,7 @@ a:hover {
 
 .btn-secondary {
     background-color: transparent !important;
-    border: 2px solid var(--dark-border-secondary) !important;
+    border: 2px solid var(--dark-border-light-subtle) !important;
     color: var(--dark-text-primary) !important;
 }
 
@@ -625,7 +620,7 @@ a:hover {
 .form-select,
 textarea {
     background-color: var(--dark-surface-2) !important;
-    border: 1px solid var(--dark-border-primary) !important;
+    border: 1px solid var(--light-border-primary) !important;
     color: var(--dark-text-primary) !important;
 }
 
@@ -645,7 +640,7 @@ label {
 
 .input-group-text {
     background-color: var(--dark-surface-3) !important;
-    border-color: var(--dark-border-primary) !important;
+    border-color: var(--light-border-primary) !important;
     color: var(--dark-text-secondary) !important;
 }
 
@@ -662,7 +657,7 @@ label {
 .table thead th {
     color: var(--dark-text-primary) !important;
     background-color: var(--dark-surface-3) !important;
-    border-bottom: 2px solid var(--dark-border-primary) !important;
+    border-bottom: 2px solid var(--light-border-primary) !important;
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.85rem;
@@ -670,7 +665,7 @@ label {
 
 .table td,
 .table th {
-    border-color: var(--dark-border-primary) !important;
+    border-color: var(--light-border-primary) !important;
     vertical-align: middle;
 }
 
@@ -683,17 +678,17 @@ label {
    MODALS & PANELS
    ═══════════════════════════════════════════════════════════ */
 .modal-content {
-    background-color: var(--dark-bg-elevated) !important;
-    border: 1px solid var(--dark-border-primary) !important;
+    background-color: var(--light-bg-elevated) !important;
+    border: 1px solid var(--light-border-primary) !important;
     color: var(--dark-text-secondary) !important;
 }
 
 .modal-header {
-    border-bottom: 1px solid var(--dark-border-primary) !important;
+    border-bottom: 1px solid var(--light-border-primary) !important;
 }
 
 .modal-footer {
-    border-top: 1px solid var(--dark-border-primary) !important;
+    border-top: 1px solid var(--light-border-primary) !important;
 }
 
 .modal-title {
@@ -709,7 +704,7 @@ label {
    ═══════════════════════════════════════════════════════════ */
 .toast {
     background-color: var(--dark-surface-3) !important;
-    border: 1px solid var(--dark-border-secondary);
+    border: 1px solid var(--dark-border-light-subtle);
     color: var(--dark-text-primary);
     box-shadow: var(--shadow-dark-lg) !important;
 }
@@ -717,7 +712,7 @@ label {
 .toast-header {
     background-color: var(--dark-surface-4) !important;
     color: var(--dark-text-primary) !important;
-    border-bottom: 1px solid var(--dark-border-secondary) !important;
+    border-bottom: 1px solid var(--dark-border-light-subtle) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -725,7 +720,7 @@ label {
    ═══════════════════════════════════════════════════════════ */
 .page-link {
     background-color: var(--dark-surface-2) !important;
-    border-color: var(--dark-border-primary) !important;
+    border-color: var(--light-border-primary) !important;
     color: var(--dark-text-secondary) !important;
 }
 
@@ -791,12 +786,12 @@ canvas.motion-canvas {
    ═══════════════════════════════════════════════════════════ */
 .main-footer {
     background-color: var(--dark-bg-secondary) !important;
-    border-top: 1px solid var(--dark-border-primary) !important;
+    border-top: 1px solid var(--light-border-primary) !important;
 }
 
 .newsletter-section {
     background: linear-gradient(135deg, var(--dark-surface-2), var(--dark-surface-1)) !important;
-    border: 1px solid var(--dark-border-primary);
+    border: 1px solid var(--light-border-primary);
     border-radius: 24px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     position: relative;
@@ -811,8 +806,8 @@ canvas.motion-canvas {
     color: var(--dark-text-secondary) !important;
 }
 
-.border-dark {
-    border-color: var(--dark-border-primary) !important;
+.border-light {
+    border-color: var(--light-border-primary) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -828,7 +823,7 @@ canvas.motion-canvas {
     /* Mobile Default */
     gap: 1px;
     /* Razor thin gap for MNC look or 0 for flush */
-    background: var(--dark-border-primary);
+    background: var(--light-border-primary);
     /* Gap color */
 }
 
@@ -862,7 +857,7 @@ canvas.motion-canvas {
 
 /* Grid Card Styling (Flush) */
 .grid-card-wrapper {
-    background: var(--dark-bg-elevated);
+    background: var(--light-bg-elevated);
     height: 100%;
     transition: z-index 0s;
 }
@@ -885,7 +880,7 @@ canvas.motion-canvas {
 .card-img-container {
     height: 280px;
     /* Taller for premium feel */
-    background: radial-gradient(circle at center, var(--dark-surface-2), var(--dark-bg-elevated));
+    background: radial-gradient(circle at center, var(--dark-surface-2), var(--light-bg-elevated));
     transition: padding 0.3s ease;
 }
 
@@ -895,8 +890,8 @@ canvas.motion-canvas {
 }
 
 .card-content {
-    background: var(--dark-bg-elevated);
-    border-top: 1px solid var(--dark-border-primary);
+    background: var(--light-bg-elevated);
+    border-top: 1px solid var(--light-border-primary);
     transition: background 0.3s ease;
 }
 
@@ -933,7 +928,7 @@ canvas.motion-canvas {
 /* Toolbar Styling */
 .btn-secondary {
     background: var(--dark-surface-3) !important;
-    border: 1px solid var(--dark-border-primary) !important;
+    border: 1px solid var(--light-border-primary) !important;
     color: var(--dark-text-secondary) !important;
 }
 
@@ -952,15 +947,229 @@ canvas.motion-canvas {
     filter: invert(1);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   ADDITIONAL DARK THEME OVERRIDES FOR LIGHT ELEMENTS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Mobile Bottom Navigation */
+.fixed-bottom {
+    background: var(--dark-bg-primary) !important;
+    border-top: 1px solid var(--light-border-primary) !important;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Image Wrapper Default */
+.img-wrapper {
+    background: var(--dark-surface-2) !important;
+}
+
+.img-wrapper::before {
+    color: var(--dark-text-tertiary) !important;
+}
+
+/* Glass Card Effects */
+.glass-card {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Scrollbar Dark Theme */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--dark-surface-3);
+    border: 2px solid var(--dark-bg-primary);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--light-border-primary);
+}
+
+/* Navigation Links Default Override */
+.nav-link {
+    color: var(--dark-text-secondary) !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--accent-purple-light) !important;
+}
+
+.nav-link.active {
+    background: rgba(124, 58, 237, 0.15) !important;
+    color: var(--accent-purple-light) !important;
+    border-radius: 8px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent-purple) !important;
+    border: none;
+    color: white !important;
+    padding: 0.8rem 2rem;
+    border-radius: 100px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-purple-hover) !important;
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3) !important;
+    color: white !important;
+}
+
+.btn-warning {
+    background-color: var(--dark-surface-2) !important;
+    border: 2px solid var(--accent-purple) !important;
+    color: var(--accent-purple-light) !important;
+    border-radius: 8px;
+}
+
+.btn-warning:hover {
+    background-color: rgba(124, 58, 237, 0.15) !important;
+    color: var(--accent-purple-light) !important;
+}
+
+/* Badge Dark Styling */
+.badge {
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 1rem !important;
+    background: var(--accent-purple) !important;
+    color: white !important;
+}
+
+/* Card Backgrounds */
+.card {
+    background-color: var(--light-bg-elevated) !important;
+    border: 1px solid var(--light-border-primary) !important;
+    color: var(--dark-text-primary) !important;
+}
+
+.card-header {
+    background-color: var(--dark-surface-3) !important;
+    border-bottom: 1px solid var(--light-border-primary) !important;
+    color: var(--dark-text-primary) !important;
+}
+
+.card-body {
+    background-color: var(--light-bg-elevated) !important;
+    color: var(--dark-text-secondary) !important;
+}
+
+/* Alert Styling */
+.alert {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid var(--light-border-primary) !important;
+    color: var(--dark-text-primary) !important;
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    border-color: var(--status-success) !important;
+    color: var(--status-success) !important;
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border-color: var(--status-error) !important;
+    color: var(--status-error) !important;
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+    border-color: var(--status-warning) !important;
+    color: var(--status-warning) !important;
+}
+
+/* Dropdown Dark Theme */
+.dropdown-menu {
+    background-color: var(--light-bg-elevated) !important;
+    border: 1px solid var(--light-border-primary) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-item {
+    color: var(--dark-text-secondary) !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--dark-surface-3) !important;
+    color: var(--accent-purple-light) !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--accent-purple) !important;
+    color: white !important;
+}
+
+.dropdown-divider {
+    border-color: var(--light-border-primary) !important;
+}
+
+/* Nav Pills & Tabs */
+.nav-pills .nav-link {
+    color: var(--dark-text-secondary) !important;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--accent-purple) !important;
+    color: white !important;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid var(--light-border-primary) !important;
+}
+
+.nav-tabs .nav-link {
+    color: var(--dark-text-secondary) !important;
+    border: 1px solid transparent !important;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: transparent !important;
+    border: 1px solid var(--light-border-primary) !important;
+    border-bottom: 2px solid var(--accent-purple) !important;
+    color: var(--accent-purple-light) !important;
+}
+
+/* Loading & Spinner */
+.spinner-border {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    border-right-color: var(--accent-purple) !important;
+}
+
+/* Dividers */
+.hr,
+hr {
+    border-top: 1px solid var(--light-border-primary) !important;
+    opacity: 1;
+}
+
 /* =========================================
-   GLOBAL PRODUCT CARD (SINGLE SOURCE OF TRUTH)
+   GLOBAL PRODUCT CARD (FLAT DESIGN - NO ANIMATIONS)
    ========================================= */
 .global-product-card {
-    background: linear-gradient(180deg, #121417 0%, #0E1013 100%);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease, border-color 0.3s ease;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid var(--light-border-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: none;
+    /* No animations */
     overflow: hidden;
     height: 100%;
     display: flex;
@@ -971,15 +1180,14 @@ canvas.motion-canvas {
 }
 
 .global-product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(34, 197, 94, 0.15);
-    /* Soft green glow */
-    border-color: rgba(34, 197, 94, 0.3);
+    /* Simple shadow, no transform */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent-purple-light);
 }
 
 /* Image Wrapper */
 .global-product-card .img-wrapper {
-    background: #FFFFFF;
+    background: var(--dark-surface-2);
     height: 180px;
     /* Standardized height */
     width: 100%;
@@ -988,18 +1196,20 @@ canvas.motion-canvas {
     justify-content: center;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--light-border-primary);
 }
 
 .global-product-card .img-wrapper img {
     max-height: 85%;
     max-width: 85%;
     object-fit: contain;
-    transition: transform 0.4s ease;
+    transition: none;
+    /* No animation */
 }
 
 .global-product-card:hover .img-wrapper img {
-    transform: scale(1.04);
+    transform: none;
+    /* No zoom */
 }
 
 /* Sold Out Badge OVER Image */
@@ -1019,7 +1229,7 @@ canvas.motion-canvas {
     z-index: 5;
 }
 
-/* Wishlist Icon Animation */
+/* Wishlist Icon - No Animation */
 .global-product-card .wishlist-btn {
     position: absolute;
     top: 10px;
@@ -1031,30 +1241,30 @@ canvas.motion-canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9CA3AF;
-    /* Muted gray default */
+    color: #6B7280;
     z-index: 10;
-    transition: all 0.2s ease;
-    opacity: 0;
-    transform: translateX(5px);
+    transition: none;
+    /* No animation */
+    opacity: 1;
+    /* Always visible */
+    transform: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .global-product-card:hover .wishlist-btn {
     opacity: 1;
-    transform: translateX(0);
+    transform: none;
 }
 
 .global-product-card .wishlist-btn:hover {
     color: #EF4444;
-    /* Red on hover */
     background: #FFFFFF;
 }
 
 .global-product-card .wishlist-btn.active {
     color: #EF4444;
     opacity: 1;
-    transform: translateX(0);
+    transform: none;
 }
 
 /* Card Content Standardized */
@@ -1067,8 +1277,8 @@ canvas.motion-canvas {
 
 /* Meta Pill (Unit) */
 .global-product-card .unit-pill {
-    background: #1F2937;
-    color: #F3F4F6;
+    background: #E5E7EB;
+    color: #1F2937;
     font-size: 0.7rem;
     padding: 2px 8px;
     border-radius: 12px;
@@ -1080,7 +1290,7 @@ canvas.motion-canvas {
 
 /* Product Title */
 .global-product-card .product-title {
-    color: #E5E7EB;
+    color: #374151;
     font-weight: 600;
     font-size: 0.95rem;
     margin-bottom: 0.25rem;
@@ -1096,7 +1306,7 @@ canvas.motion-canvas {
 
 /* Category Text */
 .global-product-card .product-category {
-    color: #9CA3AF;
+    color: #6B7280;
     font-size: 0.8rem;
     margin-bottom: 0.75rem;
     white-space: nowrap;
@@ -1165,4 +1375,60 @@ canvas.motion-canvas {
     .global-grid {
         grid-template-columns: repeat(6, 1fr);
     }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MD3 DARK THEME COLOR OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+:root {
+    /* Material Design 3 Dark Mode Color System */
+    --md-sys-color-primary: #D0BCFF !important;
+    --md-sys-color-on-primary: #21005D !important;
+    --md-sys-color-primary-container: #4F378B !important;
+    --md-sys-color-on-primary-container: #EADDFF !important;
+
+    /* Secondary Dark */
+    --md-sys-color-secondary: #CCC7D8 !important;
+    --md-sys-color-on-secondary: #332D41 !important;
+    --md-sys-color-secondary-container: #4A4458 !important;
+    --md-sys-color-on-secondary-container: #E8DEF8 !important;
+
+    /* Tertiary Dark */
+    --md-sys-color-tertiary: #F0C8D8 !important;
+    --md-sys-color-on-tertiary: #492532 !important;
+    --md-sys-color-tertiary-container: #633B48 !important;
+    --md-sys-color-on-tertiary-container: #FFD8E4 !important;
+
+    /* Error Dark */
+    --md-sys-color-error: #F2B8B5 !important;
+    --md-sys-color-on-error: #601410 !important;
+    --md-sys-color-error-container: #8C1D18 !important;
+    --md-sys-color-on-error-container: #F9DEDC !important;
+
+    /* Surface Dark */
+    --md-sys-color-surface: #121212 !important;
+    --md-sys-color-on-surface: #374151 !important;
+    --md-sys-color-surface-variant: #49454F !important;
+    --md-sys-color-on-surface-variant: #C4C7C5 !important;
+
+    /* Background Dark */
+    --md-sys-color-background: #121212 !important;
+    --md-sys-color-on-background: #374151 !important;
+
+    /* Outline Dark */
+    --md-sys-color-outline: #938F99 !important;
+    --md-sys-color-outline-variant: #49454F !important;
+
+    /* Surface Containers Dark */
+    --md-sys-color-surface-container-lowest: #0F0F0F !important;
+    --md-sys-color-surface-container-low: #1A1A1A !important;
+    --md-sys-color-surface-container: #1E1E1E !important;
+    --md-sys-color-surface-container-high: #262626 !important;
+    --md-sys-color-surface-container-highest: #313131 !important;
+
+    /* Inverse Dark */
+    --md-sys-color-inverse-surface: #374151 !important;
+    --md-sys-color-inverse-on-surface: #313033 !important;
+    --md-sys-color-inverse-primary: #6750A4 !important;
 }

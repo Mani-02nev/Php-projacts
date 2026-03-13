@@ -26,7 +26,9 @@ $root_path = $is_admin_dir ? '../' : '';
     <link rel="stylesheet" href="<?php echo $root_path; ?>css/style.css">
     <link rel="stylesheet" href="<?php echo $root_path; ?>css/responsive.css">
     <!-- Enterprise Dark Theme (FINAL OVERRIDE) -->
-    <link rel="stylesheet" href="<?php echo $root_path; ?>css/enterprise-dark-theme.css">
+    <link rel="stylesheet" href="<?php echo $root_path; ?>css/enterprise-light-theme.css">
+    <!-- Premium SaaS Theme Structure -->
+    <link rel="stylesheet" href="<?php echo $root_path; ?>css/saas-theme.css">
     <!-- Scroll Animations -->
     <link rel="stylesheet" href="<?php echo $root_path; ?>css/scroll-animations.css">
     <!-- 3D Card Styles -->
@@ -51,9 +53,9 @@ $root_path = $is_admin_dir ? '../' : '';
                     <span class="d-none d-sm-inline brand-text"><?php echo SITE_NAME; ?></span>
                 </a>
 
-                <?php 
-                $current_page = basename($_SERVER['PHP_SELF']); 
-                ?>
+                <?php
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
                 
                 <!-- Desktop Menu -->
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -64,7 +66,7 @@ $root_path = $is_admin_dir ? '../' : '';
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>products.php" class="nav-link <?php echo ($current_page == 'products.php' || $current_page == 'product-detail.php') && !isset($_GET['fresh']) ? 'active' : ''; ?>">
+                            <a href="<?php echo $root_path; ?>products.php" class="nav-link <?php echo($current_page == 'products.php' || $current_page == 'product-detail.php') && !isset($_GET['fresh']) ? 'active' : ''; ?>">
                                 Shop
                             </a>
                         </li>
@@ -89,15 +91,16 @@ $root_path = $is_admin_dir ? '../' : '';
                                     Admin
                                 </a>
                             </li>
-                        <?php endif; ?>
+                        <?php
+endif; ?>
                     </ul>
                 </div>
                 
                 <!-- Search Bar (Desktop) -->
                 <div class="d-none d-lg-flex flex-grow-1 mx-4 justify-content-end" style="max-width: 320px;">
-                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar w-100">
-                        <input type="text" name="search" placeholder="Search..." class="form-control" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                        <button type="submit" class="btn">
+                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar w-100" role="search">
+                        <input type="search" name="search" placeholder="Search..." class="form-control" aria-label="Search products" autocomplete="off" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                        <button type="submit" class="btn" aria-label="Submit search" title="Search">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
@@ -124,34 +127,37 @@ $root_path = $is_admin_dir ? '../' : '';
                     <?php if (is_logged_in()): ?>
                         <div class="dropdown">
                             <button class="btn btn-link p-0 border-0" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle fs-3 text-primary"></i>
+                                <i class="bi bi-person-circle fs-3" style="color: var(--saas-primary);"></i>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-2 text-center" style="min-width: 200px;">
-                                <li class="p-3 border-bottom mb-2 rounded-top">
-                                    <div class="fw-bold text-primary"><?php echo htmlspecialchars($_SESSION['user_name']); ?></div>
-                                    <small class="text-muted d-block text-truncate"><?php echo htmlspecialchars($_SESSION['user_email']); ?></small>
+                            <ul class="dropdown-menu dropdown-menu-end saas-glass-card border-0 p-2 text-center" style="min-width: 220px; border-radius: 16px;">
+                                <li class="p-3 border-bottom mb-2 bg-light rounded-top" style="border-radius: 12px 12px 0 0;">
+                                    <div class="fw-bold" style="color: var(--saas-text-heading); font-size: 1.1rem;"><?php echo htmlspecialchars($_SESSION['user_name']); ?></div>
+                                    <small class="text-secondary d-block text-truncate"><?php echo htmlspecialchars($_SESSION['user_email']); ?></small>
                                 </li>
-                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>profile.php"><i class="bi bi-person me-2"></i> Profile</a></li>
-                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>wishlist.php"><i class="bi bi-heart me-2"></i> Wishlist</a></li>
-                                <li><a class="dropdown-item rounded-2" href="<?php echo $root_path; ?>cart.php"><i class="bi bi-bag me-2"></i> Cart</a></li>
+                                <li><a class="dropdown-item rounded-3 py-2 fw-medium text-start" href="<?php echo $root_path; ?>profile.php"><i class="bi bi-person me-2 text-primary"></i> Profile Dashboard</a></li>
+                                <li><a class="dropdown-item rounded-3 py-2 fw-medium text-start" href="<?php echo $root_path; ?>profile.php?tab=orders"><i class="bi bi-box-seam me-2 text-success"></i> My Orders</a></li>
+                                <li><a class="dropdown-item rounded-3 py-2 fw-medium text-start" href="<?php echo $root_path; ?>wishlist.php"><i class="bi bi-heart me-2 text-danger"></i> Wishlist</a></li>
                                 <?php if (is_admin()): ?>
-                                    <li><a class="dropdown-item rounded-2" href="<?php echo $is_admin_dir ? './' : 'admin/'; ?>"><i class="bi bi-speedometer2 me-2"></i> Admin</a></li>
-                                <?php endif; ?>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger rounded-2" href="<?php echo $root_path; ?>logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                                    <li><a class="dropdown-item rounded-3 py-2 fw-medium text-start" href="<?php echo $is_admin_dir ? './' : 'admin/'; ?>"><i class="bi bi-speedometer2 me-2 text-info"></i> Admin Control</a></li>
+                                <?php
+    endif; ?>
+                                <li><hr class="dropdown-divider my-2"></li>
+                                <li><a class="dropdown-item rounded-3 py-2 fw-medium text-start text-danger" href="<?php echo $root_path; ?>logout.php"><i class="bi bi-box-arrow-right me-2"></i> Secure Logout</a></li>
                             </ul>
                         </div>
-                    <?php else: ?>
+                    <?php
+else: ?>
                         <a href="<?php echo $root_path; ?>login.php" class="btn btn-primary rounded-pill px-4 fw-bold ms-2 shadow-sm" style="background-color: #7C3AED; border: none;">
                             Login
                         </a>
-                    <?php endif; ?>
+                    <?php
+endif; ?>
                 </div>
                 <!-- Mobile Search Collapse -->
                 <div class="collapse d-lg-none w-100 mt-2 pb-2" id="mobileSearch">
-                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar">
-                        <input type="text" name="search" placeholder="Search products..." class="form-control" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                        <button type="submit" class="btn">
+                    <form action="<?php echo $root_path; ?>products.php" method="GET" class="input-group glass-search-bar" role="search">
+                        <input type="search" name="search" placeholder="Search products..." class="form-control" aria-label="Search products" autocomplete="off" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                        <button type="submit" class="btn" aria-label="Submit search" title="Search">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
@@ -162,7 +168,7 @@ $root_path = $is_admin_dir ? '../' : '';
 
     <!-- Mobile Bottom Nav Logic (Moved Outside Header) -->
     <div class="d-lg-none w-100">
-        <ul class="nav nav-pills justify-content-around fixed-bottom shadow-lg py-2 border-top mobile-bottom-navbar" style="z-index: 1050; background-color: var(--dark-bg-elevated); border-top: 1px solid var(--dark-border-primary) !important;">
+        <ul class="nav nav-pills justify-content-around fixed-bottom shadow-lg py-2 border-top mobile-bottom-navbar" style="z-index: 1050; background-color: var(--light-bg-elevated); border-top: 1px solid var(--light-border-primary) !important;">
             <li class="nav-item">
                 <a href="<?php echo $root_path ?: './'; ?>" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>">
                     <i class="bi bi-house-fill d-block mb-1" style="font-size: 1.5rem;"></i>
@@ -170,7 +176,7 @@ $root_path = $is_admin_dir ? '../' : '';
                 </a>
             </li>
             <li class="nav-item">
-                <a href="<?php echo $root_path; ?>products.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo ($current_page == 'products.php' || $current_page == 'product-detail.php') ? 'active' : ''; ?>">
+                <a href="<?php echo $root_path; ?>products.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo($current_page == 'products.php' || $current_page == 'product-detail.php') ? 'active' : ''; ?>">
                     <i class="bi bi-grid-fill d-block mb-1" style="font-size: 1.5rem;"></i>
                     <span style="font-size: 0.7rem; font-weight: 500;">Shop</span>
                 </a>
@@ -200,9 +206,10 @@ $root_path = $is_admin_dir ? '../' : '';
                     <span style="font-size: 0.7rem; font-weight: 500;">Admin</span>
                 </a>
             </li>
-            <?php endif; ?>
+            <?php
+endif; ?>
             <li class="nav-item">
-                <a href="<?php echo $root_path; ?>profile.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo ($current_page == 'profile.php' || $current_page == 'login.php' || $current_page == 'register.php') ? 'active' : ''; ?>">
+                <a href="<?php echo $root_path; ?>profile.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo($current_page == 'profile.php' || $current_page == 'login.php' || $current_page == 'register.php') ? 'active' : ''; ?>">
                     <i class="bi bi-person-circle d-block mb-1" style="font-size: 1.5rem;"></i>
                     <span style="font-size: 0.7rem; font-weight: 500;">Account</span>
                 </a>
@@ -212,7 +219,7 @@ $root_path = $is_admin_dir ? '../' : '';
 
     <!-- Toast Container -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast align-items-center text-white border-0 rounded-4 shadow" role="alert" aria-live="assertive" aria-atomic="true" style="background: var(--dark-bg-elevated); border: 1px solid var(--dark-border-primary) !important;">
+        <div id="liveToast" class="toast align-items-center text-body border-0 rounded-4 shadow" role="alert" aria-live="assertive" aria-atomic="true" style="background: var(--light-bg-elevated); border: 1px solid var(--light-border-primary) !important;">
             <div class="d-flex">
                 <div class="toast-body" id="toastMessage">
                     Hello, world! This is a toast message.
@@ -227,8 +234,8 @@ $root_path = $is_admin_dir ? '../' : '';
     document.addEventListener('DOMContentLoaded', () => {
         // Force dark theme
         const html = document.documentElement;
-        html.setAttribute('data-bs-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
+        html.setAttribute('data-bs-theme', 'light');
+        localStorage.setItem('theme', 'light');
     });
 
     // Global Toast Function

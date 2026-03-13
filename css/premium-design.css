@@ -20,7 +20,7 @@
 
     --text-main: #0F172A;
     --text-muted: #64748B;
-    --text-white: #FFFFFF;
+    --text-body: #FFFFFF;
 
     /* 📏 Spacing Scale (8px Grid) */
     --space-1: 8px;
@@ -89,7 +89,7 @@ h6 {
 
 .btn-primary {
     background-color: var(--primary);
-    color: var(--text-white);
+    color: var(--text-body);
 }
 
 .btn-primary:hover {
@@ -100,7 +100,7 @@ h6 {
 
 .btn-accent {
     background-color: var(--accent);
-    color: var(--text-white);
+    color: var(--text-body);
 }
 
 .btn-accent:hover {
@@ -122,7 +122,7 @@ h6 {
 
 /* 🃏 Cards */
 .card-premium {
-    background: var(--text-white);
+    background: var(--text-body);
     border-radius: var(--radius-md);
     padding: var(--space-4);
     box-shadow: var(--shadow-soft);
@@ -161,7 +161,7 @@ h6 {
 .input-premium:focus {
     outline: none;
     border-color: var(--accent);
-    background: var(--text-white);
+    background: var(--text-body);
     box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
 }
 
@@ -207,14 +207,14 @@ h6 {
         --secondary-dark: #1E293B;
         --text-main: #F8FAFC;
         --text-muted: #94A3B8;
-        --text-white: #0F172A;
+        --text-body: #0F172A;
         /* Inverted for high contrast */
         --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
     }
 
     .card-premium {
         background: var(--secondary-dark);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .input-premium {

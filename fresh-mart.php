@@ -31,7 +31,7 @@ include 'includes/header.php';
 }
 
 .fresh-mart-hero {
-    background: radial-gradient(circle at top center, rgba(16, 185, 129, 0.15), #0B0B0E 70%);
+    background: radial-gradient(circle at top center, rgba(16, 185, 129, 0.15), #F8F9FA 70%);
     position: relative;
     overflow: hidden;
     padding: 4rem 0;
@@ -41,8 +41,8 @@ include 'includes/header.php';
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: #14161A;
-    border: 1px solid rgba(255,255,255,0.05);
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,9 +61,9 @@ include 'includes/header.php';
 
 /* PREMIUM GROCERY CARD STYLE */
 .grocery-card {
-    background: #14161A;
+    background: #FFFFFF;
     border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow: hidden;
     height: 100%;
@@ -84,7 +84,7 @@ include 'includes/header.php';
     align-items: center;
     justify-content: center;
     position: relative;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .grocery-card-img {
@@ -129,7 +129,7 @@ include 'includes/header.php';
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9CA3AF;
+    color: #6B7280;
     opacity: 0;
     transform: translateX(10px);
     transition: all 0.3s ease;
@@ -148,8 +148,8 @@ include 'includes/header.php';
 }
 
 .trust-badge-strip {
-    border-top: 1px solid #2D2D35;
-    border-bottom: 1px solid #2D2D35;
+    border-top: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E5E7EB;
     background: rgba(255,255,255,0.02);
 }
 </style>
@@ -160,7 +160,7 @@ include 'includes/header.php';
         <span class="badge rounded-pill bg-success px-3 py-2 mb-3 bg-opacity-25 text-success border border-success">
             <i class="bi bi-shop me-2"></i> FRESH MART OPEN
         </span>
-        <h1 class="display-4 fw-bold text-white mb-3">Daily Grocery, <span style="color: var(--fresh-green);">Delivered Fresh</span></h1>
+        <h1 class="display-4 fw-bold text-body mb-3">Daily Grocery, <span style="color: var(--fresh-green);">Delivered Fresh</span></h1>
         <p class="lead text-secondary mb-4 mx-auto" style="max-width: 600px;">
             Get farm-fresh vegetables, fruits, and daily essentials delivered to your doorstep in minutes.
         </p>
@@ -186,20 +186,20 @@ include 'includes/header.php';
             <div class="p-4 rounded-4 d-flex align-items-center justify-content-between" style="background: linear-gradient(45deg, #064E3B, #065F46);">
                 <div>
                     <span class="badge bg-warning text-dark mb-2 fw-bold">LIMITED TIME</span>
-                    <h3 class="fw-bold text-white mb-1">50% OFF</h3>
-                    <p class="text-white opacity-75 mb-0">On Fresh Fruits & Veg</p>
+                    <h3 class="fw-bold text-body mb-1">50% OFF</h3>
+                    <p class="text-body opacity-75 mb-0">On Fresh Fruits & Veg</p>
                 </div>
-                <i class="bi bi-basket3-fill text-white opacity-25" style="font-size: 5rem;"></i>
+                <i class="bi bi-basket3-fill text-body opacity-25" style="font-size: 5rem;"></i>
             </div>
         </div>
         <div class="col-md-6">
             <div class="p-4 rounded-4 d-flex align-items-center justify-content-between" style="background: linear-gradient(45deg, #1E3A8A, #1D4ED8);">
                 <div>
                     <span class="badge bg-info text-dark mb-2 fw-bold">NEW ARRIVAL</span>
-                    <h3 class="fw-bold text-white mb-1">Dairy Special</h3>
-                    <p class="text-white opacity-75 mb-0">Milk, Curd & Cheese</p>
+                    <h3 class="fw-bold text-body mb-1">Dairy Special</h3>
+                    <p class="text-body opacity-75 mb-0">Milk, Curd & Cheese</p>
                 </div>
-                <i class="bi bi-egg-fried text-white opacity-25" style="font-size: 5rem;"></i>
+                <i class="bi bi-egg-fried text-body opacity-25" style="font-size: 5rem;"></i>
             </div>
         </div>
     </div>
@@ -209,7 +209,7 @@ include 'includes/header.php';
 <div class="container mb-5">
     <div class="d-flex justify-content-between align-items-end mb-4 px-2">
         <div>
-            <h3 class="fw-bold text-white mb-1">Fresh Essentials</h3>
+            <h3 class="fw-bold text-body mb-1">Fresh Essentials</h3>
             <p class="text-secondary mb-0">Best prices on your daily needs</p>
         </div>
         <a href="products.php?category=Groceries" class="btn btn-outline-success btn-sm rounded-pill px-4 fw-bold">View All</a>
@@ -262,21 +262,21 @@ include 'includes/header.php';
 <div class="trust-badge-strip py-4 mb-5">
     <div class="container">
         <div class="row text-center g-4">
-            <div class="col-6 col-md-3 border-end border-secondary border-opacity-25">
+            <div class="col-6 col-md-3 border-end border-light-subtle border-opacity-25">
                 <i class="bi bi-clock-history fs-3 text-success mb-2 d-block"></i>
-                <h6 class="text-white fw-bold mb-0">10 Min Delivery</h6>
+                <h6 class="text-body fw-bold mb-0">10 Min Delivery</h6>
             </div>
-            <div class="col-6 col-md-3 border-end border-secondary border-opacity-25">
+            <div class="col-6 col-md-3 border-end border-light-subtle border-opacity-25">
                 <i class="bi bi-shield-check fs-3 text-success mb-2 d-block"></i>
-                <h6 class="text-white fw-bold mb-0">Quality Check</h6>
+                <h6 class="text-body fw-bold mb-0">Quality Check</h6>
             </div>
-            <div class="col-6 col-md-3 border-end border-secondary border-opacity-25">
+            <div class="col-6 col-md-3 border-end border-light-subtle border-opacity-25">
                 <i class="bi bi-flower2 fs-3 text-success mb-2 d-block"></i>
-                <h6 class="text-white fw-bold mb-0">Farm Fresh</h6>
+                <h6 class="text-body fw-bold mb-0">Farm Fresh</h6>
             </div>
             <div class="col-6 col-md-3">
                 <i class="bi bi-arrow-counterclockwise fs-3 text-success mb-2 d-block"></i>
-                <h6 class="text-white fw-bold mb-0">Easy Returns</h6>
+                <h6 class="text-body fw-bold mb-0">Easy Returns</h6>
             </div>
         </div>
     </div>

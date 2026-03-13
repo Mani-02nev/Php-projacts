@@ -18,10 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $stock = intval($_POST['stock']);
     $image = clean_input($_POST['image']);
     $category = clean_input($_POST['category'] ?? 'General');
-    
+
     if (add_product($name, $description, $price, $stock, $image, $category)) {
         $success = 'Product added successfully!';
-    } else {
+    }
+    else {
         $error = 'Failed to add product.';
     }
 }
@@ -31,7 +32,8 @@ if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     if (delete_product($id)) {
         $success = 'Product deleted successfully!';
-    } else {
+    }
+    else {
         $error = 'Failed to delete product.';
     }
 }
@@ -39,7 +41,7 @@ if (isset($_GET['delete'])) {
 $products = get_all_products();
 
 // Sort by ID descending
-usort($products, function($a, $b) {
+usort($products, function ($a, $b) {
     return $b['id'] - $a['id'];
 });
 
@@ -48,31 +50,31 @@ include '../includes/header.php';
 
 <!-- Admin Products -->
 <style>
-    body { background-color: #0E1116 !important; }
-    .admin-card { background-color: #141821; border: 1px solid #1F2937; }
-    .table-dark-custom { --bs-table-bg: transparent; --bs-table-color: #9CA3AF; --bs-table-border-color: #2D2D35; }
-    .table-dark-custom th { color: #E5E7EB; background-color: #1F2937; border-bottom: 1px solid #374151; }
-    .table-dark-custom td { vertical-align: middle; border-bottom: 1px solid #2D2D35; color: #9CA3AF; }
-    .form-control-dark { background-color: #0B0B0E; border: 1px solid #374151; color: #E5E7EB; }
-    .form-control-dark:focus { background-color: #0B0B0E; border-color: #7C3AED; color: #FFFFFF; box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25); }
-    .form-select-dark { background-color: #0B0B0E; border: 1px solid #374151; color: #E5E7EB; }
-    .form-select-dark:focus { border-color: #7C3AED; color: #FFFFFF; box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25); }
-    .hover-row:hover td { background-color: rgba(255,255,255,0.02); color: #F3F4F6; }
+    body { background-color: #F8F9FA !important; }
+    .admin-card { background-color: #FFFFFF; border: 1px solid #E5E7EB; }
+    .table-dark-custom { --bs-table-bg: transparent; --bs-table-color: #6B7280; --bs-table-border-color: #E5E7EB; }
+    .table-dark-custom th { color: #374151; background-color: #E5E7EB; border-bottom: 1px solid #D1D5DB; }
+    .table-dark-custom td { vertical-align: middle; border-bottom: 1px solid #E5E7EB; color: #6B7280; }
+    .form-control-dark { background-color: #F8F9FA; border: 1px solid #D1D5DB; color: #374151; }
+    .form-control-dark:focus { background-color: #F8F9FA; border-color: #7C3AED; color: #374151; box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25); }
+    .form-select-dark { background-color: #F8F9FA; border: 1px solid #D1D5DB; color: #374151; }
+    .form-select-dark:focus { border-color: #7C3AED; color: #374151; box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25); }
+    .hover-row:hover td { background-color: rgba(0,0,0,0.02); color: #1F2937; }
 </style>
 
 <div class="container-fluid px-4 py-5" style="min-height: 100vh;">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <div class="d-flex align-items-center gap-3 mb-1">
-                <span class="badge rounded-pill px-3 py-1 fw-bold" style="background-color: #374151; color: #E5E7EB; border: 1px solid #4B5563;">
+                <span class="badge rounded-pill px-3 py-1 fw-bold" style="background-color: #D1D5DB; color: #374151; border: 1px solid #4B5563;">
                     <i class="bi bi-box-seam me-1 text-primary"></i> INVENTORY
                 </span>
             </div>
-            <h1 class="fw-bold mb-0 text-white display-6">Manage Products</h1>
+            <h1 class="fw-bold mb-0 text-body display-6">Manage Products</h1>
             <p class="text-secondary mb-0">Add, edit, and remove store items</p>
         </div>
         <div>
-            <a href="./" class="btn btn-outline-secondary rounded-pill px-4 bg-dark text-white border-secondary fw-bold">
+            <a href="./" class="btn btn-outline-secondary rounded-pill px-4 bg-white text-dark border-light-subtle fw-bold">
                 <i class="bi bi-arrow-left me-2"></i> Dashboard
             </a>
         </div>
@@ -82,29 +84,31 @@ include '../includes/header.php';
         <div class="alert alert-success rounded-4 border-0 shadow-sm animate__animated animate__fadeIn mb-4 bg-success-subtle border-success text-success fw-bold">
             <i class="bi bi-check-circle-fill me-2"></i> <?php echo $success; ?>
         </div>
-    <?php endif; ?>
+    <?php
+endif; ?>
     
     <?php if ($error): ?>
         <div class="alert alert-danger rounded-4 border-0 shadow-sm animate__animated animate__fadeIn mb-4 bg-danger-subtle border-danger text-danger fw-bold">
             <i class="bi bi-exclamation-triangle-fill me-2"></i> <?php echo $error; ?>
         </div>
-    <?php endif; ?>
+    <?php
+endif; ?>
 
     <div class="row g-4">
         <!-- Add Product Form -->
         <div class="col-lg-4">
             <div class="card admin-card rounded-4 h-100 shadow-lg">
-                <div class="card-header border-bottom border-secondary border-opacity-25 py-3 px-4" style="background-color: transparent;">
-                    <h5 class="fw-bold mb-0 text-white"><i class="bi bi-plus-circle me-2 text-primary"></i>Add New Product</h5>
+                <div class="card-header border-bottom border-light-subtle border-opacity-25 py-3 px-4" style="background-color: transparent;">
+                    <h5 class="fw-bold mb-0 text-body"><i class="bi bi-plus-circle me-2 text-primary"></i>Add New Product</h5>
                 </div>
                 <div class="card-body p-4">
                     <form method="POST">
                         <div class="mb-3">
-                            <label for="name" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Product Name</label>
+                            <label for="name" class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Product Name</label>
                             <input type="text" id="name" name="name" class="form-control form-control-dark rounded-3 px-3 py-2" placeholder="e.g. Wireless Headset" required>
                         </div>
                         <div class="mb-3">
-                            <label for="category" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Category</label>
+                            <label for="category" class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Category</label>
                             <select id="category" name="category" class="form-select form-select-dark rounded-3 px-3 py-2">
                                 <option value="Electronics">Electronics</option>
                                 <option value="Fashion">Fashion</option>
@@ -115,21 +119,21 @@ include '../includes/header.php';
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="description" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Description</label>
+                            <label for="description" class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Description</label>
                             <textarea id="description" name="description" class="form-control form-control-dark px-3 py-2" rows="4" style="border-radius: 0.75rem;" placeholder="Product details..." required></textarea>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-6">
-                                <label for="price" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Price (₹)</label>
+                                <label for="price" class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Price (₹)</label>
                                 <input type="number" id="price" name="price" class="form-control form-control-dark rounded-3 px-3 py-2" step="0.01" min="0" placeholder="0.00" required>
                             </div>
                             <div class="col-6">
-                                <label for="stock" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Stock</label>
+                                <label for="stock" class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Stock</label>
                                 <input type="number" id="stock" name="stock" class="form-control form-control-dark rounded-3 px-3 py-2" min="0" placeholder="0" required>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="image" class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Image Filename</label>
+                            <label for="image" class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Image Filename</label>
                             <input type="text" id="image" name="image" class="form-control form-control-dark rounded-3 px-3 py-2" placeholder="e.g. product.jpg">
                             <div class="form-text small ms-1" style="color: #6B7280;"><i class="bi bi-info-circle me-1"></i>File must exist in assets/images/</div>
                         </div>
@@ -145,9 +149,9 @@ include '../includes/header.php';
         <!-- Product List -->
         <div class="col-lg-8">
             <div class="card admin-card rounded-4 h-100 overflow-hidden shadow-lg">
-                <div class="card-header border-bottom border-secondary border-opacity-25 py-3 px-4 d-flex justify-content-between align-items-center" style="background-color: transparent;">
-                    <h5 class="fw-bold mb-0 text-white"><i class="bi bi-list-ul me-2 text-primary"></i>Product Inventory</h5>
-                    <span class="badge rounded-pill px-3" style="background-color: #374151; color: #E5E7EB; border: 1px solid #4B5563;"><?php echo count($products); ?> Items</span>
+                <div class="card-header border-bottom border-light-subtle border-opacity-25 py-3 px-4 d-flex justify-content-between align-items-center" style="background-color: transparent;">
+                    <h5 class="fw-bold mb-0 text-body"><i class="bi bi-list-ul me-2 text-primary"></i>Product Inventory</h5>
+                    <span class="badge rounded-pill px-3" style="background-color: #D1D5DB; color: #374151; border: 1px solid #4B5563;"><?php echo count($products); ?> Items</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -167,37 +171,42 @@ include '../includes/header.php';
                                         <td class="ps-4 small" style="color: #6B7280;">#<?php echo $product['id']; ?></td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3 border border-secondary border-opacity-25 bg-dark" style="width: 48px; height: 48px; min-width: 48px;">
-                                                    <?php 
-                                                    $is_url = strpos($product['image'], 'http') === 0;
-                                                    if(!empty($product['image']) && ($is_url || file_exists('../assets/images/' . $product['image']))): 
-                                                    ?>
+                                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3 border border-light-subtle border-opacity-25 bg-white" style="width: 48px; height: 48px; min-width: 48px;">
+                                                    <?php
+    $is_url = strpos($product['image'], 'http') === 0;
+    if (!empty($product['image']) && ($is_url || file_exists('../assets/images/' . $product['image']))):
+?>
                                                         <img src="<?php echo $is_url ? htmlspecialchars($product['image']) : '../assets/images/' . htmlspecialchars($product['image']); ?>" alt="Product" class="rounded-3" style="width: 100%; height: 100%; object-fit: cover;">
-                                                    <?php else: ?>
+                                                    <?php
+    else: ?>
                                                         <i class="bi bi-box text-secondary"></i>
-                                                    <?php endif; ?>
+                                                    <?php
+    endif; ?>
                                                 </div>
                                                 <div>
-                                                    <div class="fw-bold text-white mb-0 text-truncate" style="max-width: 200px;"><?php echo htmlspecialchars($product['name']); ?></div>
+                                                    <div class="fw-bold text-body mb-0 text-truncate" style="max-width: 200px;"><?php echo htmlspecialchars($product['name']); ?></div>
                                                     <div class="small text-truncate" style="color: #6B7280; max-width: 200px;">
                                                         <?php echo htmlspecialchars($product['category'] ?? '-'); ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="fw-bold text-white">₹<?php echo number_format($product['price'], 2); ?></td>
+                                        <td class="fw-bold text-body">₹<?php echo number_format($product['price'], 2); ?></td>
                                         <td>
                                             <?php if ($product['stock'] > 10): ?>
                                                 <span class="badge rounded-pill px-2" style="background-color: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);">
                                                     <?php echo $product['stock']; ?> in stock
                                                 </span>
-                                            <?php elseif ($product['stock'] > 0): ?>
+                                            <?php
+    elseif ($product['stock'] > 0): ?>
                                                 <span class="badge rounded-pill px-2" style="background-color: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3);">
                                                     Low: <?php echo $product['stock']; ?>
                                                 </span>
-                                            <?php else: ?>
+                                            <?php
+    else: ?>
                                                 <span class="badge rounded-pill px-2" style="background-color: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3);">Out of Stock</span>
-                                            <?php endif; ?>
+                                            <?php
+    endif; ?>
                                         </td>
                                         <td class="text-end pe-4">
                                             <a href="?delete=<?php echo $product['id']; ?>" 
@@ -209,15 +218,17 @@ include '../includes/header.php';
                                             </a>
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
+                                <?php
+endforeach; ?>
                                 <?php if (empty($products)): ?>
                                     <tr>
                                         <td colspan="5" class="text-center py-5">
-                                            <i class="bi bi-inbox display-4 d-block mb-3" style="color: #374151;"></i>
+                                            <i class="bi bi-inbox display-4 d-block mb-3" style="color: #D1D5DB;"></i>
                                             <span class="text-secondary">No products found. Add one to get started!</span>
                                         </td>
                                     </tr>
-                                <?php endif; ?>
+                                <?php
+endif; ?>
                             </tbody>
                         </table>
                     </div>

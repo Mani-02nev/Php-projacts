@@ -46,9 +46,9 @@
     --white: #FFFFFF;
     --off-white: #FAFAFA;
     --light-gray: #F5F5F7;
-    --medium-gray: #E5E7EB;
+    --medium-gray: #374151;
     --dark-gray: #6B7280;
-    --text-primary: #1F2937;
+    --text-primary: #E5E7EB;
     --text-secondary: #6B7280;
     --text-dark: #111827;
 
@@ -247,7 +247,7 @@ html {
         0 4px 15px rgba(124, 58, 237, 0.4),
         0 2px 4px rgba(124, 58, 237, 0.2);
     transform: translateY(-1px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     position: relative;
 }
 

@@ -35,7 +35,7 @@ session_start();
         @media (prefers-color-scheme: dark) {
             .glass-nav {
                 background: rgba(15, 23, 42, 0.8);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             }
             .nav-links a:hover {
                 color: var(--accent);
@@ -114,7 +114,7 @@ session_start();
 
         .footer-premium {
             background: var(--primary);
-            color: var(--text-white);
+            color: var(--text-body);
             padding: var(--space-8) 0;
             margin-top: var(--space-10);
         }
@@ -126,7 +126,7 @@ session_start();
         }
 
         .footer-links h4 {
-            color: var(--text-white);
+            color: var(--text-body);
             margin-bottom: var(--space-3);
         }
 
@@ -304,7 +304,7 @@ session_start();
         <div class="container-premium">
             <div class="footer-grid">
                 <div>
-                    <a href="#" class="logo-box" style="color: var(--text-white); margin-bottom: var(--space-3);">
+                    <a href="#" class="logo-box" style="color: var(--text-body); margin-bottom: var(--space-3);">
                         <img src="assets/aura-logo.png" alt="Aura Logo" style="height: 32px; border-radius: 6px; filter: brightness(0) invert(1);">
                         Aura
                     </a>
@@ -339,7 +339,7 @@ session_start();
                     </ul>
                 </div>
             </div>
-            <div style="margin-top: var(--space-8); padding-top: var(--space-4); border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; font-size: 14px; color: var(--text-muted);">
+            <div style="margin-top: var(--space-8); padding-top: var(--space-4); border-top: 1px solid rgba(0, 0, 0, 0.05); text-align: center; font-size: 14px; color: var(--text-muted);">
                 &copy; 2026 Aura Premium. All rights reserved. Built with precision and trust.
             </div>
         </div>

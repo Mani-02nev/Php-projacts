@@ -1,67 +1,51 @@
-/* 3D Card Base Styles */
+/* 3D Card Base Styles - DISABLED (FLAT DESIGN) */
 .global-product-card {
-    /* Critical for 3D effect */
-    transform-style: preserve-3d;
-    transform: perspective(1000px);
-    will-change: transform;
-    transition: box-shadow 0.3s ease;
+    /* Removed 3D effects */
+    transform: none;
+    will-change: auto;
+    transition: none;
 }
 
-/* Inner content layers must also preserve 3D to be moved in Z-space */
+/* Inner content layers - NO 3D */
 .global-product-card .img-wrapper,
 .global-product-card .card-content,
 .global-product-card .wishlist-btn {
-    transform-style: preserve-3d;
-    transition: transform 0.1s;
-    /* Instant reaction for mouse, handled by JS primarily */
+    transform: none;
+    transition: none;
+    /* Removed animations */
 }
 
-/* Depth Layers */
+/* Depth Layers - DISABLED */
 .global-product-card .img-wrapper {
-    /* Image sits back slightly or middle */
-    transform: translateZ(20px);
+    /* Removed 3D transform */
+    transform: none;
 }
 
 .global-product-card .card-content {
-    /* Text floats above image */
-    transform: translateZ(40px);
-    background: rgba(20, 22, 26, 0.8) !important;
-    /* Ensure readable against 3D overlapping */
-    backdrop-filter: blur(4px);
+    /* Removed 3D transform */
+    transform: none;
+    background: var(--light-bg-elevated) !important;
+    /* Simple dark background */
+    backdrop-filter: none;
 }
 
 .global-product-card .wishlist-btn {
-    /* Button floats highest */
-    transform: translateZ(60px);
+    /* Removed 3D transform */
+    transform: none;
 }
 
-/* Dynamic Glow/Sheen Overlay */
+/* Dynamic Glow/Sheen Overlay - DISABLED */
 .card-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 20px;
-    /* Match card radius */
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    mix-blend-mode: overlay;
-    z-index: 10;
-    transform: translateZ(1px);
-    /* Just above bg */
+    display: none !important;
+    /* Completely disabled */
 }
 
 .global-product-card:hover .card-glow {
-    opacity: 1;
+    display: none !important;
 }
 
-/* High Performance Shadow on Hover */
+/* Simple Hover Effect - NO ANIMATION */
 .global-product-card:hover {
-    box-shadow:
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(124, 58, 237, 0.2);
-    /* Purple Glow */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Subtle shadow only */
 }

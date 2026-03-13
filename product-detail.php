@@ -82,11 +82,11 @@ if(count($related_products) < 4) {
     <div class="row g-5">
         <!-- Product Image Section -->
         <div class="col-lg-6">
-            <div class="card p-5 border-0 rounded-5 position-relative mb-4" style="background-color: #14161A;">
+            <div class="card p-5 border-0 rounded-5 position-relative mb-4" style="background-color: #FFFFFF;">
                 <div class="position-absolute top-0 end-0 m-4 z-2">
                     <a href="?wishlist_toggle=<?php echo $product['id']; ?>" class="btn rounded-circle d-flex align-items-center justify-content-center p-0" 
                        style="width: 44px; height: 44px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(4px);">
-                        <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill text-danger' : 'bi-heart text-white'; ?>" style="font-size: 1.25rem;"></i>
+                        <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill text-danger' : 'bi-heart text-body'; ?>" style="font-size: 1.25rem;"></i>
                     </a>
                 </div>
                 
@@ -101,17 +101,17 @@ if(count($related_products) < 4) {
             <!-- Gallery Thumbnails (Static for visual quality) -->
             <div class="row g-3">
                 <div class="col-3">
-                    <div class="p-3 rounded-4 cursor-pointer" style="background-color: #14161A; border: 1px solid #7C3AED;">
+                    <div class="p-3 rounded-4 cursor-pointer" style="background-color: #FFFFFF; border: 1px solid #7C3AED;">
                         <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid" style="opacity: 1;">
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="p-3 rounded-4 cursor-pointer" style="background-color: #14161A; border: 1px solid transparent; opacity: 0.5;">
+                    <div class="p-3 rounded-4 cursor-pointer" style="background-color: #FFFFFF; border: 1px solid transparent; opacity: 0.5;">
                         <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="p-3 rounded-4 cursor-pointer" style="background-color: #14161A; border: 1px solid transparent; opacity: 0.5;">
+                    <div class="p-3 rounded-4 cursor-pointer" style="background-color: #FFFFFF; border: 1px solid transparent; opacity: 0.5;">
                         <img src="<?php echo htmlspecialchars($product['image']); ?>" class="img-fluid">
                     </div>
                 </div>
@@ -135,7 +135,7 @@ if(count($related_products) < 4) {
                 </div>
 
                 <!-- Title -->
-                <h1 class="display-5 fw-bold mb-3" style="color: #E5E7EB; line-height: 1.2;">
+                <h1 class="display-5 fw-bold mb-3" style="color: #374151; line-height: 1.2;">
                     <?php echo htmlspecialchars($product['name']); ?>
                 </h1>
                 
@@ -148,8 +148,8 @@ if(count($related_products) < 4) {
                         <i class="bi bi-star-fill"></i>
                         <i class="bi bi-star-half"></i>
                     </div>
-                    <span style="color: #E5E7EB; font-weight: 600;">4.5</span>
-                    <span style="color: #9CA3AF;">(<?php echo rand(120, 500); ?> verified reviews)</span>
+                    <span style="color: #374151; font-weight: 600;">4.5</span>
+                    <span style="color: #6B7280;">(<?php echo rand(120, 500); ?> verified reviews)</span>
                 </div>
 
                 <!-- Price -->
@@ -166,8 +166,8 @@ if(count($related_products) < 4) {
                 
                 <!-- Description -->
                 <div class="mb-5">
-                    <h5 class="fw-bold mb-3" style="color: #E5E7EB;">Overview</h5>
-                    <p class="fs-6 mb-0" style="color: #9CA3AF; line-height: 1.8; max-width: 90%;">
+                    <h5 class="fw-bold mb-3" style="color: #374151;">Overview</h5>
+                    <p class="fs-6 mb-0" style="color: #6B7280; line-height: 1.8; max-width: 90%;">
                         <?php echo nl2br(htmlspecialchars($product['description'])); ?>
                     </p>
                 </div>
@@ -175,26 +175,26 @@ if(count($related_products) < 4) {
                 <!-- Info Cards -->
                 <div class="row g-3 mb-5">
                     <div class="col-6">
-                        <div class="p-3 rounded-4 d-flex align-items-center gap-3" style="background-color: #14161A; border: 1px solid #2D2D35;">
+                        <div class="p-3 rounded-4 d-flex align-items-center gap-3" style="background-color: #FFFFFF; border: 1px solid #E5E7EB;">
                             <div class="rounded-circle d-flex align-items-center justify-content-center" 
                                  style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.1); color: #10B981;">
                                 <i class="bi bi-box-seam fs-5"></i>
                             </div>
                             <div>
                                 <small class="d-block text-uppercase fw-bold" style="color: #6B7280; font-size: 0.7rem; letter-spacing: 0.5px;">Inventory</small>
-                                <span class="fw-bold" style="color: #E5E7EB;"><?php echo $product['stock']; ?> Units</span>
+                                <span class="fw-bold" style="color: #374151;"><?php echo $product['stock']; ?> Units</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="p-3 rounded-4 d-flex align-items-center gap-3" style="background-color: #14161A; border: 1px solid #2D2D35;">
+                        <div class="p-3 rounded-4 d-flex align-items-center gap-3" style="background-color: #FFFFFF; border: 1px solid #E5E7EB;">
                             <div class="rounded-circle d-flex align-items-center justify-content-center" 
                                  style="width: 48px; height: 48px; background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
                                 <i class="bi bi-shield-check fs-5"></i>
                             </div>
                             <div>
                                 <small class="d-block text-uppercase fw-bold" style="color: #6B7280; font-size: 0.7rem; letter-spacing: 0.5px;">Warranty</small>
-                                <span class="fw-bold" style="color: #E5E7EB;">1 Year</span>
+                                <span class="fw-bold" style="color: #374151;">1 Year</span>
                             </div>
                         </div>
                     </div>
@@ -203,17 +203,17 @@ if(count($related_products) < 4) {
                 <!-- Actions -->
                 <form method="POST">
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-uppercase mb-2" style="color: #9CA3AF;">Quantity</label>
-                        <div class="d-flex align-items-center bg-dark border border-secondary border-opacity-25 rounded-pill px-2" style="width: fit-content;">
-                            <button type="button" class="btn text-white" onclick="this.nextElementSibling.stepDown()"><i class="bi bi-dash"></i></button>
-                            <input type="number" name="quantity" class="form-control bg-transparent border-0 text-white text-center fw-bold" style="width: 60px;" value="1" min="1" max="<?php echo $product['stock']; ?>">
-                            <button type="button" class="btn text-white" onclick="this.previousElementSibling.stepUp()"><i class="bi bi-plus"></i></button>
+                        <label class="form-label fw-bold small text-uppercase mb-2" style="color: #6B7280;">Quantity</label>
+                        <div class="d-flex align-items-center bg-white border border-light-subtle border-opacity-25 rounded-pill px-2" style="width: fit-content;">
+                            <button type="button" class="btn text-body" onclick="this.nextElementSibling.stepDown()"><i class="bi bi-dash"></i></button>
+                            <input type="number" name="quantity" class="form-control bg-transparent border-0 text-body text-center fw-bold" style="width: 60px;" value="1" min="1" max="<?php echo $product['stock']; ?>">
+                            <button type="button" class="btn text-body" onclick="this.previousElementSibling.stepUp()"><i class="bi bi-plus"></i></button>
                         </div>
                     </div>
 
                     <div class="d-flex gap-3 flex-column flex-sm-row">
                         <button type="button" id="btn-ajax-add-cart" class="btn btn-lg rounded-pill px-5 fw-bold flex-grow-1" 
-                                style="border: 2px solid #7C3AED; color: #E5E7EB; background: transparent;">
+                                style="border: 2px solid #7C3AED; color: #374151; background: transparent;">
                             Add to Cart
                         </button>
                         <button type="submit" name="ship_order" class="btn btn-lg rounded-pill px-5 fw-bold flex-grow-1" 
@@ -237,8 +237,8 @@ if(count($related_products) < 4) {
 
 
 <!-- Related Products -->
-<div class="container py-5" style="border-top: 1px solid #2D2D35;">
-    <h3 class="fw-bold mb-4" style="color: #E5E7EB;">Related Products</h3>
+<div class="container py-5" style="border-top: 1px solid #E5E7EB;">
+    <h3 class="fw-bold mb-4" style="color: #374151;">Related Products</h3>
     <div class="global-grid">
         <?php foreach(array_slice($related_products, 0, 4) as $related): ?>
             <!-- Global Product Card -->

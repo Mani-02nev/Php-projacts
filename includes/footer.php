@@ -1,6 +1,6 @@
     </main>
     
-    <footer class="main-footer py-5 border-top border-dark">
+    <footer class="main-footer py-5 border-top border-light">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6">
@@ -9,7 +9,7 @@
                 </div>
                 
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-3 text-white">Quick Links</h5>
+                    <h5 class="fw-bold mb-3 text-body">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="<?php echo $root_path ?: './'; ?>" class="text-secondary text-decoration-none transition-link">Home</a></li>
                         <li class="mb-2"><a href="<?php echo $root_path; ?>products.php" class="text-secondary text-decoration-none transition-link">Products</a></li>
@@ -19,7 +19,7 @@
                 </div>
                 
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-3 text-white">Support</h5>
+                    <h5 class="fw-bold mb-3 text-body">Support</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="#" class="text-secondary text-decoration-none transition-link">Contact Us</a></li>
                         <li class="mb-2"><a href="#" class="text-secondary text-decoration-none transition-link">Shipping Info</a></li>
@@ -28,7 +28,7 @@
                 </div>
                 
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-3 text-white">Account</h5>
+                    <h5 class="fw-bold mb-3 text-body">Account</h5>
                     <ul class="list-unstyled">
                         <?php if (is_logged_in()): ?>
                             <li class="mb-2"><a href="<?php echo $root_path; ?>profile.php" class="text-secondary text-decoration-none transition-link">My Profile</a></li>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             
-            <div class="pt-4 mt-5 border-top border-secondary text-center">
+            <div class="pt-4 mt-5 border-top border-light-subtle text-center">
                 <p class="text-secondary small mb-0">&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All rights reserved.</p>
             </div>
         </div>

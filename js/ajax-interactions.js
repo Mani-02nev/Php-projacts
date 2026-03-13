@@ -153,8 +153,8 @@ function handleWishlistToggle(productId, btnElement) {
                         // Item was added to wishlist - show filled heart
                         icon.classList.remove('bi-heart');
                         icon.classList.add('bi-heart-fill');
-                        if (icon.classList.contains('text-white')) {
-                            icon.classList.remove('text-white');
+                        if (icon.classList.contains('text-body')) {
+                            icon.classList.remove('text-body');
                             icon.classList.add('text-danger');
                         }
                         btnElement.classList.add('active');
@@ -164,7 +164,7 @@ function handleWishlistToggle(productId, btnElement) {
                         icon.classList.add('bi-heart');
                         if (icon.classList.contains('text-danger')) {
                             icon.classList.remove('text-danger');
-                            icon.classList.add('text-white');
+                            icon.classList.add('text-body');
                         }
                         btnElement.classList.remove('active');
                     }

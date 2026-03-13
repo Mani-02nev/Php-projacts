@@ -51,7 +51,7 @@ include 'includes/header.php';
 
 <div class="container py-5" style="min-height: 80vh;">
     <style>
-        .checkout-input::placeholder { color: #9CA3AF !important; opacity: 1; }
+        .checkout-input::placeholder { color: #6B7280 !important; opacity: 1; }
         .checkout-input:focus { border-color: #7C3AED !important; box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15); }
         .hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.4) !important; }
@@ -60,22 +60,22 @@ include 'includes/header.php';
     <?php if ($success): ?>
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="text-center py-5 rounded-5 shadow-lg border animate__animated animate__zoomIn" style="background-color: #141821; border-color: #374151;">
+                <div class="text-center py-5 rounded-5 shadow-lg border animate__animated animate__zoomIn" style="background-color: #141821; border-color: #D1D5DB;">
                     <div class="mb-4 d-inline-flex p-3 rounded-circle" style="background-color: rgba(16, 185, 129, 0.1);">
                         <i class="bi bi-check-circle-fill display-3" style="color: #10B981;"></i>
                     </div>
-                    <h1 class="fw-bold mb-3 display-5 text-white">Order Placed Successfully!</h1>
-                    <p class="fs-5 mb-5 px-4" style="color: #9CA3AF;">
-                        Order #<span class="fw-bold text-white"><?php echo $order_id; ?></span> has been confirmed.<br>
-                        A confirmation email has been sent to <span class="fw-bold text-white"><?php echo htmlspecialchars($email); ?></span>
+                    <h1 class="fw-bold mb-3 display-5 text-body">Order Placed Successfully!</h1>
+                    <p class="fs-5 mb-5 px-4" style="color: #6B7280;">
+                        Order #<span class="fw-bold text-body"><?php echo $order_id; ?></span> has been confirmed.<br>
+                        A confirmation email has been sent to <span class="fw-bold text-body"><?php echo htmlspecialchars($email); ?></span>
                     </p>
                     
                     <div class="row justify-content-center g-4 mb-5">
                         <div class="col-md-5">
-                            <div class="p-4 rounded-4 border" style="background: rgba(255,255,255,0.03); border-color: #374151 !important;">
+                            <div class="p-4 rounded-4 border" style="background: rgba(255,255,255,0.03); border-color: #D1D5DB !important;">
                                 <i class="bi bi-truck fs-2 mb-2 d-block" style="color: #7C3AED;"></i>
-                                <h6 class="text-white mb-1 fw-bold">Estimated Delivery</h6>
-                                <small style="color: #9CA3AF;">3-5 Business Days</small>
+                                <h6 class="text-body mb-1 fw-bold">Estimated Delivery</h6>
+                                <small style="color: #6B7280;">3-5 Business Days</small>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@ include 'includes/header.php';
                         <a href="index.php" class="btn btn-lg rounded-pill px-5 fw-bold py-3 shadow-lg hover-lift" style="background-color: #7C3AED; color: #FFFFFF; border: none; min-width: 200px;">
                             Continue Shopping
                         </a>
-                        <a href="track-order.php?id=<?php echo $order_id; ?>" class="btn btn-lg rounded-pill px-5 fw-bold py-3 hover-lift" style="background-color: transparent; border: 1px solid #4B5563; color: #E5E7EB; min-width: 200px;">
+                        <a href="track-order.php?id=<?php echo $order_id; ?>" class="btn btn-lg rounded-pill px-5 fw-bold py-3 hover-lift" style="background-color: transparent; border: 1px solid #4B5563; color: #374151; min-width: 200px;">
                             Track Order
                         </a>
                     </div>
@@ -97,7 +97,7 @@ include 'includes/header.php';
             <div class="col-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="cart.php" class="text-decoration-none fw-medium" style="color: #9CA3AF;">Cart</a></li>
+                        <li class="breadcrumb-item"><a href="cart.php" class="text-decoration-none fw-medium" style="color: #6B7280;">Cart</a></li>
                         <li class="breadcrumb-item active fw-bold" aria-current="page" style="color: #D1D5DB;">Checkout</li>
                     </ol>
                 </nav>
@@ -105,13 +105,13 @@ include 'includes/header.php';
                     <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="width: 48px; height: 48px; background: rgba(124, 58, 237, 0.2); color: #8B5CF6;">
                         <i class="bi bi-lock-fill fs-4"></i>
                     </div>
-                    <h1 class="fw-bold display-6 mb-0" style="color: #E5E7EB;">Secure Checkout</h1>
+                    <h1 class="fw-bold display-6 mb-0" style="color: #374151;">Secure Checkout</h1>
                 </div>
             </div>
         </div>
 
         <?php if ($error): ?>
-            <div class="alert rounded-4 shadow-sm mb-4 border-0 text-white fw-bold d-flex align-items-center animate__animated animate__shakeX" style="background-color: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4);">
+            <div class="alert rounded-4 shadow-sm mb-4 border-0 text-body fw-bold d-flex align-items-center animate__animated animate__shakeX" style="background-color: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4);">
                 <i class="bi bi-exclamation-triangle-fill me-3 fs-4 text-danger"></i> <?php echo $error; ?>
             </div>
         <?php endif; ?>
@@ -119,80 +119,80 @@ include 'includes/header.php';
         <div class="row g-5">
             <!-- LEFT PANEL -->
             <div class="col-lg-7">
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden animate__animated animate__fadeInUp" style="background-color: #141821; border: 1px solid #1F2937;">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden animate__animated animate__fadeInUp" style="background-color: #141821; border: 1px solid #E5E7EB;">
                     <div class="card-body p-4 p-md-5">
                         
                         <!-- Header -->
-                        <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom" style="border-color: #374151 !important;">
+                        <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom" style="border-color: #D1D5DB !important;">
                             <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: rgba(124, 58, 237, 0.1); color: #7C3AED;">
                                 <i class="bi bi-geo-alt-fill"></i>
                             </div>
-                            <h4 class="fw-bold mb-0" style="color: #E5E7EB;">Shipping Information</h4>
+                            <h4 class="fw-bold mb-0" style="color: #374151;">Shipping Information</h4>
                         </div>
 
                         <form method="POST" class="row g-4">
                             <!-- Name -->
                             <div class="col-12">
-                                <label class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Full Name</label>
+                                <label class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Full Name</label>
                                 <div class="input-group">
                                     <input type="text" name="name" class="form-control form-control-lg rounded-pill px-4 checkout-input" 
-                                           style="background-color: #1F2937; border: 1px solid #374151; color: #E5E7EB; font-size: 1rem;" 
+                                           style="background-color: #E5E7EB; border: 1px solid #D1D5DB; color: #374151; font-size: 1rem;" 
                                            placeholder="Enter your full name" required>
                                 </div>
                             </div>
                             <!-- Email -->
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Email Address</label>
+                                <label class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Email Address</label>
                                 <input type="email" name="email" class="form-control form-control-lg rounded-pill px-4 checkout-input" 
-                                       style="background-color: #1F2937; border: 1px solid #374151; color: #E5E7EB; font-size: 1rem;"
+                                       style="background-color: #E5E7EB; border: 1px solid #D1D5DB; color: #374151; font-size: 1rem;"
                                        placeholder="your@email.com" required>
                             </div>
                             <!-- Phone -->
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Phone Number</label>
+                                <label class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Phone Number</label>
                                 <input type="tel" name="phone" class="form-control form-control-lg rounded-pill px-4 checkout-input" 
-                                       style="background-color: #1F2937; border: 1px solid #374151; color: #E5E7EB; font-size: 1rem;"
+                                       style="background-color: #E5E7EB; border: 1px solid #D1D5DB; color: #374151; font-size: 1rem;"
                                        placeholder="+91 00000 00000" required>
                             </div>
                             <!-- Address -->
                             <div class="col-12">
-                                <label class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Shipping Address</label>
+                                <label class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Shipping Address</label>
                                 <textarea name="address" rows="2" class="form-control rounded-4 px-4 py-3 checkout-input" 
-                                          style="background-color: #1F2937; border: 1px solid #374151; color: #E5E7EB; font-size: 1rem; resize: none;"
+                                          style="background-color: #E5E7EB; border: 1px solid #D1D5DB; color: #374151; font-size: 1rem; resize: none;"
                                           placeholder="Flat / House No / Street Name" required></textarea>
                             </div>
                             <!-- City -->
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">City</label>
+                                <label class="form-label small fw-bold text-uppercase" style="color: #6B7280;">City</label>
                                 <input type="text" name="city" class="form-control form-control-lg rounded-pill px-4 checkout-input" 
-                                       style="background-color: #1F2937; border: 1px solid #374151; color: #E5E7EB; font-size: 1rem;"
+                                       style="background-color: #E5E7EB; border: 1px solid #D1D5DB; color: #374151; font-size: 1rem;"
                                        placeholder="City Name" required>
                             </div>
                             <!-- Pincode -->
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-uppercase" style="color: #9CA3AF;">Pincode</label>
+                                <label class="form-label small fw-bold text-uppercase" style="color: #6B7280;">Pincode</label>
                                 <input type="text" name="pincode" class="form-control form-control-lg rounded-pill px-4 checkout-input" 
-                                       style="background-color: #1F2937; border: 1px solid #374151; color: #E5E7EB; font-size: 1rem;"
+                                       style="background-color: #E5E7EB; border: 1px solid #D1D5DB; color: #374151; font-size: 1rem;"
                                        placeholder="000000" required>
                             </div>
 
                              <!-- Payment Section -->
                             <div class="col-12 mt-5">
-                                <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom" style="border-color: #374151 !important;">
+                                <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom" style="border-color: #D1D5DB !important;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: rgba(124, 58, 237, 0.1); color: #7C3AED;">
                                         <i class="bi bi-wallet-fill"></i>
                                     </div>
-                                    <h4 class="fw-bold mb-0" style="color: #E5E7EB;">Payment Method</h4>
+                                    <h4 class="fw-bold mb-0" style="color: #374151;">Payment Method</h4>
                                 </div>
                                 
                                 <div class="p-3 rounded-4 border-2 position-relative cursor-pointer hover-lift" 
-                                     style="background-color: #1F2937; border: 2px solid #7C3AED;">
+                                     style="background-color: #E5E7EB; border: 2px solid #7C3AED;">
                                     <div class="form-check d-flex align-items-center gap-3 m-0">
                                         <input class="form-check-input fs-5" type="radio" name="payment" id="cod" checked 
                                                style="background-color: #7C3AED; border-color: #7C3AED; box-shadow: none;">
                                         <label class="form-check-label flex-grow-1" for="cod">
-                                            <span class="d-block fw-bold fs-5" style="color: #E5E7EB;">Cash on Delivery (COD)</span>
-                                            <span class="small fw-bold" style="color: #9CA3AF;">Pay securely at your doorstep</span>
+                                            <span class="d-block fw-bold fs-5" style="color: #374151;">Cash on Delivery (COD)</span>
+                                            <span class="small fw-bold" style="color: #6B7280;">Pay securely at your doorstep</span>
                                         </label>
                                         <i class="bi bi-cash-stack fs-3" style="color: #7C3AED;"></i>
                                     </div>
@@ -218,9 +218,9 @@ include 'includes/header.php';
 
             <!-- RIGHT PANEL (Summary) -->
             <div class="col-lg-5">
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden sticky-top animate__animated animate__fadeInUp animate__delay-1s" style="top: 2rem; background-color: #141821; border: 1px solid #1F2937;">
-                    <div class="card-header border-bottom py-4 px-4" style="background-color: #141821; border-color: #374151 !important;">
-                        <h5 class="fw-bold mb-0" style="color: #E5E7EB;">Order Summary</h5>
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden sticky-top animate__animated animate__fadeInUp animate__delay-1s" style="top: 2rem; background-color: #141821; border: 1px solid #E5E7EB;">
+                    <div class="card-header border-bottom py-4 px-4" style="background-color: #141821; border-color: #D1D5DB !important;">
+                        <h5 class="fw-bold mb-0" style="color: #374151;">Order Summary</h5>
                     </div>
                     <div class="card-body p-4">
                         <div class="d-flex flex-column gap-3 mb-4">
@@ -232,7 +232,7 @@ include 'includes/header.php';
                             ?>
                             <div class="d-flex gap-3 align-items-center">
                                 <div class="rounded-3 d-flex align-items-center justify-content-center p-2 border" 
-                                     style="width: 64px; height: 64px; background-color: #1F2937; border-color: #374151 !important;">
+                                     style="width: 64px; height: 64px; background-color: #E5E7EB; border-color: #D1D5DB !important;">
                                     <?php if(!empty($product['image'])): ?>
                                         <img src="<?php echo (strpos($product['image'], 'http') === 0) ? htmlspecialchars($product['image']) : 'assets/images/' . htmlspecialchars($product['image']); ?>" class="img-fluid" style="max-height: 100%; object-fit: contain;">
                                     <?php else: ?>
@@ -240,14 +240,14 @@ include 'includes/header.php';
                                     <?php endif; ?>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="fw-bold mb-1 text-truncate" style="color: #E5E7EB; max-width: 180px;">
+                                    <h6 class="fw-bold mb-1 text-truncate" style="color: #374151; max-width: 180px;">
                                         <?php echo htmlspecialchars($product['name']); ?>
                                     </h6>
-                                    <div class="small fw-bold" style="color: #9CA3AF;">
+                                    <div class="small fw-bold" style="color: #6B7280;">
                                         Qty: <?php echo $quantity; ?>
                                     </div>
                                 </div>
-                                <div class="fw-bold text-end" style="color: #E5E7EB;">
+                                <div class="fw-bold text-end" style="color: #374151;">
                                     ₹<?php echo number_format($subtotal, 0); ?>
                                 </div>
                             </div>
@@ -255,27 +255,27 @@ include 'includes/header.php';
                         </div>
 
                         <!-- Computations -->
-                        <div class="border-top pt-3 mb-4" style="border-color: #374151 !important;">
+                        <div class="border-top pt-3 mb-4" style="border-color: #D1D5DB !important;">
                             <div class="d-flex justify-content-between mb-2">
-                                <span class="fw-medium" style="color: #9CA3AF;">Subtotal</span>
-                                <span class="fw-bold" style="color: #E5E7EB;">₹<?php echo number_format(get_cart_total(), 0); ?></span>
+                                <span class="fw-medium" style="color: #6B7280;">Subtotal</span>
+                                <span class="fw-bold" style="color: #374151;">₹<?php echo number_format(get_cart_total(), 0); ?></span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
-                                <span class="fw-medium" style="color: #9CA3AF;">Shipping</span>
+                                <span class="fw-medium" style="color: #6B7280;">Shipping</span>
                                 <span class="fw-bold" style="color: #10B981;">FREE</span>
                             </div>
-                            <div class="d-flex justify-content-between pt-3 border-top" style="border-color: #374151 !important;">
-                                <span class="fs-5 fw-bold" style="color: #E5E7EB;">Total</span>
+                            <div class="d-flex justify-content-between pt-3 border-top" style="border-color: #D1D5DB !important;">
+                                <span class="fs-5 fw-bold" style="color: #374151;">Total</span>
                                 <span class="fs-3 fw-bold" style="color: #7C3AED;">₹<?php echo number_format(get_cart_total(), 0); ?></span>
                             </div>
                         </div>
                         
                         <!-- Trust Badge -->
-                        <div class="rounded-3 p-3 d-flex align-items-start gap-3" style="background-color: #1F2937;">
-                            <i class="bi bi-shield-check fs-2" style="color: #9CA3AF;"></i>
+                        <div class="rounded-3 p-3 d-flex align-items-start gap-3" style="background-color: #E5E7EB;">
+                            <i class="bi bi-shield-check fs-2" style="color: #6B7280;"></i>
                             <div>
-                                <h6 class="fw-bold mb-1" style="color: #E5E7EB;">SSL Secured Payment</h6>
-                                <p class="small mb-0 fw-medium" style="color: #9CA3AF; line-height: 1.4;">
+                                <h6 class="fw-bold mb-1" style="color: #374151;">SSL Secured Payment</h6>
+                                <p class="small mb-0 fw-medium" style="color: #6B7280; line-height: 1.4;">
                                     Your personal data is encrypted and secure. We do not store card details.
                                 </p>
                             </div>

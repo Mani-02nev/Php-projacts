@@ -48,7 +48,8 @@ if (isset($_GET['wishlist_toggle'])) {
     $p_id = intval($_GET['wishlist_toggle']);
     if (is_in_wishlist($p_id)) {
         remove_from_wishlist($p_id);
-    } else {
+    }
+    else {
         add_to_wishlist($p_id);
     }
     // Maintain scroll position
@@ -60,245 +61,102 @@ if (isset($_GET['wishlist_toggle'])) {
 include 'includes/header.php';
 ?>
 
-<style>
-/* THREE.JS HERO STYLES */
-#hero-canvas-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60%; /* Take up more space on the right */
-    height: 100%;
-    z-index: 1;
-    overflow: hidden;
-}
+<!-- HERO SLIDER SECTION -->
+<link rel="stylesheet" href="css/hero-slider.css">
+<section class="premium-hero-container">
+    <div id="hero-3d-canvas" class="hero-3d-bg"></div>
 
-@media (max-width: 991px) {
-    #hero-canvas-container {
-        width: 100%;
-        opacity: 0.5; /* Fade background 3d on mobile for legibility */
-    }
-}
-
-.hero-3d-wrapper {
-    position: relative;
-    height: 90vh;
-    min-height: 700px;
-    background: #0B0B0E;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
-
-.hero-content-layer {
-    z-index: 10;
-    position: relative;
-    pointer-events: none;
-}
-
-.hero-content-layer .btn, 
-.hero-content-layer a {
-    pointer-events: auto; 
-}
-
-.hero-title {
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 900;
-    line-height: 0.95;
-    letter-spacing: -2px;
-    color: #FFFFFF;
-    text-shadow: 0 20px 50px rgba(0,0,0,0.3);
-}
-
-.hero-subtitle {
-    font-size: 1.15rem;
-    color: #9CA3AF;
-    font-weight: 400;
-    line-height: 1.6;
-}
-
-.hero-badge {
-    background: rgba(124, 58, 237, 0.1);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    color: #C084FC;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.btn-glow {
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.btn-glow:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(124, 58, 237, 0.5);
-}
-
-.hero-fade-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(to top, #0B0B0E 0%, transparent 100%);
-    z-index: 5;
-    pointer-events: none;
-}
-
-/* PRODUCT CARD ANIMATIONS */
-.premium-product-card {
-    background-color: #14161A;
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 16px;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.premium-product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(124, 58, 237, 0.3);
-    background-color: #1A1D23;
-}
-
-.product-img-zoom {
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-}
-
-.premium-product-card:hover .product-img-zoom {
-    transform: scale(1.08) translateY(-5px);
-}
-
-.wishlist-btn-hover {
-    opacity: 0;
-    transform: translateX(10px);
-    transition: all 0.3s ease;
-}
-
-.premium-product-card:hover .wishlist-btn-hover {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* SECTION TYPOGRAPHY */
-.section-title {
-    color: #F3F4F6;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    font-size: 1.75rem;
-}
-
-.section-subtitle {
-    color: #9CA3AF;
-    font-size: 0.95rem;
-}
-
-/* NAVIGATION BUTTONS */
-.nav-btn-custom {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #2D2D35;
-    border: 1px solid #374151;
-    color: #E5E7EB;
-    transition: all 0.2s;
-}
-
-.nav-btn-custom:hover {
-    background: #7C3AED;
-    border-color: #7C3AED;
-    color: white;
-    transform: scale(1.1);
-}
-
-/* SCROLLBAR HIDE */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-</style>
-
-<!-- 3D HERO SECTION: GLOBAL COMMERCE -->
-<div class="hero-3d-wrapper">
-    <!-- background cinematic globe -->
-    <div id="hero-canvas-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
-
-    <!-- Content Overlay -->
-    <div class="container-fluid hero-content-layer h-100 d-flex align-items-center justify-content-center text-center" style="position: relative; z-index: 10;">
-        <div class="col-lg-8 animate__animated animate__fadeInUp">
-            
-            <!-- AI Label -->
-            <div class="d-flex justify-content-center mb-4">
-                <span class="badge rounded-pill px-4 py-2 hero-badge font-monospace" style="letter-spacing: 3px; background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.3); color: #A78BFA;">
-                    AI-POWERED COMMERCE
-                </span>
-            </div>
-            
-            <h1 class="hero-title mb-4" style="font-size: clamp(3rem, 8vw, 5rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1;">
-                Future of <span style="background: linear-gradient(90deg, #A78BFA, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Shopping</span>
-            </h1>
-            
-            <p class="hero-subtitle mb-5 text-secondary mx-auto" style="max-width: 700px; font-size: 1.25rem; line-height: 1.6; color: rgba(255,255,255,0.7) !important;">
-                Discover smarter shopping with AI-powered recommendations, premium products, and seamless delivery experiences designed for the modern customer.
-            </p>
-            
-            <div class="d-flex flex-wrap justify-content-center gap-4 mb-5">
-                <a href="products.php" class="btn btn-lg rounded-pill px-5 fw-bold btn-glow-purple" style="background: #7C3AED; color: white; border: none; box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);">
-                    Shop Smarter
-                </a>
-                <a href="#categories" class="btn btn-lg btn-outline-light rounded-pill px-5 fw-bold" style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);">
-                    Explore Categories
-                </a>
-            </div>
-            
-            <!-- Micro Trust Row -->
-            <div class="d-flex justify-content-center gap-4 align-items-center opacity-75 font-monospace" style="font-size: 0.8rem; letter-spacing: 2px; color: #9CA3AF;">
-                <span>PERSONALIZED</span>
-                <span style="color: #7C3AED;">•</span>
-                <span>FAST</span>
-                <span style="color: #7C3AED;">•</span>
-                <span>INTELLIGENT</span>
+    <!-- Slide 1: Electronics -->
+    <div class="hero-slide active">
+        <div class="container h-100 position-relative z-2">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6 hero-text-col">
+                    <span class="hero-label">ELECTRONICS</span>
+                    <h1 class="hero-title">Next-Generation<br>Smart Devices</h1>
+                    <p class="hero-description">Discover powerful smartphones, premium smartwatches, and intelligent accessories designed for your digital life.</p>
+                    <div class="hero-buttons">
+                        <a href="products.php?category=Electronics" class="btn-hero-primary">Shop Electronics</a>
+                        <a href="#categories" class="btn-hero-secondary">Explore Smart Devices</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div class="hero-fade-bottom"></div>
-</div>
 
-<style>
-/* Global Hero Styles */
-.hero-3d-wrapper {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background: #0B0B0E;
-    overflow: hidden;
-}
+    <!-- Slide 2: Shoes -->
+    <div class="hero-slide">
+        <div class="container h-100 position-relative z-2">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6 hero-text-col">
+                    <span class="hero-label">FOOTWEAR</span>
+                    <h1 class="hero-title">Move With<br>Confidence</h1>
+                    <p class="hero-description">Performance footwear designed for comfort, speed, and everyday style. Elevate your every step.</p>
+                    <div class="hero-buttons">
+                        <a href="products.php?category=Footwear" class="btn-hero-primary">Shop Shoes</a>
+                        <a href="#categories" class="btn-hero-secondary">View Collections</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-.btn-glow-purple:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 40px rgba(124, 58, 237, 0.6) !important;
-    transition: all 0.3s ease;
-}
+    <!-- Slide 3: Groceries -->
+    <div class="hero-slide">
+        <div class="container h-100 position-relative z-2">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6 hero-text-col">
+                    <span class="hero-label">ESSENTIALS</span>
+                    <h1 class="hero-title">Fresh Essentials<br>Delivered</h1>
+                    <p class="hero-description">Your daily groceries delivered fast, fresh, and reliable. Stock up your pantry with premium goods.</p>
+                    <div class="hero-buttons">
+                        <a href="products.php?category=Groceries" class="btn-hero-primary">Shop Groceries</a>
+                        <a href="#categories" class="btn-hero-secondary">View Offers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-.hero-fade-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 300px;
-    background: linear-gradient(to top, #0B0B0E, transparent);
-    z-index: 5;
-}
-</style>
+    <!-- Slide 4: Vegetables -->
+    <div class="hero-slide">
+        <div class="container h-100 position-relative z-2">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6 hero-text-col">
+                    <span class="hero-label">ORGANIC</span>
+                    <h1 class="hero-title">Farm Fresh<br>Vegetables</h1>
+                    <p class="hero-description">Healthy, organic vegetables sourced directly from trusted farms. Taste the nature in every bite.</p>
+                    <div class="hero-buttons">
+                        <a href="products.php?category=Vegetables" class="btn-hero-primary">Shop Vegetables</a>
+                        <a href="#categories" class="btn-hero-secondary">View Fresh Picks</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="hero-nav-controls container">
+        <div class="slider-dots">
+            <span class="dot active" onclick="gotoSlide(1)"></span>
+            <span class="dot" onclick="gotoSlide(2)"></span>
+            <span class="dot" onclick="gotoSlide(3)"></span>
+            <span class="dot" onclick="gotoSlide(4)"></span>
+        </div>
+        <div class="slider-arrows d-none d-md-flex">
+            <button onclick="prevSlide()" class="btn-arrow"><i class="bi bi-chevron-left"></i></button>
+            <button onclick="nextSlide()" class="btn-arrow"><i class="bi bi-chevron-right"></i></button>
+        </div>
+    </div>
+</section>
 
 <!-- CATEGORY SECTIONS -->
-<div id="categories" class="container-fluid px-0 py-5" style="background-color: #0B0B0E;">
+<div id="categories" class="container-fluid px-0 py-5" style="background-color: #F8F9FA;">
     
     <?php foreach ($categories_data as $category_name => $products): ?>
         <?php if (count($products) > 0): // Only show categories with items ?>
         <section class="mb-5 px-lg-5 px-3 category-scroll-trigger">
             <!-- Section Header -->
-            <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-3 section-header-animate" style="border-color: #1F2937 !important;">
+            <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-3 section-header-animate" style="border-color: #E5E7EB !important;">
                 <div>
                     <h2 class="section-title mb-1"><?php echo htmlspecialchars($category_name); ?></h2>
                     <p class="section-subtitle mb-0">Top picks for you</p>
@@ -313,7 +171,7 @@ include 'includes/header.php';
                         <i class="bi bi-chevron-right"></i>
                     </button>
                     <a href="products.php?category=<?php echo urlencode($category_name); ?>" class="btn btn-outline-secondary rounded-pill px-4 ms-2 fw-bold" 
-                       style="border-color: #374151; color: #9CA3AF;">
+                       style="border-color: #D1D5DB; color: #6B7280;">
                         View All
                     </a>
                 </div>
@@ -339,9 +197,10 @@ include 'includes/header.php';
                                 <div class="img-wrapper">
                                     <?php if ($product['stock'] == 0): ?>
                                         <div class="sold-out-overlay">Sold Out</div>
-                                    <?php endif; ?>
+                                    <?php
+            endif; ?>
                                     
-                                    <img src="<?php echo (strpos($product['image'], 'http') === 0) ? htmlspecialchars($product['image']) : 'assets/images/' . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
+                                    <img src="<?php echo(strpos($product['image'], 'http') === 0) ? htmlspecialchars($product['image']) : 'assets/images/' . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
                                 </div>
                                 
                                 <!-- Content -->
@@ -357,7 +216,8 @@ include 'includes/header.php';
                                             ₹<?php echo number_format($product['price'], 0); ?>
                                             <?php if ($product['price'] > 500): ?>
                                                 <span class="old-price">₹<?php echo number_format($product['price'] * 1.2, 0); ?></span>
-                                            <?php endif; ?>
+                                            <?php
+            endif; ?>
                                         </div>
                                         <button class="btn-add" data-id="<?php echo $product['id']; ?>">
                                             ADD
@@ -366,22 +226,25 @@ include 'includes/header.php';
                                 </div>
                             </a>
                         </div>
-                    <?php endforeach; ?>
+                    <?php
+        endforeach; ?>
                 </div>
             </div>
         </section>
-        <?php endif; ?>
-    <?php endforeach; ?>
+        <?php
+    endif; ?>
+    <?php
+endforeach; ?>
 
     <!-- Bottom Newsletter -->
     <section class="container my-5">
         <div class="p-5 rounded-4 text-center position-relative overflow-hidden" 
-             style="background: linear-gradient(135deg, #1F2937, #111827); border: 1px solid #374151;">
+             style="background: linear-gradient(135deg, #E5E7EB, #F1F5F9); border: 1px solid #D1D5DB;">
             <div class="position-relative z-1">
-                <h2 class="fw-bold text-white mb-3">Join the Future</h2>
+                <h2 class="fw-bold text-body mb-3">Join the Future</h2>
                 <p class="text-secondary mb-4 mx-auto" style="max-width: 500px;">Subscribe to our newsletter for exclusive drops and early access to new collections.</p>
                 <form class="d-flex justify-content-center gap-2 max-w-md mx-auto" style="max-width: 400px;">
-                    <input type="email" class="form-control bg-dark border-secondary text-white" placeholder="Enter your email">
+                    <input type="email" class="form-control bg-white border-light-subtle text-body" placeholder="Enter your email">
                     <button class="btn fw-bold" style="background: #7C3AED; color: white;">Subscribe</button>
                 </form>
             </div>
@@ -397,9 +260,9 @@ function scrollSlider(id, amount) {
 }
 </script>
 
-<!-- Three.js Library -->
+<!-- Three.js for Hero Background Effects -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<!-- Custom 3D Hero Script -->
-<script src="js/hero-scene.js"></script>
+<!-- Custom Hero Slider Logic -->
+<script src="js/hero-slider.js"></script>
 
 <?php include 'includes/footer.php'; ?>

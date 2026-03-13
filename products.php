@@ -72,13 +72,13 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
 /* Ensure the grid has padding on the edges */
 .global-grid-wrapper {
     padding: 20px;
-    background-color: #0B0B0E;
+    background-color: #F8F9FA;
     min-height: 100vh;
 }
 </style>
 
 <!-- ACTION TOOLBAR -->
-<div class="sticky-top border-bottom border-secondary border-opacity-25" style="background: rgba(20, 22, 26, 0.95); backdrop-filter: blur(10px); z-index: 1000;">
+<div class="sticky-top border-bottom border-light-subtle border-opacity-25" style="background: rgba(20, 22, 26, 0.95); backdrop-filter: blur(10px); z-index: 1000;">
     <div class="px-4 py-3 d-flex justify-content-between align-items-center">
         <!-- Filter Trigger -->
         <button class="btn btn-outline-secondary rounded-0 text-uppercase fw-bold d-flex align-items-center gap-2 px-4" 
@@ -95,7 +95,7 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
             <span class="text-muted text-uppercase small fw-bold d-none d-md-block">Sort By</span>
             <form method="GET" class="m-0">
                 <?php foreach($_GET as $key => $val) { if($key != 'sort') echo "<input type='hidden' name='$key' value='$val'>"; } ?>
-                <select name="sort" class="form-select form-select-sm bg-dark text-white border-secondary rounded-0 text-uppercase fw-bold py-2 ps-3" 
+                <select name="sort" class="form-select form-select-sm bg-white text-dark border-light-subtle rounded-0 text-uppercase fw-bold py-2 ps-3" 
                         onchange="this.form.submit()" style="min-width: 160px; font-size: 0.8rem;">
                     <option value="name_asc" <?php echo $sort == 'name_asc' ? 'selected' : ''; ?>>Name (A-Z)</option>
                     <option value="name_desc" <?php echo $sort == 'name_desc' ? 'selected' : ''; ?>>Name (Z-A)</option>
@@ -156,20 +156,20 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
                 </a>
             <?php endforeach; ?>
         <?php else: ?>
-            <div style="grid-column: 1 / -1; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0B0B0E;">
+            <div style="grid-column: 1 / -1; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #F8F9FA;">
                 <i class="bi bi-search text-secondary opacity-25 mb-4" style="font-size: 4rem;"></i>
-                <h3 class="fw-bold text-white mb-2">No Products Found</h3>
+                <h3 class="fw-bold text-body mb-2">No Products Found</h3>
                 <p class="text-secondary mb-4">We couldn't find matches for your search.</p>
-                <a href="products.php" class="btn btn-outline-light rounded-0 px-5 text-uppercase fw-bold">View All Products</a>
+                <a href="products.php" class="btn btn-outline-dark rounded-0 px-5 text-uppercase fw-bold">View All Products</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
 
 <!-- OFF CANVAS FILTERS -->
-<div class="offcanvas offcanvas-start border-end border-secondary border-opacity-25" tabindex="-1" id="filterSidebar" style="background-color: #0B0B0E; width: 320px;">
-    <div class="offcanvas-header border-bottom border-dark p-4">
-        <h5 class="offcanvas-title fw-bold text-white text-uppercase letter-spacing-2">Filters</h5>
+<div class="offcanvas offcanvas-start border-end border-light-subtle border-opacity-25" tabindex="-1" id="filterSidebar" style="background-color: #F8F9FA; width: 320px;">
+    <div class="offcanvas-header border-bottom border-light p-4">
+        <h5 class="offcanvas-title fw-bold text-body text-uppercase letter-spacing-2">Filters</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body p-4">
@@ -179,7 +179,7 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
             <!-- Search -->
             <div class="mb-5">
                 <label class="d-block text-secondary fw-bold text-uppercase small mb-3 letter-spacing-1">Search</label>
-                <input type="text" name="search" class="form-control bg-dark border-secondary border-opacity-25 text-white rounded-0 p-3" 
+                <input type="text" name="search" class="form-control bg-white border-light-subtle border-opacity-25 text-body rounded-0 p-3" 
                        placeholder="Type Keyword..." value="<?php echo htmlspecialchars($search); ?>">
             </div>
 
@@ -187,16 +187,16 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
             <div class="mb-5">
                 <label class="d-block text-secondary fw-bold text-uppercase small mb-3 letter-spacing-1">Category</label>
                 <div class="d-flex flex-column gap-2">
-                    <label class="custom-control-label d-flex align-items-center gap-2 cursor-pointer text-white">
-                        <input type="radio" name="category" value="" class="form-check-input bg-dark border-secondary rounded-circle" 
+                    <label class="custom-control-label d-flex align-items-center gap-2 cursor-pointer text-body">
+                        <input type="radio" name="category" value="" class="form-check-input bg-white border-light-subtle rounded-circle" 
                                <?php echo $category_filter == '' ? 'checked' : ''; ?>>
                         <span>All Categories</span>
                     </label>
                     <?php foreach ($all_categories as $cat): ?>
                         <label class="custom-control-label d-flex align-items-center gap-2 cursor-pointer text-gray-300">
-                            <input type="radio" name="category" value="<?php echo htmlspecialchars($cat); ?>" class="form-check-input bg-dark border-secondary rounded-circle"
+                            <input type="radio" name="category" value="<?php echo htmlspecialchars($cat); ?>" class="form-check-input bg-white border-light-subtle rounded-circle"
                                    <?php echo $category_filter == $cat ? 'checked' : ''; ?>>
-                            <span class="<?php echo $category_filter == $cat ? 'text-white fw-bold' : 'text-secondary'; ?>"><?php echo htmlspecialchars($cat); ?></span>
+                            <span class="<?php echo $category_filter == $cat ? 'text-body fw-bold' : 'text-secondary'; ?>"><?php echo htmlspecialchars($cat); ?></span>
                         </label>
                     <?php endforeach; ?>
                 </div>
@@ -206,8 +206,8 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
             <div class="mb-5">
                 <label class="d-block text-secondary fw-bold text-uppercase small mb-3 letter-spacing-1">Price Range</label>
                 <div class="d-flex gap-2">
-                    <input type="number" name="min_price" class="form-control bg-dark border-secondary border-opacity-25 text-white rounded-0" placeholder="Min" value="<?php echo $min_price; ?>">
-                    <input type="number" name="max_price" class="form-control bg-dark border-secondary border-opacity-25 text-white rounded-0" placeholder="Max" value="<?php echo $max_price; ?>">
+                    <input type="number" name="min_price" class="form-control bg-white border-light-subtle border-opacity-25 text-body rounded-0" placeholder="Min" value="<?php echo $min_price; ?>">
+                    <input type="number" name="max_price" class="form-control bg-white border-light-subtle border-opacity-25 text-body rounded-0" placeholder="Max" value="<?php echo $max_price; ?>">
                 </div>
             </div>
 

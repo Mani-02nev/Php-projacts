@@ -67,7 +67,7 @@ $team = [
    ═══════════════════════════════════════════════════════════ */
 
 .about-page-wrapper {
-    background-color: #0B0B0E;
+    background-color: #F8F9FA;
     min-height: 100vh;
     position: relative;
     overflow: hidden;
@@ -83,8 +83,8 @@ $team = [
    CORE VALUES CARDS
    ═══════════════════════════════════════════════════════════ */
 .feature-card {
-    background: #14161A;
-    border: 1px solid #2D2D35;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     height: 100%;
 }
@@ -137,12 +137,12 @@ $team = [
     backface-visibility: hidden;
     border-radius: 24px;
     overflow: hidden;
-    border: 1px solid #2D2D35;
+    border: 1px solid #E5E7EB;
 }
 
 /* Front Side */
 .flip-card-front {
-    background-color: #14161A;
+    background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -152,8 +152,8 @@ $team = [
 
 /* Back Side */
 .flip-card-back {
-    background-color: #0B0B0E;
-    color: #E5E7EB;
+    background-color: #F8F9FA;
+    color: #374151;
     transform: rotateY(180deg);
     display: flex;
     flex-direction: column;
@@ -179,20 +179,20 @@ $team = [
    PROJECT INFO SECTION
    ═══════════════════════════════════════════════════════════ */
 .project-info-card {
-    background: #14161A;
-    border: 1px solid #2D2D35;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
     border-radius: 24px;
     overflow: hidden;
 }
 
 .project-info-divider {
-    border-color: #2D2D35 !important;
+    border-color: #E5E7EB !important;
 }
 
 .tech-badge {
-    background: #0B0B0E;
-    border: 1px solid #2D2D35;
-    color: #9CA3AF;
+    background: #F8F9FA;
+    border: 1px solid #E5E7EB;
+    color: #6B7280;
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
     font-size: 0.875rem;
@@ -217,11 +217,11 @@ $team = [
    ACCESSIBILITY & CONTRAST
    ═══════════════════════════════════════════════════════════ */
 .text-primary-light {
-    color: #E5E7EB;
+    color: #374151;
 }
 
 .text-secondary-light {
-    color: #9CA3AF;
+    color: #6B7280;
 }
 
 .text-tertiary-light {
@@ -239,10 +239,10 @@ $team = [
             <div class="row justify-content-center">
                 <div class="col-lg-8 mx-auto py-5">
                     <span class="badge rounded-pill px-3 py-2 mb-4" style="background: rgba(124, 58, 237, 0.1); color: #A78BFA; border: 1px solid rgba(124, 58, 237, 0.2);">EST. 2026</span>
-                    <h1 class="display-3 fw-bold mb-4" style="color: #E5E7EB; letter-spacing: -1px;">
+                    <h1 class="display-3 fw-bold mb-4" style="color: #374151; letter-spacing: -1px;">
                         We are <span style="color: #7C3AED;">UNIVAULT</span>
                     </h1>
-                    <p class="lead mb-0" style="color: #9CA3AF; line-height: 1.8; max-width: 600px; margin: 0 auto;">
+                    <p class="lead mb-0" style="color: #6B7280; line-height: 1.8; max-width: 600px; margin: 0 auto;">
                         A collective of digital craftsmen building the next generation of e-commerce experiences. 
                         Driven by innovation, secured by logic, and designed with passion.
                     </p>
@@ -262,8 +262,8 @@ $team = [
                     <div class="feature-icon-wrapper" style="background: rgba(124, 58, 237, 0.1); color: #7C3AED;">
                         <i class="bi bi-layers-fill fs-1"></i>
                     </div>
-                    <h4 class="fw-bold mb-3" style="color: #E5E7EB;">Modern Stack</h4>
-                    <p class="mb-0" style="color: #9CA3AF; line-height: 1.6;">
+                    <h4 class="fw-bold mb-3" style="color: #374151;">Modern Stack</h4>
+                    <p class="mb-0" style="color: #6B7280; line-height: 1.6;">
                         Built on a robust PHP framework with CSV-based data architecture for lightning-fast performance.
                     </p>
                 </div>
@@ -275,8 +275,8 @@ $team = [
                     <div class="feature-icon-wrapper" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
                         <i class="bi bi-shield-lock-fill fs-1"></i>
                     </div>
-                    <h4 class="fw-bold mb-3" style="color: #E5E7EB;">Bank-Grade Security</h4>
-                    <p class="mb-0" style="color: #9CA3AF; line-height: 1.6;">
+                    <h4 class="fw-bold mb-3" style="color: #374151;">Bank-Grade Security</h4>
+                    <p class="mb-0" style="color: #6B7280; line-height: 1.6;">
                         Engineered with enterprise security protocols to ensure every transaction is safe and encrypted.
                     </p>
                 </div>
@@ -288,8 +288,8 @@ $team = [
                     <div class="feature-icon-wrapper" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
                         <i class="bi bi-infinity fs-1"></i>
                     </div>
-                    <h4 class="fw-bold mb-3" style="color: #E5E7EB;">Scalable Design</h4>
-                    <p class="mb-0" style="color: #9CA3AF; line-height: 1.6;">
+                    <h4 class="fw-bold mb-3" style="color: #374151;">Scalable Design</h4>
+                    <p class="mb-0" style="color: #6B7280; line-height: 1.6;">
                         Modular architecture allowing infinite scalability and seamless feature integration.
                     </p>
                 </div>
@@ -302,8 +302,8 @@ $team = [
          ═══════════════════════════════════════════════════════════ -->
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3" style="color: #E5E7EB;">Meet Our Visionaries</h2>
-            <p class="mb-5" style="color: #9CA3AF;">The brilliant minds behind the code.</p>
+            <h2 class="display-5 fw-bold mb-3" style="color: #374151;">Meet Our Visionaries</h2>
+            <p class="mb-5" style="color: #6B7280;">The brilliant minds behind the code.</p>
         </div>
 
         <div class="row g-4">
@@ -315,17 +315,17 @@ $team = [
                             <!-- Front Side -->
                             <div class="flip-card-front">
                                 <div class="avatar-glow rounded-circle d-flex align-items-center justify-content-center mb-4" 
-                                     style="width: 100px; height: 100px; background: #0B0B0E; border: 2px solid <?php echo $member['color']; ?>; color: <?php echo $member['color']; ?>; font-size: 2.5rem;">
+                                     style="width: 100px; height: 100px; background: #F8F9FA; border: 2px solid <?php echo $member['color']; ?>; color: <?php echo $member['color']; ?>; font-size: 2.5rem;">
                                     <i class="bi <?php echo $member['icon']; ?>"></i>
                                 </div>
-                                <h4 class="fw-bold mb-1" style="color: #E5E7EB;"><?php echo $member['name']; ?></h4>
+                                <h4 class="fw-bold mb-1" style="color: #374151;"><?php echo $member['name']; ?></h4>
                                 <p class="small text-uppercase fw-bold mb-4" style="color: <?php echo $member['color']; ?>; letter-spacing: 1px;">
                                     <?php echo $member['role']; ?>
                                 </p>
                                 
                                 <div class="d-flex gap-2 justify-content-center flex-wrap">
                                     <?php foreach ($member['skills'] as $skill): ?>
-                                        <span class="badge rounded-pill px-3 py-2" style="background: rgba(255, 255, 255, 0.05); color: #9CA3AF; border: 1px solid #2D2D35; font-weight: 500;">
+                                        <span class="badge rounded-pill px-3 py-2" style="background: rgba(0, 0, 0, 0.05); color: #6B7280; border: 1px solid #E5E7EB; font-weight: 500;">
                                             <?php echo $skill; ?>
                                         </span>
                                     <?php endforeach; ?>
@@ -335,11 +335,11 @@ $team = [
                             <!-- Back Side -->
                             <div class="flip-card-back">
                                 <div class="mb-3 d-flex align-items-center justify-content-center rounded-circle" 
-                                     style="width: 60px; height: 60px; background: rgba(255,255,255,0.05); color: <?php echo $member['color']; ?>;">
+                                     style="width: 60px; height: 60px; background: rgba(0,0,0,0.05); color: <?php echo $member['color']; ?>;">
                                     <span class="fw-bold fs-4"><?php echo $member['initials']; ?></span>
                                 </div>
-                                <h5 class="fw-bold mb-3" style="color: #E5E7EB;">About</h5>
-                                <p class="text-center mb-4 small px-3" style="line-height: 1.6; color: #9CA3AF;">
+                                <h5 class="fw-bold mb-3" style="color: #374151;">About</h5>
+                                <p class="text-center mb-4 small px-3" style="line-height: 1.6; color: #6B7280;">
                                     <?php echo $member['bio']; ?>
                                 </p>
                                 <button class="btn btn-sm rounded-pill px-4 fw-bold" style="background: <?php echo $member['color']; ?>; color: white; border: none;">
@@ -361,23 +361,23 @@ $team = [
         <div class="project-info-card">
             <div class="row g-0">
                 <!-- Left Column: Info Table -->
-                <div class="col-lg-6 p-5 d-flex flex-column justify-content-center" style="border-right: 1px solid #2D2D35;">
-                    <h3 class="fw-bold mb-4" style="color: #E5E7EB;">Project Information</h3>
+                <div class="col-lg-6 p-5 d-flex flex-column justify-content-center" style="border-right: 1px solid #E5E7EB;">
+                    <h3 class="fw-bold mb-4" style="color: #374151;">Project Information</h3>
                     <div class="vstack gap-3">
                         <div class="d-flex justify-content-between border-bottom pb-3 project-info-divider">
-                            <span style="color: #9CA3AF;">Project Name</span>
-                            <span class="fw-bold" style="color: #E5E7EB;">Univault E-Commerce</span>
+                            <span style="color: #6B7280;">Project Name</span>
+                            <span class="fw-bold" style="color: #374151;">Univault E-Commerce</span>
                         </div>
                         <div class="d-flex justify-content-between border-bottom pb-3 project-info-divider">
-                            <span style="color: #9CA3AF;">Institution</span>
-                            <span class="fw-bold" style="color: #E5E7EB;">Computer Science Dept.</span>
+                            <span style="color: #6B7280;">Institution</span>
+                            <span class="fw-bold" style="color: #374151;">Computer Science Dept.</span>
                         </div>
                         <div class="d-flex justify-content-between border-bottom pb-3 project-info-divider">
-                            <span style="color: #9CA3AF;">Academic Year</span>
-                            <span class="fw-bold" style="color: #E5E7EB;">2nd Year Diploma</span>
+                            <span style="color: #6B7280;">Academic Year</span>
+                            <span class="fw-bold" style="color: #374151;">2nd Year Diploma</span>
                         </div>
                         <div class="d-flex justify-content-between pt-1">
-                            <span style="color: #9CA3AF;">Tech Stack</span>
+                            <span style="color: #6B7280;">Tech Stack</span>
                             <div class="d-flex gap-2 flex-wrap justify-content-end">
                                 <span class="tech-badge">PHP 8.2</span>
                                 <span class="tech-badge">HTML5</span>
@@ -392,8 +392,8 @@ $team = [
                      style="background: radial-gradient(circle, rgba(124, 58, 237, 0.1), transparent);">
                     <div>
                         <i class="bi bi-code-square display-1 mb-4 d-block" style="color: #7C3AED;"></i>
-                        <h4 class="fw-bold mb-3" style="color: #E5E7EB;">Open Source Learning</h4>
-                        <p class="mb-4 px-4" style="color: #9CA3AF; line-height: 1.6;">
+                        <h4 class="fw-bold mb-3" style="color: #374151;">Open Source Learning</h4>
+                        <p class="mb-4 px-4" style="color: #6B7280; line-height: 1.6;">
                             This project represents a complete dedication to learning full-stack development, 
                             from server-side logic to frontend interactivity.
                         </p>
@@ -413,11 +413,11 @@ $team = [
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <h2 class="fw-bold mb-4 text-center" style="color: #E5E7EB;">
+                <h2 class="fw-bold mb-4 text-center" style="color: #374151;">
                     <i class="bi bi-lightbulb me-2" style="color: #7C3AED;"></i>
                     About This Project
                 </h2>
-                <div style="color: #9CA3AF; line-height: 1.8; font-size: 1.05rem;">
+                <div style="color: #6B7280; line-height: 1.8; font-size: 1.05rem;">
                     <p>
                         UNIVAULT is an e-commerce platform developed as part of our 2nd year diploma project for PHP web development. 
                         This project demonstrates our understanding of full-stack web development, including user authentication, 
@@ -441,8 +441,8 @@ $team = [
          6. CLOSING SECTION
          ═══════════════════════════════════════════════════════════ -->
     <div class="container text-center py-5 mb-5">
-        <p class="h6 text-uppercase fw-bold mb-3" style="color: #9CA3AF; letter-spacing: 2px;">Thank You</p>
-        <h2 class="display-6 fw-bold mb-0" style="color: #E5E7EB;">
+        <p class="h6 text-uppercase fw-bold mb-3" style="color: #6B7280; letter-spacing: 2px;">Thank You</p>
+        <h2 class="display-6 fw-bold mb-0" style="color: #374151;">
             Created with <i class="bi bi-heart-fill mx-2" style="color: #EF4444;"></i> by the Students
         </h2>
     </div>

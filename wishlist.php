@@ -31,15 +31,15 @@ include 'includes/header.php';
 <div class="container py-5">
     <div class="row mb-4 align-items-center">
         <div class="col">
-            <h1 class="fw-bold mb-1" style="color: #E5E7EB;"><i class="bi bi-heart-fill text-danger me-2"></i> My Wishlist</h1>
-            <p class="mb-0 fs-5" style="color: #9CA3AF;">Products you've saved for later</p>
+            <h1 class="fw-bold mb-1" style="color: #374151;"><i class="bi bi-heart-fill text-danger me-2"></i> My Wishlist</h1>
+            <p class="mb-0 fs-5" style="color: #6B7280;">Products you've saved for later</p>
         </div>
     </div>
 
     <?php if (empty($wishlist_items)): ?>
         <!-- EMPTY STATE (White Card as requested) -->
-        <div class="text-center py-5 rounded-5 shadow-sm border" style="background-color: #FFFFFF; border-color: #E5E7EB;">
-            <div class="display-1 mb-4" style="color: #9CA3AF; opacity: 0.3;">
+        <div class="text-center py-5 rounded-5 shadow-sm border" style="background-color: #FFFFFF; border-color: #374151;">
+            <div class="display-1 mb-4" style="color: #6B7280; opacity: 0.3;">
                 <i class="bi bi-heart"></i>
             </div>
             <h3 class="fw-bold text-dark mb-2">Your wishlist is empty</h3>
@@ -89,8 +89,8 @@ include 'includes/header.php';
     <!-- Recently Viewed Section -->
     <?php $recently_viewed = get_recently_viewed_products(); ?>
     <?php if (!empty($recently_viewed)): ?>
-        <div class="mt-5 pt-5" style="border-top: 1px solid #2D2D35;">
-            <h4 class="fw-bold mb-4" style="color: #E5E7EB;">Recently Viewed</h4>
+        <div class="mt-5 pt-5" style="border-top: 1px solid #E5E7EB;">
+            <h4 class="fw-bold mb-4" style="color: #374151;">Recently Viewed</h4>
             <div class="global-grid">
                 <?php foreach (array_slice($recently_viewed, 0, 6) as $product): ?>
                     <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">

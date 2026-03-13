@@ -41,217 +41,334 @@ $progress_width = ($current_status_index / (count($status_steps) - 1)) * 100;
 $items = json_decode($order['items'], true);
 $all_products = get_all_products();
 $order_products = [];
-foreach ($items as $pid => $qty) {
-    foreach ($all_products as $p) {
-        if ($p['id'] == $pid) {
-            $p['qty'] = $qty;
-            $order_products[] = $p;
-            break;
+if (is_array($items)) {
+    foreach ($items as $pid => $qty) {
+        foreach ($all_products as $p) {
+            if ($p['id'] == $pid) {
+                $p['qty'] = $qty;
+                $order_products[] = $p;
+                break;
+            }
         }
     }
 }
 ?>
+<style>
+/* Custom track order styles */
+.saas-glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
 
-<div class="container-fluid px-3 px-lg-5 py-5" style="background-color: #0B0B0E; min-height: 100vh;">
+.timeline-horizontal {
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 768px) {
+    .timeline-horizontal {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+    }
+    .timeline-horizontal::before {
+        content: '';
+        position: absolute;
+        top: 24px;
+        left: 40px;
+        right: 40px;
+        height: 2px;
+        background: #E5E7EB;
+        z-index: 0;
+    }
+}
+.timeline-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+@media (min-width: 768px) {
+    .timeline-step {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 0;
+        width: 20%;
+    }
+    .timeline-step .track-line-mobile {
+        display: none;
+    }
+}
+@media (max-width: 767.98px) {
+    .timeline-step::before {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: 24px;
+        width: 2px;
+        height: calc(100% + 10px);
+        background: #E5E7EB;
+        z-index: -1;
+    }
+    .timeline-step:last-child::before {
+        display: none;
+    }
+}
+</style>
+
+<div class="saas-container py-5">
     <!-- Header Section -->
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5">
-        <div class="mb-3 mb-md-0">
-            <nav aria-label="breadcrumb" class="mb-2">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
+        <div>
+            <nav aria-label="breadcrumb" class="mb-1">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="profile.php" class="text-decoration-none" style="color: #6B7280;">My Orders</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" style="color: #9CA3AF;">#<?php echo $order['id']; ?></li>
+                    <li class="breadcrumb-item"><a href="profile.php" class="text-decoration-none" style="color: #6366F1;">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="profile.php#orders" class="text-decoration-none" style="color: #6366F1;">Orders</a></li>
+                    <li class="breadcrumb-item active text-secondary" aria-current="page">Track #<?php echo $order['id']; ?></li>
                 </ol>
             </nav>
-            <h2 class="fw-bold mb-0" style="color: #E5E7EB; letter-spacing: -0.5px;">Tracking Details</h2>
+            <h2 class="fw-bold mb-0" style="color: #312E81; letter-spacing: -0.5px;">Order Tracking</h2>
         </div>
-        <a href="profile.php" class="btn rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center justify-content-center" 
-           style="background-color: rgba(255, 255, 255, 0.05); color: #E5E7EB; border: 1px solid #2D2D35; transition: all 0.2s;">
+        <a href="profile.php#orders" class="btn rounded-pill px-4 py-2 fw-medium mt-3 mt-md-0 d-inline-flex align-items-center" 
+           style="background-color: #ffffff; color: #4338CA; border: 1px solid rgba(99, 102, 241, 0.2); box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.05)'" onmouseout="this.style.background='#ffffff'">
             <i class="bi bi-arrow-left me-2"></i> Back to Orders
         </a>
     </div>
 
-    <div class="row g-4">
-        <!-- LEFT COLUMN: Tracking Timeline -->
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-lg h-100" style="background-color: #14161A; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-                <div class="card-body p-4 p-md-5 position-relative">
-                    <h5 class="fw-bold mb-5 pb-3 border-bottom" style="color: #E5E7EB; border-color: #2D2D35 !important;">
-                        <i class="bi bi-geo-alt-fill me-2" style="color: #7C3AED;"></i> Shipment Status
-                    </h5>
-                    
-                    <!-- Vertical Timeline Container -->
-                    <div class="position-relative ms-2 ms-md-4" style="min-height: 400px;">
-                        <!-- The Connecting Line -->
-                        <div class="position-absolute top-0 bottom-0 start-0 border-start border-2" 
-                             style="border-color: #2D2D35; left: 24px; z-index: 0;"></div>
-                        
-                        <?php 
-                        $steps = [
-                            'pending' => [
-                                'title' => 'Order Placed',
-                                'desc' => 'We have received your order.',
-                                'icon' => 'bi-clipboard-check',
-                                'date' => $order['created_at'] // Approximate date logic
-                            ],
-                            'processing' => [
-                                'title' => 'Processing',
-                                'desc' => 'Your order is being prepared.',
-                                'icon' => 'bi-box-seam',
-                                'date' => null
-                            ],
-                            'shipped' => [
-                                'title' => 'Shipped',
-                                'desc' => 'Your order is on the way.',
-                                'icon' => 'bi-truck',
-                                'date' => null
-                            ],
-                            'delivered' => [
-                                'title' => 'Delivered',
-                                'desc' => 'Package delivered safely.',
-                                'icon' => 'bi-house-check',
-                                'date' => null
-                            ]
-                        ];
-                        
-                        $keys = array_keys($steps);
-                        foreach ($keys as $index => $key):
-                            $step = $steps[$key];
-                            $isCompleted = $index <= $current_status_index;
-                            $isCurrent = $index === $current_status_index;
-                            
-                            // Visual States
-                            $nodeBg = $isCompleted ? '#7C3AED' : '#14161A';
-                            $nodeBorder = $isCompleted ? '#7C3AED' : '#2D2D35';
-                            $iconColor = $isCompleted ? '#FFFFFF' : '#6B7280';
-                            $titleColor = $isCompleted ? '#E5E7EB' : '#6B7280';
-                            
-                            if ($isCurrent) {
-                                $nodeBg = '#14161A'; // Dark center
-                                $nodeBorder = '#7C3AED';
-                                $iconColor = '#7C3AED';
-                                $titleColor = '#FFFFFF';
-                            }
-                        ?>
-                            <!-- Timeline Step -->
-                            <div class="d-flex align-items-start mb-5 position-relative" style="z-index: 1;">
-                                <!-- Icon Node -->
-                                <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg flex-shrink-0" 
-                                     style="width: 50px; height: 50px; background-color: <?php echo $nodeBg; ?>; border: 2px solid <?php echo $nodeBorder; ?>; margin-right: 1.5rem; <?php echo $isCurrent ? 'box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);' : ''; ?>">
-                                    <i class="bi <?php echo $step['icon']; ?>" style="color: <?php echo $iconColor; ?>; font-size: 1.2rem;"></i>
+    <!-- 1. Order Summary Card -->
+    <div class="saas-glass-card p-4 p-md-5 mb-5 border-0">
+        <h5 class="fw-bold mb-4" style="color: #312E81;"><i class="bi bi-receipt me-2" style="color: #6366F1;"></i>Order Summary</h5>
+        
+        <div class="row g-4 d-flex">
+            <div class="col-md-4 col-lg-2">
+                <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Order ID</p>
+                <p class="fw-bold text-dark fs-5 mb-0">#<?php echo $order['id']; ?></p>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Order Date</p>
+                <p class="fw-semibold text-dark mb-0"><?php echo date('M d, Y', strtotime($order['created_at'])); ?></p>
+            </div>
+            <?php
+$item_count_total = 0;
+foreach ($order_products as $op) {
+    $item_count_total += $op['qty'];
+}
+?>
+            <div class="col-md-4 col-lg-2">
+                <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Items</p>
+                <p class="fw-semibold text-dark mb-0"><?php echo $item_count_total; ?> <?php echo $item_count_total === 1 ? 'item' : 'items'; ?></p>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Total Price</p>
+                <p class="fw-bold fs-5 mb-0" style="color: #4338CA;">₹<?php echo number_format($order['total_amount'], 2); ?></p>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Payment Method</p>
+                <p class="fw-semibold text-dark mb-0 d-flex align-items-center">
+                    <i class="bi bi-credit-card-2-front me-2" style="color: #6366F1;"></i> Online Secure
+                </p>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Shipping To</p>
+                <p class="text-dark small mb-0 fw-medium line-clamp-2" title="<?php echo htmlspecialchars($order['shipping_address']); ?>">
+                    <?php echo htmlspecialchars(explode(',', $order['shipping_address'])[0]); ?>, <?php echo htmlspecialchars($order['city']); ?>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <!-- Delivery Progress and Details (Left Side / Full Width) -->
+        <div class="col-12 col-xl-8">
+            
+            <!-- 2. Delivery Progress Timeline -->
+            <div class="saas-glass-card p-4 p-md-5 mb-5 border-0">
+                <h5 class="fw-bold mb-5" style="color: #312E81;"><i class="bi bi-truck me-2" style="color: #6366F1;"></i>Delivery Progress</h5>
+                
+                <?php
+// Enhanced steps including 'out_for_delivery'
+$tracking_steps = [
+    'pending' => ['title' => 'Order Placed', 'icon' => 'bi-clipboard-check', 'date' => $order['created_at']],
+    'processing' => ['title' => 'Processing', 'icon' => 'bi-box-seam', 'date' => null],
+    'shipped' => ['title' => 'Shipped', 'icon' => 'bi-truck', 'date' => null],
+    'out_for_delivery' => ['title' => 'Out for Delivery', 'icon' => 'bi-bicycle', 'date' => null],
+    'delivered' => ['title' => 'Delivered', 'icon' => 'bi-house-check', 'date' => null]
+];
+
+// Map current db status to internal tracking steps
+$mapped_index = 0;
+if ($order['status'] === 'processing')
+    $mapped_index = 1;
+else if ($order['status'] === 'shipped') {
+    // Artificially show out for delivery based on time elapsed maybe? 
+    // Let's just hardcode 2 for shipped.
+    $mapped_index = 2;
+}
+else if ($order['status'] === 'delivered')
+    $mapped_index = 4;
+
+if ($order['status'] === 'cancelled') {
+    $mapped_index = -1;
+}
+?>
+                
+                <?php if ($order['status'] === 'cancelled'): ?>
+                    <div class="alert alert-danger mb-0 rounded-4 border-0 p-4 text-center">
+                        <i class="bi bi-x-circle display-4 mb-3 d-block text-danger"></i>
+                        <h4 class="fw-bold text-danger">Order Cancelled</h4>
+                        <p class="mb-0 text-dark">This order has been cancelled and will not be delivered.</p>
+                    </div>
+                <?php
+else: ?>
+                    <div class="timeline-horizontal">
+                        <!-- Progress fill line for desktop -->
+                        <div class="d-none d-md-block position-absolute" style="top: 24px; left: 40px; height: 2px; border-radius: 2px; background: #6366F1; z-index: 0; width: <?php echo($mapped_index / 4) * 100; ?>%; transition: width 1s ease-in-out; box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);"></div>
+
+                        <?php
+    $keys = array_keys($tracking_steps);
+    foreach ($keys as $index => $key):
+        $step = $tracking_steps[$key];
+        $isCompleted = $index <= $mapped_index;
+        $isCurrent = $index === $mapped_index;
+        $isFuture = $index > $mapped_index;
+
+        $nodeBg = $isCompleted ? 'linear-gradient(135deg, #6366F1, #8B5CF6)' : '#FFFFFF';
+        $nodeBorder = $isCompleted ? 'transparent' : '#E5E7EB';
+        $iconClass = $step['icon'];
+        $iconColor = $isCompleted ? '#FFFFFF' : '#9CA3AF';
+        $textColor = $isCompleted ? '#1F2937' : '#9CA3AF';
+
+        if ($isCompleted && !$isCurrent) {
+            // Show check icons for completed past steps
+            $iconClass = 'bi-check-lg';
+        }
+
+        $glowEffect = $isCurrent ? 'box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2), 0 10px 20px rgba(99, 102, 241, 0.3); transform: scale(1.1);' : 'box-shadow: 0 4px 6px rgba(0,0,0,0.05);';
+        if ($isFuture)
+            $glowEffect = '';
+?>
+                            <div class="timeline-step">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                                     style="width: 50px; height: 50px; background: <?php echo $nodeBg; ?>; border: 2px solid <?php echo $nodeBorder; ?>; <?php echo $glowEffect; ?> transition: all 0.3s ease;">
+                                    <i class="bi <?php echo $iconClass; ?>" style="color: <?php echo $iconColor; ?>; font-size: 1.3rem;"></i>
                                 </div>
-                                
-                                <!-- Content -->
-                                <div class="pt-1 flex-grow-1">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <h6 class="fw-bold mb-0 me-3" style="color: <?php echo $titleColor; ?>; font-size: 1.1rem;">
-                                            <?php echo $step['title']; ?>
-                                        </h6>
-                                        <?php if ($isCurrent): ?>
-                                            <span class="badge rounded-pill px-2 py-1" style="background-color: #7C3AED; font-size: 0.7rem; letter-spacing: 0.5px;">CURRENT STATUS</span>
-                                        <?php elseif ($isCompleted): ?>
-                                            <i class="bi bi-check-circle-fill" style="color: #10B981;"></i>
-                                        <?php endif; ?>
-                                    </div>
-                                    <p class="mb-0 small" style="color: #9CA3AF; max-width: 300px;"><?php echo $step['desc']; ?></p>
+                                <div class="ms-4 ms-md-0 mt-md-3 pt-1 pt-md-0 d-flex flex-column align-items-start align-items-md-center">
+                                    <h6 class="fw-bold mb-1" style="color: <?php echo $textColor; ?>; font-size: 0.95rem;"><?php echo $step['title']; ?></h6>
                                     <?php if ($step['date']): ?>
-                                        <div class="mt-2 small" style="color: #6B7280;">
-                                            <i class="bi bi-clock me-1"></i> <?php echo date('M d, Y h:i A', strtotime($step['date'])); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                        <small class="text-secondary font-monospace" style="font-size: 0.8rem;"><?php echo date('M d, H:i', strtotime($step['date'])); ?></small>
+                                    <?php
+        elseif ($isCurrent): ?>
+                                        <small class="fw-bold" style="color: #6366F1; font-size: 0.8rem;">IN PROGRESS</small>
+                                    <?php
+        else: ?>
+                                        <small class="text-secondary" style="font-size: 0.8rem; visibility: hidden;">TBD</small>
+                                    <?php
+        endif; ?>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                        <?php
+    endforeach; ?>
+                    </div>
+                <?php
+endif; ?>
+            </div>
+
+            <!-- 4. Order Item List -->
+            <div class="saas-glass-card p-0 mb-5 border-0 overflow-hidden">
+                <div class="p-4 p-md-5 border-bottom" style="border-color: rgba(0,0,0,0.05) !important;">
+                    <h5 class="fw-bold mb-0" style="color: #312E81;"><i class="bi bi-cart3 me-2" style="color: #6366F1;"></i>Purchased Items</h5>
+                </div>
+                
+                <div class="p-4 p-md-5 bg-white bg-opacity-50">
+                    <div class="row g-4">
+                        <?php foreach ($order_products as $product): ?>
+                            <div class="col-md-6 col-lg-12 col-xl-6">
+                                <div class="d-flex p-3 rounded-4 bg-white shadow-sm" style="border: 1px solid rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                                    <div class="rounded-3 overflow-hidden bg-white me-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; flex-shrink: 0; background-color: #f8f9fa;">
+                                        <?php if (!empty($product['image']) && file_exists('assets/images/' . $product['image'])): ?>
+                                            <img src="assets/images/<?php echo htmlspecialchars($product['image']); ?>" class="w-100 h-100 object-fit-contain p-2" alt="Product">
+                                        <?php
+    elseif (!empty($product['image']) && strpos($product['image'], 'http') === 0): ?>
+                                            <img src="<?php echo htmlspecialchars($product['image']); ?>" class="w-100 h-100 object-fit-contain p-2" alt="Product">
+                                        <?php
+    else: ?>
+                                            <i class="bi bi-image text-secondary fs-3"></i>
+                                        <?php
+    endif; ?>
+                                    </div>
+                                    <div class="flex-grow-1 d-flex flex-column justify-content-center">
+                                        <h6 class="fw-bold mb-1 text-dark text-truncate" style="max-width: 200px;"><?php echo htmlspecialchars($product['name']); ?></h6>
+                                        <p class="text-secondary small mb-2"><?php echo htmlspecialchars($product['category'] ?? 'Category'); ?></p>
+                                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                                            <span class="badge rounded-pill fw-medium px-2 py-1" style="background: rgba(99, 102, 241, 0.1); color: #4338CA;">Qty: <?php echo $product['qty']; ?></span>
+                                            <span class="fw-bold text-dark fs-6" style="color: #312E81 !important;">₹<?php echo number_format($product['price'] * $product['qty'], 2); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+endforeach; ?>
                     </div>
                 </div>
             </div>
+
         </div>
 
-        <!-- RIGHT COLUMN: Info & Support -->
-        <div class="col-lg-4">
-            <!-- Delivery Address -->
-            <div class="card border-0 mb-4" style="background-color: #14161A; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-                <div class="card-body p-4">
-                    <h6 class="fw-bold mb-4 text-uppercase" style="color: #9CA3AF; font-size: 0.75rem; letter-spacing: 1px;">Delivery Address</h6>
-                    <div class="d-flex gap-3">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
-                             style="width: 48px; height: 48px; background-color: rgba(124, 58, 237, 0.1); color: #7C3AED;">
-                            <i class="bi bi-geo-alt-fill fs-5"></i>
-                        </div>
-                        <div>
-                            <div class="fw-bold mb-1" style="color: #E5E7EB; font-size: 1rem;"><?php echo htmlspecialchars($order['customer_name']); ?></div>
-                            <div style="color: #9CA3AF; font-size: 0.9rem; line-height: 1.5;">
-                                <?php echo htmlspecialchars($order['shipping_address']); ?><br>
-                                <?php echo htmlspecialchars($order['city']); ?> - <?php echo htmlspecialchars($order['pincode']); ?>
+        <!-- Right Side column (Delivery details & Support) -->
+        <div class="col-12 col-xl-4">
+            <!-- 3. Delivery Details Section -->
+            <div class="saas-glass-card p-4 p-md-4 mb-4 border-0 position-relative overflow-hidden">
+                <div class="position-absolute top-0 end-0 p-4 opacity-10" style="z-index: 0;">
+                    <i class="bi bi-box2-heart display-1 text-primary"></i>
+                </div>
+                
+                <h5 class="fw-bold mb-4 position-relative z-1" style="color: #312E81;">Delivery Details</h5>
+                
+                <div class="position-relative z-1">
+                    <div class="mb-4">
+                        <p class="text-secondary small fw-bold text-uppercase mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Courier Partner</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle text-white d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 36px; height: 36px; background: linear-gradient(135deg, #F59E0B, #D97706);">
+                                <i class="bi bi-lightning-fill small"></i>
                             </div>
-                            <div class="mt-3 pt-3 border-top" style="border-color: #2D2D35 !important;">
-                                <div class="d-flex align-items-center" style="color: #9CA3AF;">
-                                    <i class="bi bi-telephone me-2" style="color: #6B7280;"></i> 
-                                    <span class="small"><?php echo htmlspecialchars($order['customer_phone']); ?></span>
-                                </div>
-                            </div>
+                            <span class="fw-bold text-dark fs-6">Swift Logistics Inc.</span>
                         </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-secondary small fw-bold text-uppercase mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Tracking ID</p>
+                        <div class="d-flex align-items-center justify-content-between bg-white bg-opacity-75 px-3 py-2 rounded-3 border" style="border-color: rgba(99, 102, 241, 0.2) !important;">
+                            <span class="fw-bold font-monospace" style="color: #4338CA; letter-spacing: 1px;">UNI-<?php echo str_pad($order['id'], 8, "0", STR_PAD_LEFT); ?>-X</span>
+                            <button class="btn btn-sm text-secondary p-1" title="Copy Tracking ID" onclick="alert('Copied to clipboard!')" style="border: none; background: transparent;"><i class="bi bi-copy border border-secondary border-opacity-25 rounded p-1"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <p class="text-secondary small fw-bold text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">Estimated Delivery</p>
+                        <?php
+// Dummy estimate: order date + 3 days
+$est_date = date('l, M d, Y', strtotime($order['created_at'] . ' + 3 days'));
+?>
+                        <p class="fw-bold fs-5 mb-0" style="color: #10B981;"><?php echo $est_date; ?></p>
+                        <p class="text-secondary small fw-medium mt-1"><i class="bi bi-clock me-1"></i> By 9:00 PM</p>
                     </div>
                 </div>
             </div>
 
             <!-- Support Card -->
-            <div class="card border-0 overflow-hidden" style="background-color: #14161A; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-                 <div class="card-body p-4 position-relative overflow-hidden">
-                    <!-- Background Decoration -->
-                    <div class="position-absolute top-0 end-0 p-3 opacity-25" style="transform: translate(20%, -20%);">
-                        <i class="bi bi-headset" style="font-size: 8rem; color: #2D2D35;"></i>
-                    </div>
-                    
-                    <h6 class="fw-bold mb-3" style="color: #E5E7EB;">Need Assistance?</h6>
-                    <p class="small mb-4 position-relative" style="color: #9CA3AF; z-index: 1;">
-                        If you have any issues with your delivery, our support team is available 24/7.
-                    </p>
-                    <a href="#" class="btn w-100 py-2 rounded-pill fw-bold position-relative" 
-                       style="background-color: #2D2D35; color: #E5E7EB; border: 1px solid #374151; z-index: 1;">
-                        Contact Support
-                    </a>
+            <div class="saas-glass-card p-4 p-md-4 border-0 text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3 shadow-sm" style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); color: #6366F1;">
+                    <i class="bi bi-headset fs-3"></i>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- BOTTOM SECTION: Order Items -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm" style="background-color: #14161A; border-radius: 20px;">
-                <div class="card-header border-bottom py-3 px-4" style="background-color: transparent; border-color: #2D2D35 !important;">
-                    <h5 class="fw-bold mb-0" style="color: #E5E7EB;">Items in this Order</h5>
-                </div>
-                <div class="card-body px-4">
-                    <div class="row g-4">
-                        <?php foreach ($order_products as $product): ?>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="d-flex align-items-center p-3 rounded-4" style="background-color: #0B0B0E; border: 1px solid #2D2D35;">
-                                    <div class="rounded-3 d-flex align-items-center justify-content-center me-3 overflow-hidden bg-white" 
-                                         style="width: 70px; height: 70px; flex-shrink: 0;">
-                                        <?php if (!empty($product['image'])): ?>
-                                            <img src="<?php echo htmlspecialchars($product['image']); ?>" class="w-100 h-100 object-fit-contain" alt="Product">
-                                        <?php else: ?>
-                                            <i class="bi bi-image text-secondary fs-4"></i>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <h6 class="fw-bold mb-1 text-truncate" style="color: #E5E7EB;"><?php echo htmlspecialchars($product['name']); ?></h6>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="badge rounded-pill" style="background-color: #2D2D35; color: #9CA3AF;">Qty: <?php echo $product['qty']; ?></span>
-                                            <span class="fw-bold" style="color: #7C3AED;">₹<?php echo number_format($product['price'] * $product['qty'], 2); ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                    
-                    <div class="d-flex justify-content-end align-items-center pt-4 mt-2 border-top" style="border-color: #2D2D35 !important;">
-                        <span class="me-3" style="color: #9CA3AF;">Total Amount:</span>
-                        <span class="display-6 fw-bold" style="color: #E5E7EB; font-size: 1.5rem;">₹<?php echo number_format($order['total_amount'], 2); ?></span>
-                    </div>
-                </div>
+                <h5 class="fw-bold mb-2" style="color: #312E81;">Need Help?</h5>
+                <p class="text-secondary small mb-4" style="line-height: 1.6;">Have issues with your delivery or want to return an item? We are here 24/7.</p>
+                <a href="ai-assistant.php" class="btn w-100 rounded-pill py-2 fw-medium text-white shadow-sm" style="background: linear-gradient(135deg, #6366F1, #8B5CF6); transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'" onmouseout="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'">Chat with AI Support</a>
             </div>
         </div>
     </div>

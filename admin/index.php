@@ -15,152 +15,171 @@ $stats = get_stats();
 include '../includes/header.php';
 ?>
 
-<!-- Admin Dashboard -->
-<style>
-    body { background-color: #0E1116 !important; }
-    .admin-card { background-color: #141821; border: 1px solid #1F2937; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
-    .stat-icon-wrapper { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-    .hover-lift { transition: transform 0.2s, box-shadow 0.2s; }
-    .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7); }
-</style>
+<div class="admin-layout">
+    
+    <!-- ADMIN SIDEBAR -->
+    <aside class="admin-sidebar saas-glass-card border-0 rounded-0 shadow-sm" style="position: sticky; top: 0; padding-top: 2rem;">
+        <div class="mb-5 px-3">
+            <span class="badge rounded-pill fw-bold mb-2" style="background: rgba(124, 58, 237, 0.1); color: var(--saas-primary);">
+                ADMINISTRATION
+            </span>
+            <h5 class="fw-bold text-heading mb-0">Univault Control</h5>
+            <small class="text-secondary">System version 2.4.0</small>
+        </div>
 
-<div class="container-fluid px-4 py-5" style="min-height: 100vh;">
-    <!-- Header -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
-        <div>
-            <div class="d-flex align-items-center gap-3 mb-1">
-                <span class="badge rounded-pill px-3 py-1 fw-bold" style="background-color: #374151; color: #E5E7EB; border: 1px solid #4B5563;">
-                    <i class="bi bi-shield-lock-fill me-1 text-warning"></i> ADMIN
-                </span>
-                <span class="text-secondary small">v2.4.0</span>
+        <nav class="d-flex flex-column gap-2 px-2">
+            <a href="index.php" class="sidebar-menu-link active">
+                <i class="bi bi-grid-1x2"></i> Dashboard
+            </a>
+            <a href="products.php" class="sidebar-menu-link">
+                <i class="bi bi-box-seam"></i> Products
+            </a>
+            <a href="orders.php" class="sidebar-menu-link">
+                <i class="bi bi-receipt"></i> Orders
+            </a>
+            <a href="users.php" class="sidebar-menu-link">
+                <i class="bi bi-people"></i> Users
+            </a>
+            <a href="#" class="sidebar-menu-link text-muted">
+                <i class="bi bi-tags"></i> Categories
+            </a>
+            <a href="#" class="sidebar-menu-link text-muted">
+                <i class="bi bi-boxes"></i> Inventory
+            </a>
+            <a href="#" class="sidebar-menu-link text-muted">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+            <a href="#" class="sidebar-menu-link text-muted">
+                <i class="bi bi-cpu"></i> AI Logs
+            </a>
+            <div class="my-3 border-top" style="border-color: var(--saas-border-light) !important;"></div>
+            <a href="#" class="sidebar-menu-link text-muted">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+            <a href="../" class="sidebar-menu-link mt-4" style="color: var(--saas-accent);">
+                <i class="bi bi-box-arrow-up-right"></i> View Store
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ADMIN MAIN CONTENT -->
+    <main class="admin-main">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold text-heading mb-1">Overview Dashboard</h2>
+                <p class="text-secondary mb-0">System performance and sales metrics</p>
             </div>
-            <h1 class="fw-bold mb-0 text-white display-6">Dashboard Overview</h1>
-            <p class="text-secondary mb-0">System performance and management controls</p>
+            <div>
+                <button class="saas-btn-primary">
+                    <i class="bi bi-download me-2"></i> Export Report
+                </button>
+            </div>
         </div>
-        <div class="d-flex gap-3">
-            <a href="../" class="btn btn-outline-secondary rounded-pill fw-bold bg-dark text-white border-secondary">
-                <i class="bi bi-box-arrow-up-right me-2"></i> View Store
-            </a>
-            <a href="../logout.php" class="btn btn-danger rounded-pill fw-bold">
-                <i class="bi bi-box-arrow-right me-2"></i> Logout
-            </a>
-        </div>
-    </div>
-    
-    <!-- Stats Grid -->
-    <div class="row g-4 mb-5">
-        <!-- Products Stat -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card admin-card rounded-4 p-4 h-100 hover-lift">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div class="stat-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.15); color: #3B82F6;">
-                        <i class="bi bi-box-seam"></i>
+        
+        <!-- Stats Grid -->
+        <div class="row g-4 mb-5">
+            <!-- Revenue Stat -->
+            <div class="col-md-6 col-lg-3">
+                <div class="saas-glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <p class="text-secondary fw-semibold text-uppercase small mb-0">Total Sales</p>
+                        <div class="p-2 rounded" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">
+                            <i class="bi bi-currency-rupee"></i>
+                        </div>
                     </div>
-                    <span class="badge fw-bold" style="background-color: rgba(59, 130, 246, 0.1); color: #3B82F6;">Inventory</span>
+                    <h2 class="fw-bold text-heading mb-1 display-6">₹<?php echo number_format($stats['total_revenue'] / 1000, 1); ?>k</h2>
+                    <p class="text-success small mb-0 fw-medium"><i class="bi bi-arrow-up-right"></i> +12% from last month</p>
                 </div>
-                <h2 class="fw-bold text-white mb-1 display-5"><?php echo $stats['total_products']; ?></h2>
-                <div class="d-flex align-items-center text-secondary small">
-                    <span class="text-success fw-bold me-2"><i class="bi bi-arrow-up-short"></i> Live</span>
-                    <span>Total Products</span>
+            </div>
+
+            <!-- Orders Stat -->
+            <div class="col-md-6 col-lg-3">
+                <div class="saas-glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <p class="text-secondary fw-semibold text-uppercase small mb-0">Total Orders</p>
+                        <div class="p-2 rounded" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
+                            <i class="bi bi-cart-check"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold text-heading mb-1 display-6"><?php echo $stats['total_orders']; ?></h2>
+                    <p class="text-success small mb-0 fw-medium"><i class="bi bi-arrow-up-right"></i> +8% from last month</p>
+                </div>
+            </div>
+
+            <!-- Users Stat -->
+            <div class="col-md-6 col-lg-3">
+                <div class="saas-glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <p class="text-secondary fw-semibold text-uppercase small mb-0">Active Users</p>
+                        <div class="p-2 rounded" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
+                            <i class="bi bi-people"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold text-heading mb-1 display-6"><?php echo $stats['total_users']; ?></h2>
+                    <p class="text-secondary small mb-0 fw-medium">Registered accounts</p>
+                </div>
+            </div>
+
+            <!-- Products Sold Stat -->
+            <div class="col-md-6 col-lg-3">
+                <div class="saas-glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <p class="text-secondary fw-semibold text-uppercase small mb-0">Products Sold</p>
+                        <div class="p-2 rounded" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold text-heading mb-1 display-6"><?php echo $stats['total_products'] * 3; /* Dummy multiplier for visual */?></h2>
+                    <p class="text-secondary small mb-0 fw-medium">Items moving from inventory</p>
                 </div>
             </div>
         </div>
         
-        <!-- Orders Stat -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card admin-card rounded-4 p-4 h-100 hover-lift">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div class="stat-icon-wrapper" style="background-color: rgba(16, 185, 129, 0.15); color: #10B981;">
-                        <i class="bi bi-cart-check"></i>
+        <!-- Charts Dashboard Placeholder Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8">
+                <div class="saas-glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold text-heading mb-0">Revenue Analytics</h5>
+                        <select class="form-select saas-input w-auto p-2 py-1">
+                            <option>This Year</option>
+                            <option>This Month</option>
+                        </select>
                     </div>
-                    <span class="badge fw-bold" style="background-color: rgba(16, 185, 129, 0.1); color: #10B981;">Sales</span>
+                    <!-- Chart Graphic Placeholder -->
+                    <div class="w-100 rounded d-flex align-items-center justify-content-center" style="height: 300px; background: rgba(0,0,0,0.02); border: 1px dashed var(--saas-border-light);">
+                        <p class="text-secondary mb-0"><i class="bi bi-graph-up text-primary fs-3 d-block text-center mb-2"></i> Revenue Chart Graphic</p>
+                    </div>
                 </div>
-                <h2 class="fw-bold text-white mb-1 display-5"><?php echo $stats['total_orders']; ?></h2>
-                <div class="d-flex align-items-center text-secondary small">
-                    <span class="text-white fw-bold me-2">All Time</span>
-                    <span>Completed Orders</span>
+            </div>
+            <div class="col-lg-4">
+                <div class="saas-glass-card p-4 h-100">
+                    <h5 class="fw-bold text-heading mb-4">Traffic Sources</h5>
+                    <div class="w-100 rounded d-flex align-items-center justify-content-center" style="height: 200px; background: rgba(0,0,0,0.02); border: 1px dashed var(--saas-border-light);">
+                        <p class="text-secondary mb-0"><i class="bi bi-pie-chart text-info fs-3 d-block text-center mb-2"></i> Traffic Pie Chart</p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-secondary small fw-medium text-uppercase">Organic</span>
+                            <span class="fw-bold text-heading small">65%</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 6px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 65%"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-secondary small fw-medium text-uppercase">Direct</span>
+                            <span class="fw-bold text-heading small">35%</span>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 35%"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Users Stat -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card admin-card rounded-4 p-4 h-100 hover-lift">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div class="stat-icon-wrapper" style="background-color: rgba(245, 158, 11, 0.15); color: #F59E0B;">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <span class="badge fw-bold" style="background-color: rgba(245, 158, 11, 0.1); color: #F59E0B;">Customers</span>
-                </div>
-                <h2 class="fw-bold text-white mb-1 display-5"><?php echo $stats['total_users']; ?></h2>
-                <div class="d-flex align-items-center text-secondary small">
-                    <span class="text-warning fw-bold me-2">Verified</span>
-                    <span>Active Accounts</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Revenue Stat -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card admin-card rounded-4 p-4 h-100 hover-lift">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div class="stat-icon-wrapper" style="background-color: rgba(139, 92, 246, 0.15); color: #8B5CF6;">
-                        <i class="bi bi-currency-rupee"></i>
-                    </div>
-                    <span class="badge fw-bold" style="background-color: rgba(139, 92, 246, 0.1); color: #8B5CF6;">Revenue</span>
-                </div>
-                <h2 class="fw-bold text-white mb-1 display-5">₹<?php echo number_format($stats['total_revenue'] / 1000, 1); ?>k</h2>
-                <div class="d-flex align-items-center text-secondary small">
-                    <span class="text-white fw-bold me-2">Gross</span>
-                    <span>Total Earnings</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Quick Actions -->
-    <h4 class="fw-bold text-white mb-4">Management Modules</h4>
-    <div class="row g-4">
-        <div class="col-md-6 col-xl-4">
-            <a href="products.php" class="text-decoration-none">
-                <div class="card admin-card rounded-4 p-4 h-100 hover-lift border-0 position-relative overflow-hidden group">
-                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
-                        <i class="bi bi-grid-3x3-gap display-1 text-primary"></i>
-                    </div>
-                    <div class="position-relative z-1">
-                        <div class="mb-4">
-                            <span class="badge bg-primary rounded-pill mb-2">Inventory</span>
-                            <h3 class="fw-bold text-white mb-1">Product Management</h3>
-                            <p class="text-secondary small mb-0">Add, edit, and categorize store items.</p>
-                        </div>
-                        <div class="d-flex align-items-center text-primary fw-bold">
-                            Manage Products <i class="bi bi-arrow-right ms-2"></i>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-        <div class="col-md-6 col-xl-4">
-            <a href="orders.php" class="text-decoration-none">
-                <div class="card admin-card rounded-4 p-4 h-100 hover-lift border-0 position-relative overflow-hidden">
-                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
-                        <i class="bi bi-receipt display-1 text-success"></i>
-                    </div>
-                    <div class="position-relative z-1">
-                        <div class="mb-4">
-                            <span class="badge bg-success rounded-pill mb-2">Orders</span>
-                            <h3 class="fw-bold text-white mb-1">Order Fulfillment</h3>
-                            <p class="text-secondary small mb-0">Track shipments and update statuses.</p>
-                        </div>
-                        <div class="d-flex align-items-center text-success fw-bold">
-                            View Orders <i class="bi bi-arrow-right ms-2"></i>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
+    </main>
 </div>
 
 <?php include '../includes/footer.php'; ?>

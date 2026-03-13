@@ -1,0 +1,206 @@
+/* MNC Premium Hero Slider Custom CSS */
+.premium-hero-container {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    min-height: 650px;
+    background: linear-gradient(135deg, #F8F9FF 0%, #EEF2FF 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+/* 3D Canvas wrapper sits strictly on the right side on desktop */
+.hero-3d-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    /* Let clicks pass through */
+}
+
+@media (max-width: 991px) {
+    .hero-3d-bg {
+        width: 100%;
+        opacity: 0.3;
+        /* Fade into background on mobile */
+    }
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hero-text-col {
+    padding-top: 5rem;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.2s, opacity 0.8s ease 0.2s;
+}
+
+.hero-slide.active .hero-text-col {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Typography elements */
+.hero-label {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(124, 58, 237, 0.1);
+    color: #7C3AED;
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title {
+    font-size: clamp(3.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #4B5563;
+    max-width: 90%;
+    margin-bottom: 2.5rem;
+}
+
+/* Premium Buttons */
+.hero-buttons {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: #7C3AED;
+    color: #FFF;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+    background: #6D28D9;
+    color: #FFF;
+}
+
+.btn-hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    color: #1F2937;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btn-hero-secondary:hover {
+    background: #FFF;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    color: #111827;
+}
+
+/* Navigation Controls Overlay */
+.hero-nav-controls {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.slider-dots {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.dot {
+    width: 32px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: #7C3AED;
+    width: 48px;
+}
+
+.slider-arrows {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    color: #111827;
+    transition: all 0.3s ease;
+}
+
+.btn-arrow:hover {
+    background: #FFF;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
