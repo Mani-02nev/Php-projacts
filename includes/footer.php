@@ -13,6 +13,8 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="<?php echo $root_path ?: './'; ?>" class="text-secondary text-decoration-none transition-link">Home</a></li>
                         <li class="mb-2"><a href="<?php echo $root_path; ?>products.php" class="text-secondary text-decoration-none transition-link">Products</a></li>
+                        <li class="mb-2"><a href="<?php echo $root_path; ?>fresh-mart.php" class="text-secondary text-decoration-none transition-link">Fresh Mart</a></li>
+                        <li class="mb-2"><a href="<?php echo $root_path; ?>local-mart.php" class="text-secondary text-decoration-none transition-link">Local Mart</a></li>
                         <li class="mb-2"><a href="<?php echo $root_path; ?>about.php" class="text-secondary text-decoration-none transition-link">About Us</a></li>
                         <li class="mb-2"><a href="<?php echo $root_path; ?>cart.php" class="text-secondary text-decoration-none transition-link">Cart</a></li>
                     </ul>

@@ -1,0 +1,185 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 1,
+        "name": "Sri Ram Grocery Store",
+        "type": "grocery",
+        "address": "14 Teppakulam Street, Trichy",
+        "rating": 4.6,
+        "phone": "+91 98765 11111",
+        "hours": "7:00 AM – 10:00 PM",
+        "is_open": true,
+        "product_count": 42
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6856, 10.8050] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 2,
+        "name": "Ponni Departmental Mart",
+        "type": "supermarket",
+        "address": "22 Thillai Nagar Main Road, Trichy",
+        "rating": 4.2,
+        "phone": "+91 98001 22222",
+        "hours": "8:00 AM – 9:00 PM",
+        "is_open": true,
+        "product_count": 87
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6920, 10.8180] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 3,
+        "name": "Fresh Veggie World",
+        "type": "vegetables",
+        "address": "5 Ariyamangalam, Trichy",
+        "rating": 4.8,
+        "phone": "+91 94444 33333",
+        "hours": "6:00 AM – 8:00 PM",
+        "is_open": false,
+        "product_count": 31
+      },
+      "geometry": { "type": "Point", "coordinates": [78.7145, 10.7934] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 4,
+        "name": "RR Electronics",
+        "type": "electronics",
+        "address": "33 Salai Road, Trichy",
+        "rating": 3.9,
+        "phone": "+91 90000 44444",
+        "hours": "10:00 AM – 8:00 PM",
+        "is_open": true,
+        "product_count": 156
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6812, 10.8230] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 5,
+        "name": "Rockfort Pharmacy",
+        "type": "pharmacy",
+        "address": "7 Big Bazaar Street, Trichy",
+        "rating": 4.5,
+        "phone": "+91 92201 55555",
+        "hours": "24 Hours",
+        "is_open": true,
+        "product_count": 290
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6899, 10.8058] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 6,
+        "name": "Kaveri Bakery",
+        "type": "bakery",
+        "address": "12 Pattalam Road, Trichy",
+        "rating": 4.7,
+        "phone": "+91 97777 66666",
+        "hours": "6:00 AM – 9:00 PM",
+        "is_open": true,
+        "product_count": 18
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6778, 10.8102] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 7,
+        "name": "Chandra Dairy Farm",
+        "type": "dairy",
+        "address": "18 Woraiyur, Trichy",
+        "rating": 4.3,
+        "phone": "+91 86001 77777",
+        "hours": "5:30 AM – 11:00 PM",
+        "is_open": true,
+        "product_count": 25
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6956, 10.8371] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 8,
+        "name": "Sree Lakshmi Supermart",
+        "type": "supermarket",
+        "address": "45 Srirangam, Trichy",
+        "rating": 4.1,
+        "phone": "+91 91000 88888",
+        "hours": "7:00 AM – 11:00 PM",
+        "is_open": false,
+        "product_count": 60
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6932, 10.8620] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 9,
+        "name": "Annamalai Hardware",
+        "type": "hardware",
+        "address": "9 Mannarpuram, Trichy",
+        "rating": 3.8,
+        "phone": "+91 99000 99900",
+        "hours": "9:00 AM – 7:00 PM",
+        "is_open": true,
+        "product_count": 34
+      },
+      "geometry": { "type": "Point", "coordinates": [78.7023, 10.7912] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 10,
+        "name": "BlueStar Mobile Shop",
+        "type": "electronics",
+        "address": "3 Cantonment, Trichy",
+        "rating": 4.4,
+        "phone": "+91 88001 10101",
+        "hours": "10:00 AM – 9:00 PM",
+        "is_open": true,
+        "product_count": 76
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6743, 10.8295] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 11,
+        "name": "Murugan Fruits Corner",
+        "type": "vegetables",
+        "address": "Old Bus Stand Road, Trichy",
+        "rating": 4.5,
+        "phone": "+91 96005 11120",
+        "hours": "6:00 AM – 8:00 PM",
+        "is_open": true,
+        "product_count": 22
+      },
+      "geometry": { "type": "Point", "coordinates": [78.6980, 10.7990] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shop_id": 12,
+        "name": "Vijaya Provision Store",
+        "type": "grocery",
+        "address": "K K Nagar, Trichy",
+        "rating": 4.0,
+        "phone": "+91 98400 22211",
+        "hours": "8:00 AM – 10:00 PM",
+        "is_open": true,
+        "product_count": 55
+      },
+      "geometry": { "type": "Point", "coordinates": [78.7100, 10.8100] }
+    }
+  ]
+}

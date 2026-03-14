@@ -76,6 +76,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="<?php echo $root_path; ?>local-mart.php" class="nav-link <?php echo $current_page == 'local-mart.php' ? 'active' : ''; ?>" style="<?php echo $current_page == 'local-mart.php' ? '' : ''; ?>">
+                                <i class="bi bi-geo-alt-fill me-1" style="color:#6C63FF;"></i> Local Mart
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?php echo $root_path; ?>about.php" class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>">
                                 About
                             </a>
@@ -179,6 +184,12 @@ endif; ?>
                 <a href="<?php echo $root_path; ?>products.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo($current_page == 'products.php' || $current_page == 'product-detail.php') ? 'active' : ''; ?>">
                     <i class="bi bi-grid-fill d-block mb-1" style="font-size: 1.5rem;"></i>
                     <span style="font-size: 0.7rem; font-weight: 500;">Shop</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo $root_path; ?>local-mart.php" class="nav-link text-center border-0 p-2 mobile-nav-link <?php echo $current_page == 'local-mart.php' ? 'active' : ''; ?>">
+                    <i class="bi bi-geo-alt-fill d-block mb-1" style="font-size: 1.5rem; color: #6C63FF;"></i>
+                    <span style="font-size: 0.7rem; font-weight: 500;">Local Mart</span>
                 </a>
             </li>
             <li class="nav-item">

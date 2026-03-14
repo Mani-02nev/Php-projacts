@@ -1,0 +1,48 @@
+product_id,product_name,shop_id,price,stock,category,image_url
+1,Ponni Raw Rice 1 kg,1,65,120,Grocery,https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&q=80
+2,Fresh Milk 1 L (Aavin),1,34,80,Dairy,https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=80
+3,Tata Salt 1 kg,1,22,150,Grocery,https://images.unsplash.com/photo-1574447027038-0a64f2e5c7c4?w=200&q=80
+4,Whole Wheat Bread,1,45,50,Bakery,https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?w=200&q=80
+5,Tomatoes 500g,1,35,90,Vegetables,https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=200&q=80
+6,Coconut Oil 1 L,1,195,40,Grocery,https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200&q=80
+7,Farm Eggs 12 pcs,2,90,60,Dairy,https://images.unsplash.com/photo-1506976785307-8732e854bbe7?w=200&q=80
+8,Idli Rice 1 kg,2,60,100,Grocery,https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&q=80
+9,Surf Excel 1 kg,2,115,80,Household,https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&q=80
+10,Colgate Toothpaste,2,95,60,Personal Care,https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=200&q=80
+11,Bournvita 500g,2,280,30,Beverages,https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=200&q=80
+12,Apple Shimla 1 kg,3,180,45,Fruits,https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=200&q=80
+13,Banana 1 dozen,3,60,70,Fruits,https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=200&q=80
+14,Carrot 500g,3,40,0,Vegetables,https://images.unsplash.com/photo-1447175008436-054170c2e979?w=200&q=80
+15,Spinach Bunch,3,25,55,Vegetables,https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=200&q=80
+16,Capsicum 500g,3,80,30,Vegetables,https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=200&q=80
+17,USB-C Charger 65W,4,699,40,Electronics,https://images.unsplash.com/photo-1601524909162-ae8725290836?w=200&q=80
+18,Wireless Earbuds,4,1299,25,Electronics,https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200&q=80
+19,Phone Stand Holder,4,350,60,Electronics,https://images.unsplash.com/photo-1583394293254-a4ad2e3e7e39?w=200&q=80
+20,Power Bank 10000mAh,4,1499,20,Electronics,https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=200&q=80
+21,Screen Guard Pack,4,199,75,Electronics,https://images.unsplash.com/photo-1601524909162-ae8725290836?w=200&q=80
+22,Dettol Handwash 250ml,5,120,90,Personal Care,https://images.unsplash.com/photo-1584515933487-779824d29309?w=200&q=80
+23,Vitamin D3 Capsules,5,199,50,Medicine,https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&q=80
+24,Paracetamol 10 tabs,5,18,200,Medicine,https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&q=80
+25,Band-Aid Pack,5,85,40,Medicine,https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=200&q=80
+26,Crocin Cold 10 tabs,5,55,80,Medicine,https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&q=80
+27,Croissant 2 pcs,6,80,20,Bakery,https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=80
+28,Chocolate Muffin,6,55,15,Bakery,https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=200&q=80
+29,Brown Bread Loaf,6,65,30,Bakery,https://images.unsplash.com/photo-1574085733277-851d9d856a3a?w=200&q=80
+30,Masala Vada Batch,6,40,25,Snacks,https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=80
+31,Amul Butter 100g,7,56,50,Dairy,https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=200&q=80
+32,Paneer 200g,7,85,28,Dairy,https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=200&q=80
+33,Dahi / Curd 500g,7,55,65,Dairy,https://images.unsplash.com/photo-1571748982800-fa51082c2224?w=200&q=80
+34,Aavin Milk 500ml,7,36,90,Dairy,https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=80
+35,Ghee 500ml,7,350,20,Dairy,https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200&q=80
+36,Maggi Noodles 2-min,8,14,120,Snacks,https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=80
+37,Lays Chips Masala,8,20,80,Snacks,https://images.unsplash.com/photo-1621447504864-d8686e12698c?w=200&q=80
+38,Coca-Cola 500ml,8,40,60,Beverages,https://images.unsplash.com/photo-1554866585-cd94860890b7?w=200&q=80
+39,Parle-G Biscuit 200g,8,25,150,Snacks,https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=200&q=80
+40,Hair Oil 200ml,8,85,45,Personal Care,https://images.unsplash.com/photo-1600857062241-98e5dba7f400?w=200&q=80
+41,Hammer Set 3-piece,9,450,20,Hardware,https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=200&q=80
+42,PVC Pipe 1m,9,120,50,Hardware,https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80
+43,Screwdriver Set,9,299,35,Hardware,https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=200&q=80
+44,Samsung A15 Cover,10,149,40,Mobile Accessories,https://images.unsplash.com/photo-1583394293254-a4ad2e3e7e39?w=200&q=80
+45,Tempered Glass Pack,10,99,70,Mobile Accessories,https://images.unsplash.com/photo-1601524909162-ae8725290836?w=200&q=80
+46,Type-C Cable 2m,10,199,55,Mobile Accessories,https://images.unsplash.com/photo-1601524909162-ae8725290836?w=200&q=80
+47,Bluetooth Speaker,10,1199,18,Electronics,https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=200&q=80
