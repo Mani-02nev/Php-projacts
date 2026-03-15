@@ -60,7 +60,7 @@ include 'includes/header.php';
     <?php if ($success): ?>
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="text-center py-5 rounded-5 shadow-lg border animate__animated animate__zoomIn" style="background-color: #141821; border-color: #D1D5DB;">
+                <div class="order-success-card text-center py-5 rounded-5 shadow-lg border animate__animated animate__zoomIn" style="border-color: #D1D5DB;">
                     <div class="mb-4 d-inline-flex p-3 rounded-circle" style="background-color: rgba(16, 185, 129, 0.1);">
                         <i class="bi bi-check-circle-fill display-3" style="color: #10B981;"></i>
                     </div>

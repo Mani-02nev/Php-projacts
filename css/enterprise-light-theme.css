@@ -10,6 +10,9 @@
        WHITE THEME COLOR SYSTEM
        ═══════════════════════════════════════════════════════════ */
 
+    /* Force light color scheme in all browsers (prevents accidental dark mode) */
+    color-scheme: light;
+
     /* Primary Backgrounds */
     --dark-bg-primary: #FFFFFF;
     --dark-bg-secondary: #F8F9FA;
@@ -58,8 +61,8 @@
    ═══════════════════════════════════════════════════════════ */
 
 body {
-    background-color: var(--dark-bg-primary) !important;
-    color: var(--dark-text-primary) !important;
+    background-color: var(--dark-bg-primary, #FFFFFF) !important;
+    color: var(--dark-text-primary, #1A1A1A) !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
@@ -1282,6 +1285,25 @@ hr {
 /* Smooth heart animation when toggled: scale 1 → 1.2 → 1 */
 .global-product-card .wishlist-btn.heart-pop i {
     animation: heartPop 0.4s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ORDER SUCCESS CARD — ALWAYS LIGHT THEME
+   ═══════════════════════════════════════════════════════════ */
+.order-success-card {
+    background-color: #ffffff !important;
+    background: var(--surface-card, #ffffff) !important;
+    color: var(--text-primary, #1a1a1a) !important;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+.order-success-card h1,
+.order-success-card h2,
+.order-success-card h3 {
+    color: #16a34a !important; /* Tailwind emerald-600 */
+}
+.order-success-card p {
+    color: #374151 !important; /* Tailwind slate-700 */
 }
 @keyframes heartPop {
     0%   { transform: scale(1); }
