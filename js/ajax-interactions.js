@@ -91,9 +91,9 @@ function handleAddToCart(productId, quantity, btnElement, imgElement) {
 }
 
 function setupAjaxWishlist() {
-    // Delegation for all Heart logic (Home, Shop, Detail)
+    // Use capture phase so we handle the click before it bubbles to the parent <a> (prevents navigation)
     document.body.addEventListener('click', (e) => {
-        // Target 1: Class .wishlist-btn (Home/Shop cards)
+        // Target 1: Class .wishlist-btn (Home/Shop cards) — only toggle wishlist, never open product page
         let btn = e.target.closest('.wishlist-btn');
 
         // Target 2: Anchor links (Detail page main heart)
@@ -122,20 +122,39 @@ function setupAjaxWishlist() {
                 handleWishlistToggle(productId, btn);
             }
         }
-    }); // Capture if needed, but standard bubble is fine for delegation
+    }, true); // capture: true so parent <a> never receives the click
 }
 
 function handleWishlistToggle(productId, btnElement) {
-    // 1. Determine current state BEFORE animation
     const icon = btnElement.querySelector('i');
-    const isCurrentlyInWishlist = icon && (icon.classList.contains('bi-heart-fill') || btnElement.classList.contains('active'));
+    if (!icon) return;
 
-    // 2. Play 3D Animation
+    // 1. Play heart pop animation (scale 1 → 1.2 → 1)
+    btnElement.classList.add('heart-pop');
+    btnElement.addEventListener('animationend', function removePop() {
+        btnElement.classList.remove('heart-pop');
+        btnElement.removeEventListener('animationend', removePop);
+    }, { once: true });
+
+    // 2. Optional 3D animation if available
     if (window.wishlistAnim) {
         window.wishlistAnim.play(btnElement);
     }
 
-    // 3. Send AJAX Request
+    // 3. Optimistic UI: toggle icon and .active immediately for snappy feedback
+    const isActive = btnElement.classList.toggle('active');
+    if (isActive) {
+        icon.classList.remove('bi-heart');
+        icon.classList.add('bi-heart-fill');
+        icon.classList.remove('text-body');
+        icon.classList.add('text-danger');
+    } else {
+        icon.classList.remove('bi-heart-fill', 'text-danger');
+        icon.classList.add('bi-heart');
+        icon.classList.add('text-body');
+    }
+
+    // 4. Persist via AJAX and revert UI if request fails
     fetch('ajax_handler.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -147,33 +166,44 @@ function handleWishlistToggle(productId, btnElement) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                // Update UI based on backend response
-                if (icon) {
-                    if (data.status === 'added') {
-                        // Item was added to wishlist - show filled heart
-                        icon.classList.remove('bi-heart');
-                        icon.classList.add('bi-heart-fill');
-                        if (icon.classList.contains('text-body')) {
-                            icon.classList.remove('text-body');
-                            icon.classList.add('text-danger');
-                        }
-                        btnElement.classList.add('active');
-                    } else {
-                        // Item was removed from wishlist - show outline heart
-                        icon.classList.remove('bi-heart-fill');
-                        icon.classList.add('bi-heart');
-                        if (icon.classList.contains('text-danger')) {
-                            icon.classList.remove('text-danger');
-                            icon.classList.add('text-body');
-                        }
-                        btnElement.classList.remove('active');
+                // Sync UI with server (in case of race or different state)
+                if (data.status === 'added') {
+                    btnElement.classList.add('active');
+                    icon.classList.remove('bi-heart');
+                    icon.classList.add('bi-heart-fill', 'text-danger');
+                    icon.classList.remove('text-body');
+                } else {
+                    btnElement.classList.remove('active');
+                    icon.classList.remove('bi-heart-fill', 'text-danger');
+                    icon.classList.add('bi-heart');
+                    icon.classList.add('text-body');
+                    // On wishlist page, remove the card from DOM when item is removed
+                    if (window.location.pathname.indexOf('wishlist') !== -1) {
+                        const card = btnElement.closest('a.global-product-card');
+                        if (card) card.remove();
                     }
                 }
             } else {
-                console.error('Wishlist toggle failed', data);
+                // Revert optimistic update
+                btnElement.classList.toggle('active');
+                if (icon.classList.contains('bi-heart-fill')) {
+                    icon.classList.remove('bi-heart-fill', 'text-danger');
+                    icon.classList.add('bi-heart', 'text-body');
+                } else {
+                    icon.classList.remove('bi-heart', 'text-body');
+                    icon.classList.add('bi-heart-fill', 'text-danger');
+                }
             }
         })
-        .catch(err => {
-            console.error('Wishlist error:', err);
+        .catch(() => {
+            // Revert optimistic update on network error
+            btnElement.classList.toggle('active');
+            if (icon.classList.contains('bi-heart-fill')) {
+                icon.classList.remove('bi-heart-fill', 'text-danger');
+                icon.classList.add('bi-heart', 'text-body');
+            } else {
+                icon.classList.remove('bi-heart', 'text-body');
+                icon.classList.add('bi-heart-fill', 'text-danger');
+            }
         });
 }

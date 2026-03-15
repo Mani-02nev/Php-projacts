@@ -1267,6 +1267,28 @@ hr {
     transform: none;
 }
 
+.global-product-card .wishlist-btn.active i {
+    color: #EF4444;
+}
+
+/* Heart icon: outline by default, filled red when .active */
+.global-product-card .wishlist-btn i {
+    transition: transform 0.25s ease;
+}
+.global-product-card .wishlist-btn:not(.active) i {
+    color: inherit;
+}
+
+/* Smooth heart animation when toggled: scale 1 → 1.2 → 1 */
+.global-product-card .wishlist-btn.heart-pop i {
+    animation: heartPop 0.4s ease;
+}
+@keyframes heartPop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 /* Card Content Standardized */
 .global-product-card .card-content {
     padding: 1rem;

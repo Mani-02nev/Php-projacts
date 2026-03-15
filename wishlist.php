@@ -54,8 +54,7 @@ include 'includes/header.php';
                 <!-- Global Product Card -->
                 <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
                     <!-- Wishlist Btn (Acts as Remove) -->
-                    <button class="wishlist-btn active" 
-                            onclick="event.preventDefault(); window.location.href='?remove=<?php echo $product['id']; ?>'">
+                    <button type="button" class="wishlist-btn active" data-id="<?php echo $product['id']; ?>">
                         <i class="bi bi-heart-fill"></i>
                     </button>
                     
@@ -94,8 +93,8 @@ include 'includes/header.php';
             <div class="global-grid">
                 <?php foreach (array_slice($recently_viewed, 0, 6) as $product): ?>
                     <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
-                        <button class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
-                                onclick="event.preventDefault(); window.location.href='?wishlist_toggle=<?php echo $product['id']; ?>'"> <!-- Note: wishlist toggle handling missing in wishlist.php for recently viewed if not added, but users context is standard -->
+                        <button type="button" class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
+                                data-id="<?php echo $product['id']; ?>">
                             <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
                         </button>
                         <div class="img-wrapper">

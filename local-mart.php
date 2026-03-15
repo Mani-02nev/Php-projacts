@@ -1,7 +1,7 @@
 <?php
 /**
  * Local Mart — Univault Hyperlocal Shopping
- * Leaflet.js + OpenStreetMap + GeoJSON  (no paid APIs)
+ * Leaflet.js + GeoJSON  (no paid APIs)
  * Page: local-mart.php
  */
 
@@ -47,12 +47,12 @@ include 'includes/header.php';
         </h1>
         <p class="lead mb-4">
             Discover nearby shops in Trichy, compare products, and get directions instantly.<br class="d-none d-md-block">
-            Powered by Leaflet.js &amp; OpenStreetMap — 100% free &amp; offline-ready.
+            Powered by Leaflet.js — 100% free &amp; offline-ready.
         </p>
         <div class="d-flex justify-content-center gap-4 flex-wrap">
             <div class="lm-hero-stat">
                 <span id="statShopCount"><?= $shop_count ?></span>
-                <small>OSM Shops</small>
+                <small>Nearby Shops</small>
             </div>
             <div class="lm-hero-stat lm-hero-stat--divider">
                 <span id="statOpenCount">—</span>
@@ -74,11 +74,11 @@ include 'includes/header.php';
      CONTROL BAR
      ══════════════════════════════════════════════════════════════ -->
 <div class="lm-control-bar" id="lmControlBar">
-    <div class="container">
-        <div class="d-flex flex-wrap gap-3 align-items-center">
+    <div class="container-fluid px-4 px-xl-5">
+        <div class="lm-control-flex">
 
             <!-- Product Search -->
-            <div class="lm-search-wrapper">
+            <div class="lm-search-wrapper" style="flex:1; min-width: 250px;">
                 <i class="bi bi-search search-icon"></i>
                 <input type="text"
                        id="productSearchInput"
@@ -90,20 +90,21 @@ include 'includes/header.php';
             </div>
 
             <!-- Radius -->
-            <div class="d-flex align-items-center gap-2">
+            <div class="lm-filter-group">
                 <span class="lm-filter-label"><i class="bi bi-circle me-1"></i>Radius</span>
                 <div class="lm-radius-selector">
                     <button class="lm-radius-option" data-km="1">1 km</button>
                     <button class="lm-radius-option" data-km="3">3 km</button>
-                    <button class="lm-radius-option active" data-km="5">5 km</button>
+                    <button class="lm-radius-option" data-km="5">5 km</button>
                     <button class="lm-radius-option" data-km="10">10 km</button>
                     <button class="lm-radius-option" data-km="20">20 km</button>
+                    <button class="lm-radius-option active" data-km="50">50 km</button>
                 </div>
             </div>
 
             <!-- Shop Type -->
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <span class="lm-filter-label"><i class="bi bi-shop me-1"></i>Type</span>
+            <div class="lm-filter-group">
+                <span class="lm-filter-label"><i class="bi bi-shop me-1"></i>Category</span>
                 <button class="lm-pill active" data-filter-type="all">All</button>
                 <button class="lm-pill" data-filter-type="grocery">🛒 Grocery</button>
                 <button class="lm-pill" data-filter-type="vegetables">🥦 Vegetables</button>
@@ -112,7 +113,7 @@ include 'includes/header.php';
             </div>
 
             <!-- Rating -->
-            <div class="d-flex align-items-center gap-2">
+            <div class="lm-filter-group">
                 <span class="lm-filter-label"><i class="bi bi-star me-1"></i>Rating</span>
                 <button class="lm-pill active" data-filter-rating="0">Any</button>
                 <button class="lm-pill" data-filter-rating="4">4★+</button>
@@ -120,7 +121,7 @@ include 'includes/header.php';
 
             <!-- My Location -->
             <button id="redetectLocation" class="lm-pill ms-auto"
-                    style="border-color:var(--lm-accent);color:var(--lm-accent);">
+                    style="border-color:var(--lm-accent);color:var(--lm-accent);flex-shrink:0;">
                 <i class="bi bi-crosshair me-1"></i>My Location
             </button>
 
@@ -129,27 +130,29 @@ include 'includes/header.php';
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
-     MAIN 2-COLUMN LAYOUT
+     QUICK SEARCH CHIPS
      ══════════════════════════════════════════════════════════════ -->
-<div class="container">
-    <div class="lm-quick-search-row">
-        <div class="lm-chip" onclick="window.LM.quickSearch('Milk')"><i class="bi bi-cup-hot"></i> Milk</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Bread')"><i class="bi bi-egg-fill"></i> Bread</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Rice')"><i class="bi bi-box-seam"></i> Rice</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Vegetables')"><i class="bi bi-leaf"></i> Vegetables</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Fruits')"><i class="bi bi-apple"></i> Fruits</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Medicine')"><i class="bi bi-capsule"></i> Medicine</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Electronics')"><i class="bi bi-phone"></i> Electronics</div>
-        <div class="lm-chip" onclick="window.LM.quickSearch('Hardware')"><i class="bi bi-tools"></i> Hardware</div>
+<div class="container-fluid px-4 px-xl-5 mt-4">
+    <div class="d-flex gap-3 overflow-auto pb-2" style="scrollbar-width:none;">
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Milk')"><span class="icon">🥛</span> Milk</button>
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Bread')"><span class="icon">🍞</span> Bread</button>
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Rice')"><span class="icon">🍚</span> Rice</button>
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Vegetables')"><span class="icon">🥦</span> Vegetables</button>
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Medicine')"><span class="icon">💊</span> Medicine</button>
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Electronics')"><span class="icon">💻</span> Electronics</button>
+        <button class="lm-qs-pill" onclick="window.LM.quickSearch('Hardware')"><span class="icon">🔧</span> Auto Repair</button>
     </div>
 </div>
 
-<div class="container">
-    <div class="lm-content-area">
+<div class="container-fluid px-4 px-xl-5">
+    <div class="lm-content-area" id="lmContentArea">
 
-        <!-- ── LEFT: LEAFLET MAP ─────────────────────────── -->
+        <!-- ── LEFT: ROUTE DETAILS (Hidden implicitly until injected by JS) ── -->
+        <!-- JS will inject into #routeSidebar. We keep a placeholder. -->
+
+        <!-- ── CENTER: LEAFLET MAP ─────────────────────────── -->
         <div class="lm-map-panel">
-            <div class="lm-map-container" aria-label="OpenStreetMap — Local Mart">
+            <div class="lm-map-container" aria-label="Map — Local Mart">
 
                 <!-- Leaflet renders into this div -->
                 <div id="localMartMap"></div>
@@ -162,17 +165,17 @@ include 'includes/header.php';
 
                 <!-- Map action buttons -->
                 <div class="lm-map-controls">
-                    <button class="lm-map-btn" id="btnResetView" title="Reset to Trichy centre">
-                        <i class="bi bi-arrows-fullscreen"></i>
+                    <button class="lm-map-btn" id="btnZoomIn" title="Zoom In">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                    <button class="lm-map-btn" id="btnZoomOut" title="Zoom Out">
+                        <i class="bi bi-dash-lg"></i>
                     </button>
                     <button class="lm-map-btn" id="btnMyLocation" title="Go to my location">
                         <i class="bi bi-bullseye"></i>
                     </button>
-                    <button class="lm-map-btn" id="btnCompass" title="Reset Rotation">
-                        <i class="bi bi-compass"></i>
-                    </button>
-                    <button class="lm-map-btn" id="btnToggleCats" title="Toggle Categories">
-                        <i class="bi bi-layers"></i>
+                    <button class="lm-map-btn" id="btnResetView" title="Reset Map">
+                        <i class="bi bi-arrows-fullscreen"></i>
                     </button>
                 </div>
 
@@ -189,13 +192,6 @@ include 'includes/header.php';
                     </div>
                 </div>
 
-                <!-- OSM credit (supplementary) -->
-                <div style="position:absolute;bottom:28px;left:8px;z-index:500;
-                             background:rgba(255,255,255,.85);border-radius:6px;
-                             padding:2px 8px;font-size:.68rem;color:#6B7280;">
-                    Map data: <a href="https://www.openstreetmap.org" target="_blank" rel="noopener"
-                                 style="color:#6C63FF;">OpenStreetMap</a>
-                </div>
 
             </div>
         </div>
@@ -205,7 +201,7 @@ include 'includes/header.php';
             <div class="lm-panel-header d-flex align-items-center justify-content-between">
                 <div>
                     <p class="lm-panel-title">Nearby Shops</p>
-                    <p class="lm-panel-subtitle">Sorted by distance · Top 5 shown</p>
+                    <p class="lm-panel-subtitle">Sorted by distance · All shops shown</p>
                 </div>
                 <span class="lm-count-badge" id="shopCountBadge">Loading…</span>
             </div>
@@ -258,7 +254,7 @@ include 'includes/header.php';
         <div class="lm-how-item">
             <div class="lm-how-icon lm-how-icon--green"><i class="bi bi-map-fill"></i></div>
             <h6>View on Map</h6>
-            <p>Shops appear as colour-coded pins on OSM</p>
+            <p>Shops appear as colour-coded pins on the map</p>
         </div>
         <div class="lm-how-divider"></div>
         <div class="lm-how-item">
@@ -270,7 +266,7 @@ include 'includes/header.php';
         <div class="lm-how-item">
             <div class="lm-how-icon lm-how-icon--red"><i class="bi bi-navigation-fill"></i></div>
             <h6>Navigate &amp; Buy</h6>
-            <p>Get OSM directions or add to cart instantly</p>
+            <p>Get directions or add to cart instantly</p>
         </div>
     </div>
 </div>

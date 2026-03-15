@@ -1,5 +1,5 @@
 /**
- * Local Mart — Leaflet.js + OpenStreetMap
+ * Local Mart — Leaflet.js
  * 100% Offline-friendly, no paid APIs
  * Univault Platform · v3.0
  */
@@ -8,9 +8,9 @@
 
 /* ── Constants ─────────────────────────────────────────────────── */
 const TRICHY = { lat: 10.7905, lng: 78.7047 };
-const OSM_TILE_URL  = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-const OSM_ATTR      = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>';
-const GEOJSON_URL   = 'data/trichy_shops.geojson';
+const OSM_TILE_URL  = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+const OSM_ATTR      = '';
+const GEOJSON_URL   = 'data/50k.geojson';
 const PRODUCTS_URL  = 'data/shop_products.json';
 
 
@@ -26,7 +26,7 @@ let markerCluster = null;   // MarkerCluster group
 let allShops      = [];     // enriched shop objects (GeoJSON features + distance)
 let allProducts   = [];     // flat product objects
 let shopLayers    = {};     // shop_id → L.Marker
-let activeRadius  = 5;      // km
+let activeRadius  = 50;      // km
 let activeType    = 'all';  // shop type filter
 let activeMinRating = 0;
 let searchQuery   = '';
@@ -42,10 +42,10 @@ function initMap() {
         center:          [TRICHY.lat, TRICHY.lng],
         zoom:            13,
         zoomControl:     false,
-        attributionControl: true,
+        attributionControl: false,
     });
 
-    // OpenStreetMap tile layer
+    // Map tile layer
     L.tileLayer(OSM_TILE_URL, {
         attribution: OSM_ATTR,
         maxZoom:     19,
@@ -66,8 +66,9 @@ function initMap() {
         leafletMap.addLayer(markerCluster);
     }
 
-    // Custom zoom control (top-right)
-    L.control.zoom({ position: 'topright' }).addTo(leafletMap);
+    // Custom zoom control logic
+    document.getElementById('btnZoomIn')?.addEventListener('click', () => leafletMap.zoomIn());
+    document.getElementById('btnZoomOut')?.addEventListener('click', () => leafletMap.zoomOut());
 
     // Reset view button
     document.getElementById('btnResetView')?.addEventListener('click', () => {
@@ -131,12 +132,13 @@ function osmShopType(p) {
 }
 
 function osmAddress(p) {
+    if (p['addr:full']) return p['addr:full'];
     const parts = [
         p['addr:housenumber'] || p['addr:housename'],
-        p['addr:street'],
-        p['addr:city'] || p['addr:district'],
+        p['addr:street'] || p['addr:locality'],
+        p['addr:city'] || p['addr:district'] || p['addr:suburb'] || p['addr:state']
     ].filter(Boolean);
-    return parts.length ? parts.join(', ') : '';
+    return parts.length ? parts.join(', ') : 'Trichy District Region';
 }
 
 let _uidCounter = 0;
@@ -184,14 +186,30 @@ async function loadData() {
         allProducts   = await prodRes.json();
 
         // Parse OSM GeoJSON — filter to only Point geometry features
+        const uniqueNames = new Set();
         allShops = geoJSON.features
             .filter(f => f.geometry && f.geometry.type === 'Point' &&
                          Array.isArray(f.geometry.coordinates) &&
                          f.geometry.coordinates.length === 2)
             .map(normaliseFeature)
-            .filter(s => !isNaN(s.lat) && !isNaN(s.lng));
+            .filter(s => {
+                if (isNaN(s.lat) || isNaN(s.lng)) return false;
+                
+                // Skip unnamed shops for a cleaner UI
+                if (s.name === 'Unnamed Shop') return false; 
 
-        console.log(`✅ Loaded ${allShops.length} real OSM shops from export file`);
+                // OSM often yields nodes + ways for the same building. 
+                // Group by name and roughly 110m box (toFixed(3)) to deduplicate the same store
+                const latBin = s.lat.toFixed(3);
+                const lngBin = s.lng.toFixed(3);
+                const normalizedKey = `${s.name.trim().toLowerCase()}_${latBin}_${lngBin}`;
+                
+                if (uniqueNames.has(normalizedKey)) return false;
+                uniqueNames.add(normalizedKey);
+                return true;
+            });
+
+        console.log(`✅ Loaded ${allShops.length} unique OSM shops from export file`);
         setLocationBadge('Data loaded ✓', 'located');
         detectLocation();
 
@@ -315,16 +333,16 @@ function shopColor(type) {
     return (TYPE_COLORS[type] || TYPE_COLORS.default);
 }
 function shopEmoji(type) {
-    const m = { 
-        grocery:     '<i class="bi bi-basket-fill"></i>', 
-        supermarket: '<i class="bi bi-shop"></i>', 
-        vegetables:  '<i class="bi bi-brightness-high"></i>', 
+    const m = {
+        grocery:     '<i class="bi bi-basket-fill"></i>',
+        supermarket: '<i class="bi bi-shop"></i>',
+        vegetables:  '<i class="bi bi-brightness-high"></i>',
         electronics: '<i class="bi bi-lightning-charge-fill"></i>',
-        pharmacy:    '<i class="bi bi-hospital"></i>', 
-        bakery:      '<i class="bi bi-bag-heart-fill"></i>', 
-        dairy:       '<i class="bi bi-cup-straw"></i>', 
-        hardware:    '<i class="bi bi-tools"></i>', 
-        default:     '<i class="bi bi-shop-window"></i>' 
+        pharmacy:    '<i class="bi bi-capsule"></i>',
+        bakery:      '<i class="bi bi-bread-slice"></i>',
+        dairy:       '<i class="bi bi-cup-straw"></i>',
+        hardware:    '<i class="bi bi-tools"></i>',
+        default:     '<i class="bi bi-shop-window"></i>'
     };
     return m[type] || m.default;
 }
@@ -391,13 +409,14 @@ function placeShopMarkers(shops) {
                 <span class="lm-badge-stat text-warning bg-warning-subtle">
                     ${stars} ${shop.rating.toFixed(1)}
                 </span>
+                ${distText}
             </div>
 
             <div class="lm-popup-addr-text"><i class="bi bi-geo-alt"></i> ${esc(shop.address)}</div>
 
-            <div class="lm-popup-btns">
+            <div class="lm-popup-btns" style="margin-top:0.75rem; display:flex; gap:0.5rem;">
               <button onclick="window.LM.showShopDetail(${shop.shop_id})" class="lm-btn-popup-prof">
-                <i class="bi bi-bag"></i> View
+                <i class="bi bi-shop"></i> View shop
               </button>
               <button onclick="window.LM.navigateInSite(${shop.shop_id})" class="lm-btn-popup-prof lm-btn-accent">
                 <i class="bi bi-cursor-fill"></i> Navigate
@@ -452,10 +471,10 @@ function enrichAndRefresh() {
         return true;
     }).sort((a, b) => a.distance - b.distance);
 
-    const top5 = filtered.slice(0, 5);
+    const toShow = filtered;
 
-    placeShopMarkers(top5);
-    renderShopCards(top5);
+    placeShopMarkers(toShow);
+    renderShopCards(toShow);
     updateStats(filtered);
 }
 
@@ -495,6 +514,21 @@ function renderShopCards(shops) {
     panel.appendChild(frag);
 }
 
+function categoryLabel(type) {
+    const labels = {
+        grocery: 'Grocery Store',
+        supermarket: 'Supermarket',
+        vegetables: 'Vegetables',
+        electronics: 'Electronics',
+        pharmacy: 'Pharmacy',
+        bakery: 'Bakery',
+        dairy: 'Dairy',
+        hardware: 'Auto Repair',
+        default: type
+    };
+    return labels[type] || (type.charAt(0).toUpperCase() + type.slice(1).replace(/_/g, ' '));
+}
+
 function buildCard(shop, idx) {
     const el = document.createElement('div');
     el.className           = 'lm-shop-card';
@@ -504,33 +538,32 @@ function buildCard(shop, idx) {
     const col    = shopColor(shop.type);
     const emoji  = shopEmoji(shop.type);
     const stars  = renderStars(shop.rating);
+    const catLabel = categoryLabel(shop.type);
 
     el.innerHTML = `
       <div class="lm-card-top">
         <div class="lm-shop-icon ${shop.is_open ? 'open-icon' : 'closed-icon'}"
              style="background:${col}22;color:${col};">${emoji}</div>
         <div style="flex:1;min-width:0;">
-          <p class="lm-shop-name">${esc(shop.name)}</p>
-          <p class="lm-shop-cat-label" style="color:${col}; font-size:0.75rem; font-weight:700; text-transform:uppercase;">${esc(shop.type)}</p>
+          <p class="lm-shop-name" title="${esc(shop.name)}">${esc(shop.name)}</p>
+          <p class="lm-shop-cat-label">${esc(catLabel)}</p>
         </div>
-        <span class="lm-dist-pill" style="background:${col}18;color:${col};">
-          <i class="bi bi-geo-alt-fill"></i>${shop.distance.toFixed(1)} km
-        </span>
+        <span class="lm-dist-pill">${shop.distance.toFixed(1)} km</span>
       </div>
 
-      <div class="lm-card-meta-row">
-        <span class="lm-rating">${stars} <span class="ms-1 fw-bold">${shop.rating.toFixed(1)}</span></span>
-        <span class="lm-status-text ${shop.is_open ? 'text-success' : 'text-danger'}" style="font-size:0.8rem; font-weight:600;">
-          ${shop.is_open ? '● Open' : '● Closed'}
+      <div class="lm-card-meta">
+        <span class="lm-rating">${stars} ${shop.rating.toFixed(1)}</span>
+        <span class="lm-status-badge ${shop.is_open ? 'lm-open' : 'lm-closed'}">
+          ${shop.is_open ? 'Open' : 'Closed'}
         </span>
       </div>
 
       <div class="lm-card-actions">
-        <button class="lm-btn-prof lm-btn-prof-primary" onclick="window.LM.zoomToShop(${shop.shop_id})">
-            <i class="bi bi-map-fill"></i> View on Map
+        <button type="button" class="lm-btn-view" onclick="event.stopPropagation(); window.LM.zoomToShop(${shop.shop_id})">
+          <i class="bi bi-map-fill"></i> View on Map
         </button>
-        <button class="lm-btn-prof lm-btn-prof-accent" onclick="window.LM.navigateInSite(${shop.shop_id})">
-            <i class="bi bi-cursor-fill"></i> Directions
+        <button type="button" class="lm-btn-browse" onclick="event.stopPropagation(); window.LM.navigateInSite(${shop.shop_id})">
+          <i class="bi bi-cursor-fill"></i> Directions
         </button>
       </div>`;
 
@@ -545,20 +578,32 @@ function buildCard(shop, idx) {
 function zoomToShop(shopId) {
     const shop = allShops.find(s => s.shop_id === +shopId);
     if (!shop) return;
-    
-    leafletMap.flyTo([shop.lat, shop.lng], 16, { duration: 1.5 });
-    
-    // Bounce marker if it exists
+
+    // Highlight the card in the list and scroll it into view
+    highlightCard(shopId, true);
+
+    // 1 & 2 & 3. Pan the map to the shop location and Zoom the map to level 15
+    leafletMap.flyTo([shop.lat, shop.lng], 15, { duration: 1.5 });
+
+    // 4 & 5. Find the shop marker, highlight it, open popup (and animate)
     const m = shopLayers[shop.shop_id];
     if (m) {
-        m.openPopup();
-        const mel = m.getElement();
-        if (mel) {
-            mel.classList.add('lm-bounce');
-            setTimeout(() => mel.classList.remove('lm-bounce'), 1000);
+        const el = m.getElement();
+        const pin = el?.querySelector('.lm-prof-icon');
+        if (pin) {
+            pin.classList.add('lm-bounce');
+            setTimeout(() => pin.classList.remove('lm-bounce'), 1000);
+        }
+        if (markerCluster) {
+            markerCluster.zoomToShowLayer(m, () => {
+                m.openPopup();
+                highlightMarker(shop.shop_id, true);
+            });
+        } else {
+            m.openPopup();
+            highlightMarker(shop.shop_id, true);
         }
     }
-    highlightCard(shopId, true);
 }
 
 function renderStars(rating) {
@@ -589,8 +634,6 @@ function showShopDetail(shopId) {
     }
 
     const products = allProducts.filter(p => p.shop_id === +shopId);
-    const navUrl   = `https://www.openstreetmap.org/directions?from=${userLat||TRICHY.lat},${userLng||TRICHY.lng}&to=${shop.lat},${shop.lng}`;
-    const osmUrl   = `https://www.openstreetmap.org/?mlat=${shop.lat}&mlon=${shop.lng}#map=17/${shop.lat}/${shop.lng}`;
 
     const overlay = document.createElement('div');
     overlay.className = 'lm-modal-overlay';
@@ -641,12 +684,12 @@ function showShopDetail(shopId) {
           </div>
 
           <div class="lm-modal-map-row">
-            <a href="${navUrl}" target="_blank" rel="noopener" class="lm-btn-directions">
+            <button onclick="window.LM.navigateInSite(${shop.shop_id})" class="lm-btn-directions" style="border:none; cursor:pointer;">
               <i class="bi bi-navigation-fill me-2"></i>Get Directions
-            </a>
-            <a href="${osmUrl}" target="_blank" rel="noopener" class="lm-btn-gmap">
+            </button>
+            <button onclick="window.LM.closeModal(); window.LM.zoomToShop(${shop.shop_id})" class="lm-btn-gmap" style="border:none; cursor:pointer;">
               <i class="bi bi-map me-2"></i>View on Map
-            </a>
+            </button>
           </div>
 
           <div class="lm-modal-section-title">
@@ -931,111 +974,354 @@ function showSkeletons() {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   IN-SITE ROUTE NAVIGATION (ANIMATED POLYLINE)
+   GOOGLE MAPS-STYLE NAVIGATION SYSTEM
    ════════════════════════════════════════════════════════════════ */
+let activeNavShop = null;           // currently navigating shop
+let navTravelMode = 'driving';      // selected mode: driving | cycling | foot
+let routeSummaryCard = null;       // floating map card (legacy, may be unused)
+let routeSelectorBar = null;       // horizontal route mode selector above map
+let routesByMode = null;          // { driving: { route, latlngs, distance, duration, steps }, cycling, foot }
+let routeLayers = {};             // { drive: L.Polyline, bike: L.Polyline, walk: L.Polyline }
+let polylineGlow = null;          // glow for selected route only
+
 function clearRoute() {
+    // Remove Leaflet Routing Control if present
     if (activeRoute) {
-        leafletMap.removeControl(activeRoute);
+        try { leafletMap.removeControl(activeRoute); } catch (e) {}
         activeRoute = null;
     }
+    // Remove all route polylines (Drive, Bike, Walk)
+    if (polylineGlow) { leafletMap.removeLayer(polylineGlow); polylineGlow = null; }
+    ['drive', 'bike', 'walk'].forEach(key => {
+        if (routeLayers[key]) { leafletMap.removeLayer(routeLayers[key]); routeLayers[key] = null; }
+    });
+    routeLayers = {};
+    routesByMode = null;
+
+    // Remove route selector bar and floating summary card
+    if (routeSelectorBar) { routeSelectorBar.remove(); routeSelectorBar = null; }
+    if (routeSummaryCard) { routeSummaryCard.remove(); routeSummaryCard = null; }
+
+    // Remove route sidebar and direction steps
     if (routePanel) { routePanel.remove(); routePanel = null; }
+    activeNavShop = null;
+
+    // De-highlight destination shop marker
+    Object.values(shopLayers).forEach(m => {
+        const el = m.getElement();
+        const pin = el?.querySelector('.lm-prof-icon');
+        if (pin) pin.classList.remove('selected');
+    });
+
+    // Reset map to default shop discovery view (city view)
+    if (leafletMap) {
+        leafletMap.flyTo([TRICHY.lat, TRICHY.lng], 13, { duration: 0.8 });
+    }
+
+    const area = document.getElementById('lmContentArea');
+    if (area) area.classList.remove('routing-active');
+
+    setTimeout(() => { if (leafletMap) leafletMap.invalidateSize({ animate: true }); }, 300);
 }
 
 function navigateInSite(shopId) {
     const shop = allShops.find(s => s.shop_id === +shopId);
-    if (!shop || !userLat) return;
+    if (!shop) { lmToast('Shop not found.'); return; }
+    if (!userLat) { lmToast('Please allow location access first.'); detectLocation(); return; }
 
+    activeNavShop = shop;
     clearRoute();
-    closeModal(); // close shop modal if open
-    
-    // Initialize Leaflet Routing Machine for Real Road Calculation
-    activeRoute = L.Routing.control({
-        waypoints: [
-            L.latLng(userLat, userLng),
-            L.latLng(shop.lat, shop.lng)
-        ],
-        router: L.Routing.osrmv1({
-            serviceUrl: 'https://router.project-osrm.org/route/v1'
-        }),
-        lineOptions: {
-            styles: [
-                { color: '#1E1B4B', opacity: 0.08, weight: 14 }, // Wide shadow
-                { color: '#6366F1', opacity: 0.9, weight: 6, className: 'lm-animated-route' } // Indigo gradient-ish line
-            ],
-            extendToWaypoints: true,
-            missingRouteTolerance: 0
-        },
-        show: false,
-        addWaypoints: false,
-        draggableWaypoints: false,
-        fitSelectedRoutes: true,
-        createMarker: function() { return null; } // Hide default routing markers
-    }).addTo(leafletMap);
+    closeModal();
 
-    // Watch for route found event
-    activeRoute.on('routesfound', function(e) {
-        const routes = e.routes;
-        const summary = routes[0].summary;
-        
-        const dist = summary.totalDistance / 1000; // meters to km
-        const time = Math.round(summary.totalTime / 60); // seconds to min
+    // Highlight the destination shop marker
+    const targetMarker = shopLayers[shop.shop_id];
+    if (targetMarker) {
+        const el = targetMarker.getElement();
+        const pin = el?.querySelector('.lm-prof-icon');
+        if (pin) pin.classList.add('selected');
+    }
 
-        const transportIcon = dist > 2 ? '<i class="bi bi-car-front-fill text-primary"></i>' : '<i class="bi bi-person-walking text-primary"></i>';
-        const timeText = dist > 2 ? `${time} min (Drive)` : `${time} min (Walk)`;
+    // Set up sidebar (timeline panel)
+    const area = document.getElementById('lmContentArea');
+    if (area) area.classList.add('routing-active');
 
-        // Inject/Update Floating Info Panel
-        if (!routePanel) {
-            routePanel = document.createElement('div');
-            routePanel.className = 'lm-route-panel-glass';
-            document.getElementById('localMartMap').appendChild(routePanel);
+    routePanel = document.createElement('div');
+    routePanel.className = 'lm-route-sidebar';
+    routePanel.id = 'routeSidebar';
+    if (area) area.insertBefore(routePanel, area.firstChild);
+
+    routePanel.innerHTML = buildNavPanelSkeleton(shop);
+    const body = document.getElementById('navBody');
+    if (body) body.innerHTML = '<div class="lm-nav-loading"><div class="lm-nav-spinner"></div><span>Calculating routes…</span></div>';
+
+    // Fetch all three routes in parallel
+    fetchAllRoutes(shop).then(routes => {
+        if (!routes) return;
+        routesByMode = routes;
+        if (!routesByMode[navTravelMode]) {
+            navTravelMode = routesByMode.driving ? 'driving' : routesByMode.cycling ? 'cycling' : 'foot';
         }
-        
-        // Extract Turn-by-Turn Instructions
-        const instructions = routes[0].instructions || [];
-        const directionsHtml = instructions.map((step, idx) => {
-            let icon = 'arrow-up';
-            const t = step.type;
-            if (t.includes('Left')) icon = 'arrow-90deg-left';
-            if (t.includes('Right')) icon = 'arrow-90deg-right';
-            if (t.includes('Roundabout')) icon = 'arrow-repeat';
-            if (t === 'TurnAround') icon = 'arrow-counterclockwise';
-            if (idx === instructions.length - 1) icon = 'flag-fill';
-            if (idx === 0) icon = 'geo-alt-fill';
-
-            const stepDist = step.distance >= 1000 
-                ? (step.distance/1000).toFixed(1) + ' km' 
-                : Math.round(step.distance) + ' m';
-
-            return `
-              <div class="lm-direction-step">
-                <div class="lm-direction-icon"><i class="bi bi-${icon}"></i></div>
-                <div class="lm-direction-text">${step.text}</div>
-                <div class="lm-direction-step-dist">${stepDist}</div>
-              </div>`;
-        }).join('');
-
-        routePanel.innerHTML = `
-            <div class="lm-route-header">
-                <div>
-                    <div class="lm-route-title">Path to ${esc(shop.name)}</div>
-                    <div class="lm-route-stats">
-                        ${transportIcon} <span class="ms-1 fw-bold">${dist.toFixed(1)} km</span> • ${timeText}
-                    </div>
-                </div>
-                <button class="lm-route-close" onclick="window.LM.clearRoute()"><i class="bi bi-x-lg"></i></button>
-            </div>
-            <div class="lm-directions-container">
-                <div class="lm-directions-list">
-                    ${directionsHtml}
-                </div>
-            </div>
-        `;
+        renderAllRoutes(shop, routes);
+        selectRouteMode(shop, navTravelMode);
+    }).catch(err => {
+        console.error('Route fetch error:', err);
+        if (body) body.innerHTML = '<div class="lm-nav-error"><i class="bi bi-exclamation-triangle-fill"></i><p>Could not calculate routes. Try again.</p></div>';
     });
-    
-    activeRoute.on('routingerror', function() {
-        lmToast('Routing failed. The shop might be unreachable via roads.');
-        clearRoute();
+
+    setTimeout(() => { if (leafletMap) leafletMap.invalidateSize({ animate: true }); }, 300);
+}
+
+function buildNavPanelSkeleton(shop) {
+    const col   = shopColor(shop.type);
+    const emoji = shopEmoji(shop.type);
+    return `
+    <div class="lm-nav-header">
+        <div class="lm-nav-title-row">
+            <div class="lm-nav-icon" style="background:${col}22;color:${col};">${emoji}</div>
+            <div style="flex:1;min-width:0;">
+                <div class="lm-nav-shop-name">${esc(shop.name)}</div>
+                <div class="lm-nav-shop-type">${esc(shop.type)}</div>
+            </div>
+            <button class="lm-nav-close" onclick="window.LM.clearRoute()" title="Cancel route">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="lm-nav-waypoints">
+            <div class="lm-nav-wp-row">
+                <div class="lm-nav-wp-dot lm-wp-origin"></div>
+                <span class="lm-nav-wp-label">Your Location</span>
+            </div>
+            <div class="lm-nav-wp-line"></div>
+            <div class="lm-nav-wp-row">
+                <div class="lm-nav-wp-dot lm-wp-dest" style="background:${col};"></div>
+                <span class="lm-nav-wp-label" style="font-weight:600;">${esc(shop.name)}</span>
+            </div>
+        </div>
+    </div>
+    <div class="lm-nav-body" id="navBody"></div>`;
+}
+
+/** Average speeds (km/h) for route duration calculation. */
+const ROUTE_SPEED_KMH = { driving: 40, cycling: 25, foot: 5 };
+
+/**
+ * Compute travel duration in seconds from route distance using speed profile.
+ * time (h) = distance (km) / speed (km/h)  →  duration (s) = (distance_m / 1000 / speed_kmh) * 3600
+ */
+function durationFromDistance(distanceMeters, mode) {
+    if (!distanceMeters || !ROUTE_SPEED_KMH[mode]) return 0;
+    const km = distanceMeters / 1000;
+    const hours = km / ROUTE_SPEED_KMH[mode];
+    return Math.round(hours * 3600);
+}
+
+function formatDuration(seconds) {
+    const mins = Math.round(seconds / 60);
+    if (mins < 60) return mins + ' min';
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return m ? `${h}h ${m}m` : `${h}h`;
+}
+
+/** Fetch Drive, Bike, Walk routes in parallel from OSRM. */
+async function fetchAllRoutes(shop) {
+    const coords = `${userLng},${userLat};${shop.lng},${shop.lat}`;
+    const base = 'https://router.project-osrm.org/route/v1';
+    const opts = '?overview=full&geometries=geojson&steps=true';
+    const urls = {
+        driving: `${base}/driving/${coords}${opts}`,
+        cycling: `${base}/cycling/${coords}${opts}`,
+        foot:    `${base}/foot/${coords}${opts}`
+    };
+    const results = await Promise.allSettled([
+        fetch(urls.driving).then(r => r.ok ? r.json() : Promise.reject(new Error('driving'))),
+        fetch(urls.cycling).then(r => r.ok ? r.json() : Promise.reject(new Error('cycling'))),
+        fetch(urls.foot).then(r => r.ok ? r.json() : Promise.reject(new Error('foot')))
+    ]);
+    const driving = results[0].status === 'fulfilled' && results[0].value?.routes?.[0] ? results[0].value.routes[0] : null;
+    const cycling = results[1].status === 'fulfilled' && results[1].value?.routes?.[0] ? results[1].value.routes[0] : null;
+    const foot    = results[2].status === 'fulfilled' && results[2].value?.routes?.[0] ? results[2].value.routes[0] : null;
+    if (!driving && !cycling && !foot) return null;
+    return {
+        driving: driving ? { route: driving, latlngs: driving.geometry.coordinates.map(c => [c[1], c[0]]), distance: driving.distance, duration: driving.duration, steps: driving.legs?.flatMap(l => l.steps) || [] } : null,
+        cycling: cycling ? { route: cycling, latlngs: cycling.geometry.coordinates.map(c => [c[1], c[0]]), distance: cycling.distance, duration: cycling.duration, steps: cycling.legs?.flatMap(l => l.steps) || [] } : null,
+        foot:    foot    ? { route: foot,    latlngs: foot.geometry.coordinates.map(c => [c[1], c[0]]), distance: foot.distance, duration: foot.duration, steps: foot.legs?.flatMap(l => l.steps) || [] } : null
+    };
+}
+
+/** Draw all three routes on the map and create the horizontal route selector bar. */
+function renderAllRoutes(shop, routes) {
+    if (!leafletMap || !routes) return;
+    // Remove any existing route layers
+    if (polylineGlow) { leafletMap.removeLayer(polylineGlow); polylineGlow = null; }
+    ['drive', 'bike', 'walk'].forEach(key => { if (routeLayers[key]) { leafletMap.removeLayer(routeLayers[key]); routeLayers[key] = null; } });
+    routeLayers = {};
+
+    const ROUTE_STYLES = {
+        driving: { key: 'drive', color: '#2563EB', weight: 5, opacity: 0.5, dashArray: null, className: 'lm-route-drive' },
+        cycling: { key: 'bike', color: '#7c3aed', weight: 5, opacity: 0.5, dashArray: '15, 10', className: 'lm-route-bike' },
+        foot:    { key: 'walk', color: '#059669', weight: 5, opacity: 0.5, dashArray: '5, 15', className: 'lm-route-walk' }
+    };
+
+    const allLatlngs = [];
+    ['driving', 'cycling', 'foot'].forEach(mode => {
+        const data = routes[mode];
+        if (!data) return;
+        const style = ROUTE_STYLES[mode];
+        const layer = L.polyline(data.latlngs, {
+            color: style.color,
+            weight: style.weight,
+            opacity: style.opacity,
+            dashArray: style.dashArray || undefined,
+            lineCap: 'round',
+            lineJoin: 'round',
+            className: style.className
+        }).addTo(leafletMap);
+        routeLayers[style.key] = layer;
+        allLatlngs.push(...data.latlngs);
     });
+
+    if (allLatlngs.length) {
+        leafletMap.fitBounds(L.latLngBounds(allLatlngs), { padding: [80, 80], animate: true });
+    }
+
+    // Route selector bar above the map
+    const mapCont = document.querySelector('.lm-map-container');
+    if (routeSelectorBar) routeSelectorBar.remove();
+    routeSelectorBar = document.createElement('div');
+    routeSelectorBar.className = 'lm-route-selector-bar';
+    routeSelectorBar.id = 'routeSelectorBar';
+    const driveData = routes.driving;
+    const bikeData = routes.cycling;
+    const walkData = routes.foot;
+    // Duration from speed profile: time = distance / speed (Drive 40, Bike 25, Walk 5 km/h)
+    const driveTime = driveData ? formatDuration(durationFromDistance(driveData.distance, 'driving')) : '—';
+    const bikeTime = bikeData ? formatDuration(durationFromDistance(bikeData.distance, 'cycling')) : '—';
+    const walkTime = walkData ? formatDuration(durationFromDistance(walkData.distance, 'foot')) : '—';
+    const driveDist = driveData ? (driveData.distance / 1000).toFixed(1) : '—';
+    const bikeDist = bikeData ? (bikeData.distance / 1000).toFixed(1) : '—';
+    const walkDist = walkData ? (walkData.distance / 1000).toFixed(1) : '—';
+    routeSelectorBar.innerHTML = `
+        <button type="button" class="lm-route-option ${navTravelMode === 'driving' ? 'active' : ''}" data-mode="driving" ${!driveData ? 'disabled' : ''}>
+            <span class="lm-route-option-icon">🚗</span>
+            <span class="lm-route-option-label">Drive</span>
+            <span class="lm-route-option-meta">${driveTime} – ${driveDist} km</span>
+        </button>
+        <button type="button" class="lm-route-option ${navTravelMode === 'cycling' ? 'active' : ''}" data-mode="cycling" ${!bikeData ? 'disabled' : ''}>
+            <span class="lm-route-option-icon">🚴</span>
+            <span class="lm-route-option-label">Bike</span>
+            <span class="lm-route-option-meta">${bikeTime} – ${bikeDist} km</span>
+        </button>
+        <button type="button" class="lm-route-option ${navTravelMode === 'foot' ? 'active' : ''}" data-mode="foot" ${!walkData ? 'disabled' : ''}>
+            <span class="lm-route-option-icon">🚶</span>
+            <span class="lm-route-option-label">Walk</span>
+            <span class="lm-route-option-meta">${walkTime} – ${walkDist} km</span>
+        </button>
+        <button type="button" class="lm-route-cancel" onclick="window.LM.clearRoute()" title="Cancel route">
+            <i class="bi bi-x-lg"></i> Cancel
+        </button>`;
+    if (mapCont) mapCont.insertBefore(routeSelectorBar, mapCont.firstChild);
+
+    routeSelectorBar.querySelectorAll('.lm-route-option').forEach(btn => {
+        if (btn.disabled) return;
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            navTravelMode = mode;
+            selectRouteMode(shop, mode);
+        });
+    });
+}
+
+/** Highlight selected route, fade others; zoom to route; update timeline panel. */
+function selectRouteMode(shop, mode) {
+    if (!routesByMode || !leafletMap) return;
+    const data = routesByMode[mode];
+    if (!data) return;
+
+    // Update selector bar active state
+    routeSelectorBar?.querySelectorAll('.lm-route-option').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+    });
+
+    // Route line styles: selected = thicker + full opacity, others = faded
+    const ROUTE_KEYS = { driving: 'drive', cycling: 'bike', foot: 'walk' };
+    const key = ROUTE_KEYS[mode];
+    ['drive', 'bike', 'walk'].forEach(k => {
+        const layer = routeLayers[k];
+        if (!layer) return;
+        const isSelected = k === key;
+        const opts = layer.options;
+        layer.setStyle({
+            weight: isSelected ? 7 : 4,
+            opacity: isSelected ? 1 : 0.35
+        });
+    });
+
+    // Glow behind selected route (add first so selected line can be brought to front)
+    if (polylineGlow) { leafletMap.removeLayer(polylineGlow); polylineGlow = null; }
+    polylineGlow = L.polyline(data.latlngs, {
+        color: key === 'drive' ? '#2563EB' : key === 'bike' ? '#7c3aed' : '#059669',
+        weight: 20,
+        opacity: 0.2,
+        lineCap: 'round',
+        lineJoin: 'round',
+        className: 'lm-route-glow'
+    }).addTo(leafletMap);
+    if (routeLayers[key]) routeLayers[key].bringToFront();
+
+    leafletMap.fitBounds(L.latLngBounds(data.latlngs), { padding: [60, 60], animate: true, duration: 0.5 });
+
+    // Timeline panel: distance, time (from speed profile), turn-by-turn steps
+    const body = document.getElementById('navBody');
+    if (!body) return;
+    const distKm = (data.distance / 1000).toFixed(1);
+    const durationSeconds = durationFromDistance(data.distance, mode);
+    const timeStr = formatDuration(durationSeconds);
+    const steps = data.steps || [];
+    const stepsHtml = steps.map((step, idx) => {
+        const isFirst = idx === 0;
+        const isLast = idx === steps.length - 1;
+        const manType = step.maneuver?.type || 'depart';
+        const modif   = step.maneuver?.modifier || '';
+        let icon = 'arrow-up';
+        if (isFirst) icon = 'geo-alt-fill';
+        else if (isLast) icon = 'flag-fill';
+        else if (manType === 'turn' && modif.includes('left')) icon = 'arrow-90deg-left';
+        else if (manType === 'turn' && modif.includes('right')) icon = 'arrow-90deg-right';
+        else if (manType === 'roundabout' || manType === 'rotary') icon = 'arrow-repeat';
+        else if (manType === 'uturn') icon = 'arrow-counterclockwise';
+        else if (manType === 'merge') icon = 'sign-merge-right';
+        const distTxt = step.distance >= 1000 ? (step.distance / 1000).toFixed(1) + ' km' : Math.round(step.distance) + ' m';
+        const road = step.name || '';
+        const instruction = isFirst ? 'Head towards your destination' : isLast ? 'Arrive at destination' : (manType === 'turn' ? `Turn ${modif}${road ? ' onto ' + road : ''}` : `${manType.charAt(0).toUpperCase() + manType.slice(1)}${road ? ' on ' + road : ''}`);
+        const stepLat = step.maneuver?.location?.[1];
+        const stepLng = step.maneuver?.location?.[0];
+        const clickAttr = (stepLat != null && stepLng != null) ? `onclick="window.LM.zoomToStep(${stepLat},${stepLng})"` : '';
+        return `<div class="lm-route-step ${isFirst ? 'first-step' : ''} ${isLast ? 'last-step' : ''}" ${clickAttr}>
+            <div class="lm-step-icon-wrap ${isFirst ? 'start-icon' : isLast ? 'end-icon' : ''}"><i class="bi bi-${icon}"></i></div>
+            <div class="lm-step-body"><div class="lm-step-text">${esc(instruction)}</div>${road && !isFirst && !isLast ? `<div class="lm-step-road">${esc(road)}</div>` : ''}</div>
+            <div class="lm-step-dist">${distTxt}</div>
+        </div>`;
+    }).join('');
+
+    body.innerHTML = `
+        <div class="lm-nav-route-summary">
+            <div class="lm-nav-route-stat"><strong>Distance:</strong> ${distKm} km</div>
+            <div class="lm-nav-route-stat"><strong>Time:</strong> ${timeStr}</div>
+        </div>
+        <div class="lm-nav-section-label">Steps</div>
+        <div class="lm-route-steps-container">${stepsHtml}</div>`;
+}
+
+function zoomToStep(lat, lng) {
+    if (!leafletMap) return;
+    leafletMap.flyTo([lat, lng], 17, { duration: 1.2 });
+    // Pulse a temporary marker at step location
+    const pulse = L.circleMarker([lat, lng], {
+        radius: 10, color: '#a855f7', fillColor: '#a855f7',
+        fillOpacity: 0.5, weight: 3
+    }).addTo(leafletMap);
+    setTimeout(() => leafletMap.removeLayer(pulse), 3000);
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1137,5 +1423,6 @@ window.addEventListener('load', () => {
    ════════════════════════════════════════════════════════════════ */
 window.LM = {
     showShopDetail, browseProducts, closeModal,
-    showSearchResults, quickSearch, addToCart, navigateInSite, clearRoute, zoomToShop
+    showSearchResults, quickSearch, addToCart,
+    navigateInSite, clearRoute, zoomToShop, zoomToStep
 };

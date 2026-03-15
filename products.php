@@ -115,7 +115,7 @@ if (isset($script_toast)) echo "<script>window.addEventListener('load', () => { 
                 <!-- Global Product Card Component -->
                 <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="global-product-card">
                     <!-- Wishlist Btn -->
-                    <button class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
+                    <button type="button" class="wishlist-btn <?php echo is_in_wishlist($product['id']) ? 'active' : ''; ?>" 
                             data-id="<?php echo $product['id']; ?>">
                         <i class="bi <?php echo is_in_wishlist($product['id']) ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
                     </button>

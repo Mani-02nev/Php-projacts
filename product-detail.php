@@ -243,8 +243,8 @@ if(count($related_products) < 4) {
         <?php foreach(array_slice($related_products, 0, 4) as $related): ?>
             <!-- Global Product Card -->
             <a href="product-detail.php?id=<?php echo $related['id']; ?>" class="global-product-card">
-                <button class="wishlist-btn <?php echo is_in_wishlist($related['id']) ? 'active' : ''; ?>" 
-                        onclick="event.preventDefault(); window.location.href='?wishlist_toggle=<?php echo $related['id']; ?>'">
+                <button type="button" class="wishlist-btn <?php echo is_in_wishlist($related['id']) ? 'active' : ''; ?>" 
+                        data-id="<?php echo $related['id']; ?>">
                     <i class="bi <?php echo is_in_wishlist($related['id']) ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
                 </button>
                 <div class="img-wrapper">
