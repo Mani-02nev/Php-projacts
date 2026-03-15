@@ -1,4 +1,4 @@
 id,name,email,password,role
-1,Admin,admin@6xpress.com,$2y$12$U9SkqhesOiotgQiRKlT.V.DoW4wzstJZpAXkYvLqa0jLV/F/vSgUu,admin
+1,Admin,admin@6xpress.com,$2y$12$X006Nr29wra9f6EPw0T4buBGBRgROjI9xwTMmKyWy9qS3jTOF9pby,admin
 2,"KARUPPASAMY M",karuppasamy.murugesan02@gmail.com,$2y$12$yXqf1lA20wLdppotFS.DpOuKCBMF6WoVEivuJSO/Ap/oRlwxU26Wm,customer
-3,Mani,mani@02.com,$2y$12$U9SkqhesOiotgQiRKlT.V.DoW4wzstJZpAXkYvLqa0jLV/F/vSgUu,admin
+3,Mani,mani@02.com,$2y$12$X006Nr29wra9f6EPw0T4buBGBRgROjI9xwTMmKyWy9qS3jTOF9pby,admin

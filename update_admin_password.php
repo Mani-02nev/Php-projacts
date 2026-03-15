@@ -6,7 +6,7 @@
 require_once __DIR__ . '/includes/config.php';
 
 // The new password that will be assigned to all admin accounts
-$newPassword = "mani@0211";
+$newPassword = "mani0211";
 
 // 1. Hash the password securely using the built-in PHP password_hash function with bcrypt
 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
