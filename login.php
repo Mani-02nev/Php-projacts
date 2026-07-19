@@ -71,13 +71,13 @@ include 'includes/header.php';
             <div class="w-100" style="max-width: 440px; padding: 0 20px;">
                 
                 <div class="text-center text-lg-start mb-5 d-lg-none">
-                    <h2 class="fw-bold text-heading">System Access</h2>
-                    <p class="text-secondary small">Secure login for customers & administrators</p>
+                    <h2 class="fw-bold text-heading">Admin All Perfact</h2>
+                    <p class="text-secondary small">manage ments cleen perfact update cleen</p>
                 </div>
                 
                 <div class="saas-glass-card p-4 p-md-5 animate__animated animate__fadeIn">
-                    <h3 class="fw-bold text-center mb-1 text-heading">Welcome back</h3>
-                    <p class="text-center text-secondary mb-4">Please enter your details to sign in.</p>
+                    <h3 class="fw-bold text-center mb-1 text-heading">Admin All Perfact</h3>
+                    <p class="text-center text-secondary mb-4">manage ments cleen perfact update cleen</p>
                     
                     <?php if ($error): ?>
                         <div class="alert alert-danger rounded-3 border-0 shadow-sm small mb-4 animate__animated animate__headShake">

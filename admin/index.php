@@ -40,22 +40,7 @@ include '../includes/header.php';
             <a href="users.php" class="sidebar-menu-link">
                 <i class="bi bi-people"></i> Users
             </a>
-            <a href="#" class="sidebar-menu-link text-muted">
-                <i class="bi bi-tags"></i> Categories
-            </a>
-            <a href="#" class="sidebar-menu-link text-muted">
-                <i class="bi bi-boxes"></i> Inventory
-            </a>
-            <a href="#" class="sidebar-menu-link text-muted">
-                <i class="bi bi-graph-up"></i> Analytics
-            </a>
-            <a href="#" class="sidebar-menu-link text-muted">
-                <i class="bi bi-cpu"></i> AI Logs
-            </a>
-            <div class="my-3 border-top" style="border-color: var(--saas-border-light) !important;"></div>
-            <a href="#" class="sidebar-menu-link text-muted">
-                <i class="bi bi-gear"></i> Settings
-            </a>
+
             <a href="../" class="sidebar-menu-link mt-4" style="color: var(--saas-accent);">
                 <i class="bi bi-box-arrow-up-right"></i> View Store
             </a>
@@ -66,13 +51,13 @@ include '../includes/header.php';
     <main class="admin-main">
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
-                <h2 class="fw-bold text-heading mb-1">Overview Dashboard</h2>
-                <p class="text-secondary mb-0">System performance and sales metrics</p>
+                <h2 class="fw-bold text-heading mb-1">Management Admin Dashboard</h2>
+                <p class="text-secondary mb-0">Visual dashboard data analytics perfect clean</p>
             </div>
             <div>
-                <button class="saas-btn-primary">
-                    <i class="bi bi-download me-2"></i> Export Report
-                </button>
+                <a href="export_sales_report.php" target="_blank" class="saas-btn-primary text-decoration-none d-inline-flex align-items-center">
+                    <i class="bi bi-file-earmark-pdf me-2"></i> Export Sales Report
+                </a>
             </div>
         </div>
         
@@ -140,41 +125,78 @@ include '../includes/header.php';
             <div class="col-lg-8">
                 <div class="saas-glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold text-heading mb-0">Revenue Analytics</h5>
+                        <div>
+                            <h5 class="fw-bold text-heading mb-0">Company Level Analytics</h5>
+                            <p class="text-secondary small mb-0">Visual dashboard data analytics perfect clean</p>
+                        </div>
                         <select class="form-select saas-input w-auto p-2 py-1">
                             <option>This Year</option>
+                            <option>This Quarter</option>
                             <option>This Month</option>
                         </select>
                     </div>
-                    <!-- Chart Graphic Placeholder -->
-                    <div class="w-100 rounded d-flex align-items-center justify-content-center" style="height: 300px; background: rgba(0,0,0,0.02); border: 1px dashed var(--saas-border-light);">
-                        <p class="text-secondary mb-0"><i class="bi bi-graph-up text-primary fs-3 d-block text-center mb-2"></i> Revenue Chart Graphic</p>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3" style="background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.1);">
+                                <p class="text-secondary small fw-bold text-uppercase mb-1">Gross Volume</p>
+                                <h4 class="fw-bold mb-0" style="color: #8B5CF6;">₹<?php echo number_format($stats['total_revenue'] * 1.5, 2); ?></h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1);">
+                                <p class="text-secondary small fw-bold text-uppercase mb-1">Net Margin</p>
+                                <h4 class="fw-bold mb-0" style="color: #10B981;">24.8%</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3" style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1);">
+                                <p class="text-secondary small fw-bold text-uppercase mb-1">Growth Rate</p>
+                                <h4 class="fw-bold mb-0" style="color: #3B82F6;">+18.2%</h4>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Financial Chart -->
+                    <div class="w-100 position-relative" style="height: 250px;">
+                        <canvas id="financialChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="saas-glass-card p-4 h-100">
-                    <h5 class="fw-bold text-heading mb-4">Traffic Sources</h5>
-                    <div class="w-100 rounded d-flex align-items-center justify-content-center" style="height: 200px; background: rgba(0,0,0,0.02); border: 1px dashed var(--saas-border-light);">
-                        <p class="text-secondary mb-0"><i class="bi bi-pie-chart text-info fs-3 d-block text-center mb-2"></i> Traffic Pie Chart</p>
-                    </div>
+                <div class="saas-glass-card p-4 h-100 d-flex flex-column">
+                    <h5 class="fw-bold text-heading mb-4">User Demographics</h5>
                     
-                    <div class="mt-4">
+                    <div class="flex-grow-1 d-flex flex-column justify-content-center">
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="text-secondary small fw-medium text-uppercase">Organic</span>
-                            <span class="fw-bold text-heading small">65%</span>
+                            <span class="text-secondary small fw-medium text-uppercase d-flex align-items-center"><i class="bi bi-circle-fill me-2" style="color: #7C3AED; font-size: 0.5rem;"></i> Enterprise</span>
+                            <span class="fw-bold text-heading small">45%</span>
                         </div>
-                        <div class="progress mb-3" style="height: 6px;">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 65%"></div>
+                        <div class="progress mb-4" style="height: 8px; border-radius: 4px;">
+                            <div class="progress-bar" role="progressbar" style="width: 45%; background-color: #7C3AED;"></div>
                         </div>
                         
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="text-secondary small fw-medium text-uppercase">Direct</span>
+                            <span class="text-secondary small fw-medium text-uppercase d-flex align-items-center"><i class="bi bi-circle-fill me-2" style="color: #3B82F6; font-size: 0.5rem;"></i> Business</span>
                             <span class="fw-bold text-heading small">35%</span>
                         </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 35%"></div>
+                        <div class="progress mb-4" style="height: 8px; border-radius: 4px;">
+                            <div class="progress-bar" role="progressbar" style="width: 35%; background-color: #3B82F6;"></div>
                         </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-secondary small fw-medium text-uppercase d-flex align-items-center"><i class="bi bi-circle-fill me-2" style="color: #10B981; font-size: 0.5rem;"></i> Retail</span>
+                            <span class="fw-bold text-heading small">20%</span>
+                        </div>
+                        <div class="progress" style="height: 8px; border-radius: 4px;">
+                            <div class="progress-bar" role="progressbar" style="width: 20%; background-color: #10B981;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-3 border-top" style="border-color: var(--saas-border-light) !important;">
+                        <button class="btn btn-sm w-100 text-primary fw-bold" style="background: rgba(124, 58, 237, 0.1);">
+                            View Full Report <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -182,4 +204,75 @@ include '../includes/header.php';
     </main>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<!-- Load Chart.js for Financial Data Visuals -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('financialChart').getContext('2d');
+    
+    // Create gradient for the line chart
+    const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+    gradient.addColorStop(0, 'rgba(124, 58, 237, 0.4)'); // saas-primary
+    gradient.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            datasets: [{
+                label: 'Gross Volume (₹)',
+                data: [42000, 48000, 45000, 62000, 58000, 75000, 92000],
+                borderColor: '#7C3AED',
+                backgroundColor: gradient,
+                borderWidth: 3,
+                tension: 0.4, // smooth curves
+                fill: true,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#7C3AED',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1F2937',
+                    titleFont: { size: 13, family: 'Inter' },
+                    bodyFont: { size: 14, weight: 'bold', family: 'Inter' },
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                    ticks: {
+                        callback: function(value) {
+                            return '₹' + (value / 1000) + 'k';
+                        },
+                        font: { family: 'Inter', size: 11 },
+                        color: '#6B7280'
+                    }
+                },
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    ticks: {
+                        font: { family: 'Inter', size: 12 },
+                        color: '#6B7280'
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            }
+        }
+    });
+});
+</script>

@@ -70,11 +70,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 Shop
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>fresh-mart.php" class="nav-link fresh-mart-link <?php echo $current_page == 'fresh-mart.php' ? 'active' : ''; ?>">
-                                <i class="bi bi-basket2-fill me-1 text-success"></i> Fresh Mart
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="<?php echo $root_path; ?>local-mart.php" class="nav-link <?php echo $current_page == 'local-mart.php' ? 'active' : ''; ?>" style="<?php echo $current_page == 'local-mart.php' ? '' : ''; ?>">
                                 <i class="bi bi-geo-alt-fill me-1" style="color:#6C63FF;"></i> Local Mart
@@ -85,11 +81,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 About
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?php echo $root_path; ?>ai-assistant.php" class="nav-link <?php echo $current_page == 'ai-assistant.php' ? 'active' : ''; ?>" style="color: #A78BFA !important;">
-                                <i class="bi bi-stars"></i> AI Shop
-                            </a>
-                        </li>
+
                         <?php if (is_admin()): ?>
                             <li class="nav-item">
                                 <a href="<?php echo $is_admin_dir ? './' : 'admin/'; ?>" class="nav-link <?php echo strpos($current_page, 'admin') !== false ? 'active' : ''; ?>">

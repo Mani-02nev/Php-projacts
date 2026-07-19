@@ -12,51 +12,6 @@ $team = [
         'bio' => 'Driving the technical vision with scalable PHP architecture and secure systems.',
         'skills' => ['PHP', 'DevOps', 'Security'],
         'color' => '#5203dcff'
-    ],
-    [
-        'name' => 'Nathakumar',
-        'role' => 'Backend Developer',
-        'initials' => 'NK',
-        'icon' => 'bi-server',
-        'bio' => 'Specializing in server-side logic and database optimization protocols.',
-        'skills' => ['Logic', 'MySQL', 'API'],
-        'color' => '#10B981'
-    ],
-    [
-        'name' => 'Bharathvaj',
-        'role' => 'UI/UX Designer',
-        'initials' => 'BV',
-        'icon' => 'bi-palette-fill',
-        'bio' => 'Crafting intuitive user interfaces and seamless digital experiences.',
-        'skills' => ['Design', 'Figma', 'CSS'],
-        'color' => '#F59E0B'
-    ],
-    [
-        'name' => 'Tamil Arasan',
-        'role' => 'Frontend Engineer',
-        'initials' => 'TA',
-        'icon' => 'bi-code-slash',
-        'bio' => 'Translating creative designs into responsive and interactive web code.',
-        'skills' => ['HTML5', 'JS', 'React'],
-        'color' => '#3B82F6'
-    ],
-    [
-        'name' => 'Tamil Selvan',
-        'role' => 'QA Auditor',
-        'initials' => 'TS',
-        'icon' => 'bi-shield-check',
-        'bio' => 'Ensuring system integrity, security compliance, and zero-bug releases.',
-        'skills' => ['Testing', 'Security', 'QA'],
-        'color' => '#EF4444'
-    ],
-    [
-        'name' => 'Kishor Kumar',
-        'role' => 'Data Architect',
-        'initials' => 'KK',
-        'icon' => 'bi-database-fill',
-        'bio' => 'Managing data flow efficiency and structural integrity of information.',
-        'skills' => ['Data', 'Analytics', 'Flow'],
-        'color' => '#8B5CF6'
     ]
 ];
 ?>

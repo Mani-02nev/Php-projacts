@@ -318,6 +318,11 @@ h6,
     color: var(--saas-text-heading);
     font-weight: 500;
     vertical-align: middle;
+    transition: background-color 0.2s ease;
+}
+
+.saas-table tbody tr:hover td {
+    background-color: rgba(124, 58, 237, 0.02);
 }
 
 /* Responsive Adjustments */
